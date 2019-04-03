@@ -3,4 +3,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!-- White Series -->
+    <color name="white">#ffffff</color>
+
+    <!-- Bottom Navigation -->
+    <color name="bottom_nav_item_normal">#9E9E9E</color>
+    <color name="bottom_nav_item_selected">#9E9E9E</color>
 </resources>

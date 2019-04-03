@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TravelDiary</string>
+
+    //main page
+    <string name="toolbar_title">Memories</string>
+    <string name="search_hint">search here....</string>
 </resources>

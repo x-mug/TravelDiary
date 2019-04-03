@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Toolbar -->
+    <dimen name="height_toolbar">70dp</dimen>
+
+    <!-- Bottom Navigation -->
+    <dimen name="height_bottom_navigation_main">50dp</dimen>
+    <dimen name="size_bottom_nav_icon">50dp</dimen>
+</resources>
