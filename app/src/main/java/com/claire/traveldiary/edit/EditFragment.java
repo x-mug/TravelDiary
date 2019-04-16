@@ -103,7 +103,7 @@ public class EditFragment extends Fragment implements EditContract.View{
         mPresenter.result(requestCode, resultCode);
 
         //receive weather data
-        if (requestCode == REQUEST && null != data) {
+        if (requestCode == REQUEST && resultCode == RESULT_OK && null != data) {
             String imageName = data.getStringExtra(WeatherDialog.IMAGE);
             Log.d(TAG, "weather icon uri: " + imageName);
             mEditAdapter.updateWeather(imageName);
@@ -201,24 +201,10 @@ public class EditFragment extends Fragment implements EditContract.View{
 
     @Override
     public void openWeatherDialogUi() {
-
-        WeatherDialog dialog =
-                (WeatherDialog) (getActivity().getSupportFragmentManager().findFragmentByTag("WeatherDialog"));
-
-        if (dialog == null) {
-
-            dialog = new WeatherDialog();
-            mWeatherPresenter = new WeatherPresenter(dialog);
-
-            dialog.setPresenter(mWeatherPresenter);
-            dialog.setTargetFragment(EditFragment.this, REQUEST);
-            dialog.show((getActivity().getSupportFragmentManager()),"WeatherDialog");
-
-        } else if (!dialog.isAdded()) {
-
-            dialog.show(getActivity().getSupportFragmentManager(), "WeatherDialog");
-        }
+        ((MainActivity) getActivity()).openWeatherDialog();
     }
+
+
 
     @Override
     public void openGalleryUi() {
@@ -332,7 +318,6 @@ public class EditFragment extends Fragment implements EditContract.View{
             mEditAdapter.editNewDiary(mNewDiary);
         }
     }
-
 
     @Override
     public void onDestroy() {

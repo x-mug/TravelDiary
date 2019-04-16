@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -32,7 +33,9 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import mabbas007.tagsedittext.TagsEditText;
@@ -69,6 +72,7 @@ public class EditAdapter extends RecyclerView.Adapter {
         private List<String> mTagsList;
 
         private boolean isEdit = false;
+        private boolean isSearchPlace = false;
 
 
         public EditAdapter(EditContract.Presenter presenter, Context context, Diary diary) {
@@ -129,7 +133,6 @@ public class EditAdapter extends RecyclerView.Adapter {
                         ((EditViewHolder) holder).mTitle.setFocusableInTouchMode(false);
                         ((EditViewHolder) holder).mDate.setClickable(false);
                         ((EditViewHolder) holder).mWeather.setClickable(false);
-                        //location can't input haven't done
                         ((EditViewHolder) holder).mContent.setFocusableInTouchMode(false);
                         ((EditViewHolder) holder).mTags.setFocusableInTouchMode(false);
 
@@ -152,19 +155,32 @@ public class EditAdapter extends RecyclerView.Adapter {
                             ((EditViewHolder) holder).mRecyclerGallery.setAdapter(mGalleryAdapter);
                         }
 
+                        //title
                         ((EditViewHolder) holder).mTitle.setText(mDiary.getTitle());
+
+                        //date
                         ((EditViewHolder) holder).mDate.setText(mDiary.getDate());
 
+                        //weather
                         if (mDiary.getWeather() != null) {
                             ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mDiary.getWeather()));
                         }
 
+                        //places
                         if (mDiary.getDiaryPlace() != null) {
                             mLocation.setText(mDiary.getDiaryPlace().getPlaceName());
                         }
 
+                        //content
                         ((EditViewHolder) holder).mContent.setText(mDiary.getContent());
-                        //tags haven't done
+
+                        //tags
+                        if (mDiary.getTags() != null) {
+                            Log.d(TAG, "tags size" + mDiary.getTags().size() + mDiary.getTags().toString());
+                            ((EditViewHolder) holder).mTags.setTags(mDiary.getTags().toString().replace("[","").replace("]","").split("\\,"));
+                        } else {
+                            ((EditViewHolder) holder).mTags.setHint("");
+                        }
 
 
                     } else {
@@ -219,6 +235,7 @@ public class EditAdapter extends RecyclerView.Adapter {
                         });
 
                         //set tags haven't done
+                        ((EditViewHolder) holder).mTags.getTags();
 
                     }
                 } else {
@@ -279,7 +296,8 @@ public class EditAdapter extends RecyclerView.Adapter {
                     //edit content
                     mEditContent = ((EditViewHolder) holder).mContent.getText().toString();
 
-                    //choose tags
+                    //edit tags
+                    mTagsList = ((EditViewHolder) holder).mTags.getTags();
 
                 }
             }
@@ -304,29 +322,47 @@ public class EditAdapter extends RecyclerView.Adapter {
 
         private void chooseLocation() {
             // Initialize Places.
-            Places.initialize(mContext, "");
+            Places.initialize(mContext, "AIzaSyBJPVkA_f-Tp2PvzTWQ2p-_IOetu6g-9Q0");
 
             // Create a new Places client instance.
             PlacesClient placesClient = Places.createClient(mContext);
 
             if (!Places.isInitialized()) {
-                Places.initialize(TravelDiaryApplication.getAppContext(), "");
+                Places.initialize(TravelDiaryApplication.getAppContext(), "AIzaSyBJPVkA_f-Tp2PvzTWQ2p-_IOetu6g-9Q0");
             }
 
             AutocompleteSupportFragment supportFragment = (AutocompleteSupportFragment)
                     ((FragmentActivity) mContext).getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
             supportFragment.setHint("Search");
-            supportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+            supportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS));
 
             supportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
                     // TODO: Get info about the selected place.
-                    Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
+                    Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng() + ", " + place.getAddressComponents());
+
+                    String getCountry = "";
+                    String getLocality = "";
+
+                    for (int i = 0; i < place.getAddressComponents().asList().size(); i++) {
+
+                        if (place.getAddressComponents().asList().get(i).getTypes().get(0).equals("country")) {
+                            getCountry = place.getAddressComponents().asList().get(i).getName();
+                            Log.d(TAG,"get country" + getCountry);
+                        }
+
+                        if (place.getAddressComponents().asList().get(i).getTypes().get(0).equals("locality")) {
+                            getLocality = place.getAddressComponents().asList().get(i).getName();
+                            Log.d(TAG,"get locality" + getLocality);
+                        }
+                    }
+
                     mDiaryPlace = new DiaryPlace();
                     mDiaryPlace.setPlaceId(place.getId());
                     mDiaryPlace.setPlaceName(place.getName());
+                    mDiaryPlace.setCountry(getCountry);
                     mDiaryPlace.setLat(place.getLatLng().latitude);
                     mDiaryPlace.setLng(place.getLatLng().longitude);
 
@@ -347,6 +383,7 @@ public class EditAdapter extends RecyclerView.Adapter {
             mEditTitle = ((EditViewHolder) mHolder).mTitle.getText().toString();
             mStringDate = ((EditViewHolder) mHolder).mDate.getText().toString();
             mEditContent = ((EditViewHolder) mHolder).mContent.getText().toString();
+            mTagsList = ((EditViewHolder) mHolder).mTags.getTags();
 
             notifyDataSetChanged();
 

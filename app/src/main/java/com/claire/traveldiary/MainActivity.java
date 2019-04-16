@@ -1,5 +1,7 @@
 package com.claire.traveldiary;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,22 +16,29 @@ import com.claire.traveldiary.base.BaseActivity;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.edit.EditFragment;
 import com.claire.traveldiary.edit.EditPresenter;
+import com.claire.traveldiary.edit.chooseweather.WeatherDialog;
 import com.claire.traveldiary.edit.chooseweather.WeatherPresenter;
 import com.claire.traveldiary.mainpage.MainPageFragment;
 import com.claire.traveldiary.mainpage.MainPagePresenter;
 import com.claire.traveldiary.map.MapFragment;
 import com.claire.traveldiary.map.MapPresenter;
+import com.claire.traveldiary.map.showdiary.ShowDiaryDialog;
+import com.claire.traveldiary.map.showdiary.ShowDiaryPresenter;
 import com.claire.traveldiary.settings.SettingsFragment;
 import com.claire.traveldiary.settings.SettingsPresenter;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
+    private static final String TAG = "MainActivity";
+    public static final int REQUEST = 100;
+
     private MainPagePresenter mMainPagePresenter;
     private EditPresenter mEditPresenter;
     private SettingsPresenter mSettingsPresenter;
     private MapPresenter mMapPresenter;
     private WeatherPresenter mWeatherPresenter;
+    private ShowDiaryPresenter mShowDiaryPresenter;
 
     //BottomNavigation
     private BottomNavigationView mBottomNavigation;
@@ -144,6 +153,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     };
 
+
     private void openMainPage() {
         MainPageFragment mainPageFragment = (MainPageFragment) getSupportFragmentManager().findFragmentByTag("MainPage");
 
@@ -185,6 +195,45 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         updateEditToolbarFromMainPage("");
         hideBottomNavigation();
+    }
+
+    public void openWeatherDialog() {
+        WeatherDialog dialog =
+                (WeatherDialog) (this.getSupportFragmentManager().findFragmentByTag("WeatherDialog"));
+        EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag("Edit");
+
+        if (dialog == null) {
+
+            dialog = new WeatherDialog();
+            mWeatherPresenter = new WeatherPresenter(dialog);
+            dialog.setPresenter(mWeatherPresenter);
+
+            dialog.setTargetFragment(editFragment, REQUEST);
+            dialog.show((this.getSupportFragmentManager()),"WeatherDialog");
+
+        } else if (!dialog.isAdded()) {
+
+            dialog.show(this.getSupportFragmentManager(), "WeatherDialog");
+        }
+    }
+
+    public void openShowDiaryDialog(Diary diary) {
+        ShowDiaryDialog dialog =
+                (ShowDiaryDialog) (this.getSupportFragmentManager().findFragmentByTag("ShowDiaryDialog"));
+
+        if (dialog == null) {
+
+            dialog = new ShowDiaryDialog();
+            mShowDiaryPresenter = new ShowDiaryPresenter(dialog);
+            dialog.setPresenter(mShowDiaryPresenter);
+            mShowDiaryPresenter.loadDiaryByPlace(diary);
+
+            dialog.show((this.getSupportFragmentManager()),"ShowDiaryDialog");
+
+        } else if (!dialog.isAdded()) {
+
+            dialog.show(this.getSupportFragmentManager(), "ShowDiaryDialog");
+        }
     }
 
 

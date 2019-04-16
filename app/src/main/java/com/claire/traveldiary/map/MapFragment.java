@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -33,6 +35,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     private static final String TAG = "MapFragment";
 
     private GoogleMap mMap;
+    private Marker mMarker;
+
     private MapContract.Presenter mPresenter;
 
     private DiaryDatabase mDatabase;
@@ -109,13 +113,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         //database
         DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
 
-
-        // Add a marker in Sydney and move the camera
-        LatLng travel = new LatLng(25.042636, 121.564882);
-        mMap.addMarker(new MarkerOptions().position(travel).title("I'm travel here!"));
-
+        //find all my places
         for (int i = 0; i < diaryDAO.getDiarys().size(); i++ ) {
-
 
             LatLng location = new LatLng(diaryDAO.getDiarys().get(i).getDiaryPlace().getLat(), diaryDAO.getDiarys().get(i).getDiaryPlace().getLng());
 
@@ -126,6 +125,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
                     .title(diaryDAO.getDiarys().get(i).getDiaryPlace().getPlaceName()));
 
             //mMarkerArray.add(marker);
+
+            int finalI = i;
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    ((MainActivity) getActivity()).openShowDiaryDialog(diaryDAO.getDiarys().get(finalI));
+                }
+            });
         }
 
 

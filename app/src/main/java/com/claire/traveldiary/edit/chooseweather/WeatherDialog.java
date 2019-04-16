@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 
+import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.edit.EditFragment;
 
@@ -142,7 +143,7 @@ public class WeatherDialog extends DialogFragment implements WeatherContract.Vie
         } else {
             Intent intent = new Intent();
             intent.putExtra(IMAGE, imageUri);
-            getTargetFragment().onActivityResult(EditFragment.REQUEST, Activity.RESULT_OK, intent);
+            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
         }
     }
 }

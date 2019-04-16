@@ -7,17 +7,23 @@
     <string name="toolbar_edit">Edit</string>
     <string name="toolbar_done">Done</string>
 
-    //item_card
+    //item_card_in_main
     <string name="diary_title">Travel</string>
     <string name="diary_date">16th January 2019</string>
+
+    //item_card_in_main
+    <string name="diary_place">My Diaries</string>
+
 
     //item edit
     <string name="edit_diary_title_hint">Title</string>
     <string name="edit_diary_date_hint">Date</string>
     <string name="edit_diary_location_hint">Paris, France</string>
     <string name="edit_diary_content_hint">Your Diary Here....</string>
+    <string name="edit_diary_tags_hint">Add tags</string>
 
     //dialog choose weather
     <string name="dialog_choose_weather">Choose Weather</string>
+
 
 </resources>

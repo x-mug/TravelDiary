@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
-import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     private class MainPageViewHolder extends RecyclerView.ViewHolder {
 
         private ConstraintLayout mLayout;
+        private ConstraintLayout mLongClickView;
         private CardView mCard;
         private ImageView mMainImage;
         private TextView mDiaryTitle;
@@ -56,7 +56,8 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             mLayout = itemView.findViewById(R.id.card_space);
-            mCard = itemView.findViewById(R.id.card_view);
+            mLongClickView = itemView.findViewById(R.id.constraint_background);
+            mCard = itemView.findViewById(R.id.cardview_mainpage);
             mMainImage = itemView.findViewById(R.id.main_img_card);
             mMainImage.setAlpha(0.9f);
             mDiaryTitle = itemView.findViewById(R.id.edit_diary_title);
@@ -70,7 +71,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new MainPageViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_card, parent, false));
+                .inflate(R.layout.item_card_in_mainpage, parent, false));
     }
 
     @Override
@@ -84,9 +85,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
             //click space return original card view
             ((MainPageViewHolder) holder).mLayout.setOnClickListener(v -> {
-                ((MainPageViewHolder) holder).mMainImage.setAlpha(0.9f);
-                ((MainPageViewHolder) holder).mDelete.setVisibility(View.GONE);
-                ((MainPageViewHolder) holder).mShare.setVisibility(View.GONE);
+                ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
                 ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                 ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
             });
@@ -117,40 +116,33 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
 
             //long click delete or share
-            ((MainPageViewHolder) holder).mCard.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    ((MainPageViewHolder) holder).mMainImage.setAlpha(0.4f);
+            ((MainPageViewHolder) holder).mCard.setOnLongClickListener(v -> {
+                ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.VISIBLE);
+                ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.GONE);
+                ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.GONE);
 
-                    ((MainPageViewHolder) holder).mDelete.setVisibility(View.VISIBLE);
-                    ((MainPageViewHolder) holder).mDelete.setOnClickListener(v1 -> {
-                        mPresenter.deleteDiary(mDiaryList.get(position).getId());
-                        mDiaryList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyDataSetChanged();
-                        Toast.makeText(v.getContext(), "Delete Diary", Toast.LENGTH_SHORT).show();
-                        ((MainPageViewHolder) holder).mMainImage.setAlpha(0.9f);
-                        ((MainPageViewHolder) holder).mDelete.setVisibility(View.GONE);
-                        ((MainPageViewHolder) holder).mShare.setVisibility(View.GONE);
-                        ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
-                        ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
+                //click delete
+                ((MainPageViewHolder) holder).mDelete.setOnClickListener(v1 -> {
+                    mPresenter.deleteDiary(mDiaryList.get(position).getId());
+                    mDiaryList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyDataSetChanged();
+                    Toast.makeText(v.getContext(), "Delete Diary", Toast.LENGTH_SHORT).show();
+                    ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
+                    ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
+                    ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
 
-                    });
+                });
 
-                    ((MainPageViewHolder) holder).mShare.setVisibility(View.VISIBLE);
-                    ((MainPageViewHolder) holder).mShare.setOnClickListener(v12 -> {
-                        Log.d(TAG, "Oh Share.....");
-                        ((MainPageViewHolder) holder).mMainImage.setAlpha(0.9f);
-                        ((MainPageViewHolder) holder).mShare.setVisibility(View.GONE);
-                        ((MainPageViewHolder) holder).mDelete.setVisibility(View.GONE);
-                        ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
-                        ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
-                    });
+                //click share
+                ((MainPageViewHolder) holder).mShare.setOnClickListener(v12 -> {
+                    Log.d(TAG, "Oh Share.....");((MainPageViewHolder) holder).mShare.setVisibility(View.GONE);
+                    ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
+                    ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
+                    ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
+                });
 
-                    ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.GONE);
-                    ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.GONE);
-                    return true;
-                }
+                return true;
             });
         }
     }

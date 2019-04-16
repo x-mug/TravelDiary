@@ -9,9 +9,12 @@ import android.arch.persistence.room.Update;
 
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
+import com.claire.traveldiary.data.PlaceAndAllDaries;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface DiaryDAO {
@@ -19,7 +22,7 @@ public interface DiaryDAO {
     @Insert
     void insert(Diary diaries);
 
-    @Update
+    @Update(onConflict = REPLACE)
     void update(Diary diaries);
 
     @Delete
@@ -35,9 +38,11 @@ public interface DiaryDAO {
     @Query("SELECT * FROM diary WHERE mId = :id")
     Diary getDiarybyId(int id);
 
+    @Query("SELECT mPlaceName FROM DiaryPlace")
+    List<PlaceAndAllDaries> getPlaceAndAllDaries();
 
     @TypeConverters({ImagesConverter.class, TagsConverter.class, PlacesConverter.class})
-    @Query("UPDATE diary SET mTitle = :title, mDate = :date, mDiaryPlace = :diaryPlace, mWeather = :weather, mImages = :images, mContent = :content, mTags = :tags WHERE mId = :id")
+    @Query("UPDATE diary SET mTitle = :title, mDate = :date, mDiaryPlace = :diaryPlace, mWeather = :weather, mImages = :images, mContent = :content, mTags = :tags  WHERE mId = :id")
     void updateDiary(int id, String title, String date, DiaryPlace diaryPlace, String weather, ArrayList<String> images, String content, List<String> tags);
 
 
@@ -45,7 +50,7 @@ public interface DiaryDAO {
         Diary diaryFromDB = getDiarybyId(diary.getId());
 
         if (diaryFromDB != null)
-            updateDiary(diary.getId(), diary.getTitle(), diary.getDate(), diary.getDiaryPlace(), diary.getWeather(), diary.getImages(), diary.getContent(), diary.getTags());
+            update(diary);
         else
             insert(diary);
     }

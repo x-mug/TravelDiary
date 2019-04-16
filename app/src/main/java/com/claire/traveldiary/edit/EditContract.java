@@ -39,7 +39,5 @@ public interface EditContract {
 
         void clickEditDiary();
 
-
-
     }
 }
