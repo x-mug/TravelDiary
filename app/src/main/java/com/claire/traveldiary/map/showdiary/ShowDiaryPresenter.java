@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.claire.traveldiary.data.Diary;
 
+import java.util.List;
+
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
 
 public class ShowDiaryPresenter implements ShowDiaryContract.Presenter {
@@ -24,8 +26,18 @@ public class ShowDiaryPresenter implements ShowDiaryContract.Presenter {
     }
 
     @Override
-    public void loadDiaryByPlace(Diary diary) {
-        mShowDiaryView.openDiaryDialogByPlace(diary);
+    public void loadDiaryByPlace(double lat, double lng) {
+        mShowDiaryView.openDiaryDialogByPlace(lat, lng);
+    }
+
+    @Override
+    public void openEdit(Diary diary) {
+        mShowDiaryView.openEditUi(diary);
+    }
+
+    @Override
+    public void closePopup() {
+        mShowDiaryView.closePopupUi();
     }
 
     @Override

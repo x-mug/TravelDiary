@@ -26,7 +26,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -114,15 +113,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
 
         //find all my places
-        for (int i = 0; i < diaryDAO.getDiarys().size(); i++ ) {
+        for (int i = 0; i < diaryDAO.getAllPlaces().size(); i++ ) {
 
-            LatLng location = new LatLng(diaryDAO.getDiarys().get(i).getDiaryPlace().getLat(), diaryDAO.getDiarys().get(i).getDiaryPlace().getLng());
+            LatLng location = new LatLng(diaryDAO.getAllPlaces().get(i).getLat(), diaryDAO.getAllPlaces().get(i).getLng());
 
             mMap.addMarker(new MarkerOptions()
                     .position(location)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
                     .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
-                    .title(diaryDAO.getDiarys().get(i).getDiaryPlace().getPlaceName()));
+                    .title(diaryDAO.getAllPlaces().get(i).getPlaceName()));
 
             //mMarkerArray.add(marker);
 
@@ -130,12 +129,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
-                    ((MainActivity) getActivity()).openShowDiaryDialog(diaryDAO.getDiarys().get(finalI));
+                    Double latitude = marker.getPosition().latitude;
+                    Double longitude = marker.getPosition().longitude;
+
+                    ((MainActivity) getActivity()).openShowDiaryDialog(latitude, longitude);
                 }
             });
         }
 
-
     }
-
 }

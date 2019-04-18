@@ -1,9 +1,11 @@
 package com.claire.traveldiary.map.showdiary;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,6 @@ import android.widget.TextView;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
-import com.claire.traveldiary.data.room.DiaryDatabase;
 
 import java.util.List;
 
@@ -24,14 +25,13 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
     private ShowDiaryContract.Presenter mPresenter;
     private Context mContext;
 
-    private DiaryDatabase mDatabase;
-
     private List<Diary> mDiaryList;
 
 
-    public ShowDiaryAdapter(ShowDiaryContract.Presenter presenter, Context context) {
+    public ShowDiaryAdapter(ShowDiaryContract.Presenter presenter, Context context, List<Diary> diaries) {
         mPresenter = presenter;
         mContext = context;
+        mDiaryList = diaries;
     }
 
     public class ShowDiaryHolder extends RecyclerView.ViewHolder {
@@ -63,10 +63,15 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
 
         if (holder instanceof ShowDiaryHolder) {
 
-            mDatabase = DiaryDatabase.getIstance(mContext);
-            mDiaryList = mDatabase.getDiaryDAO().getDiarys();
+            ((ShowDiaryHolder) holder).mImage.setImageBitmap(BitmapFactory.decodeFile(mDiaryList.get(position).getImages().get(0)));
+            ((ShowDiaryHolder) holder).mTitle.setText(mDiaryList.get(position).getTitle());
+            ((ShowDiaryHolder) holder).mDate.setText(mDiaryList.get(position).getDate());
 
-            //((ShowDiaryHolder) holder).mTitle.setText(mPlacesList.get(position));
+            //click card into edit page
+            ((ShowDiaryHolder) holder).mCard.setOnClickListener(v -> {
+                mPresenter.openEdit(mDiaryList.get(position));
+                mPresenter.closePopup();
+            });
 
         }
     }
@@ -78,6 +83,9 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 1;
+        if (mDiaryList == null) {
+            return 0;
+        }
+        return mDiaryList.size();
     }
 }

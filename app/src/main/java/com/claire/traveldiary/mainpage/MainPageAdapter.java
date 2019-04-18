@@ -34,6 +34,8 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
     private List<Diary> mDiaryList;
 
+    private boolean isLongclick = false;
+
 
     public MainPageAdapter(MainPageContract.Presenter presenter, Context context) {
         mPresenter = presenter;
@@ -70,8 +72,10 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MainPageViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_card_in_mainpage, parent, false));
+        View view;
+
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_in_mainpage, parent, false);
+        return new MainPageViewHolder(view);
     }
 
     @Override
@@ -80,20 +84,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
         if (holder instanceof MainPageViewHolder) {
 
             mDatabase = DiaryDatabase.getIstance(mContext);
-
-            mDiaryList = mDatabase.getDiaryDAO().getDiarys();
-
-            //click space return original card view
-            ((MainPageViewHolder) holder).mLayout.setOnClickListener(v -> {
-                ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
-                ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
-                ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
-            });
-
-            //click card
-            ((MainPageViewHolder) holder).mCard.setOnClickListener(v -> {
-                mPresenter.openEdit(mDatabase.getDiaryDAO().getDiarys().get(position));
-            });
+            mDiaryList = mDatabase.getDiaryDAO().getAllDiaries();
 
             //show card
             if (mDiaryList.size() > 0) {
@@ -113,6 +104,26 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     ((MainPageViewHolder) holder).mDiaryDate.setText("11 January 2019");
                 }
             }
+
+            //click space return original card view
+            ((MainPageViewHolder) holder).mLayout.setOnClickListener(v -> {
+                ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
+                ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
+                ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
+            });
+
+
+            ((MainPageViewHolder) holder).mCard.setOnClickListener(v -> {
+                if (isLongclick == true) {
+                    ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
+                    ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
+                    ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
+                    isLongclick = false;
+                } else {
+                    //click card
+                    mPresenter.openEdit(mDatabase.getDiaryDAO().getAllDiaries().get(position));
+                }
+            });
 
 
             //long click delete or share
@@ -136,11 +147,13 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
                 //click share
                 ((MainPageViewHolder) holder).mShare.setOnClickListener(v12 -> {
-                    Log.d(TAG, "Oh Share.....");((MainPageViewHolder) holder).mShare.setVisibility(View.GONE);
+                    Log.d(TAG, "Oh Share.....");
                     ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
                     ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                     ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
                 });
+
+                isLongclick = true;
 
                 return true;
             });
@@ -150,6 +163,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     public void updateData(ArrayList<Diary> diaries) {
         mDiaryList = diaries;
         notifyDataSetChanged();
+
     }
 
 

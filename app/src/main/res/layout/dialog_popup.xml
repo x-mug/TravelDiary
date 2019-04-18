@@ -6,27 +6,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layout_popup"
-    android:background="@android:color/transparent">
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/img_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_img_rounded"
+        android:src="@drawable/img_roadtrip"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_departure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@mipmap/ic_departure"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_show_place"
-        android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:background="@color/white"
-        android:paddingLeft="10dp"
-        android:paddingTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="@string/diary_place"
         android:textSize="22sp"
         android:textStyle="bold"
         android:typeface="serif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/img_departure"
+        app:layout_constraintStart_toEndOf="@+id/img_departure"
+        app:layout_constraintTop_toTopOf="@+id/img_departure" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_popup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_show_place">
 
     </android.support.v7.widget.RecyclerView>

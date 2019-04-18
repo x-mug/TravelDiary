@@ -29,7 +29,6 @@ import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.edit.chooseweather.WeatherContract;
 import com.claire.traveldiary.edit.chooseweather.WeatherDialog;
-import com.claire.traveldiary.edit.chooseweather.WeatherPresenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -194,9 +193,10 @@ public class EditFragment extends Fragment implements EditContract.View{
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.autocomplete_fragment);
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.remove(fragment);
-        fragmentTransaction.commit();
+
+        if(fragment != null && getActivity() != null && !getActivity().isFinishing()) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
     }
 
     @Override

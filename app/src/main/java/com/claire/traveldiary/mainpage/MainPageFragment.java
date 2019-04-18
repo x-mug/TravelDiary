@@ -15,12 +15,13 @@ import android.widget.ImageButton;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
+import com.claire.traveldiary.component.GridSpacingItemDecoration;
 import com.claire.traveldiary.component.SpacesItemDecoration;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
-import com.claire.traveldiary.edit.EditFragment;
 import com.claire.traveldiary.edit.EditPresenter;
+import com.claire.traveldiary.util.Util;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,8 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
     private DiaryDatabase mDatabase;
 
     private ImageButton mAddDiary;
+
+    private int mSpace;
 
 
     public MainPageFragment() {
@@ -76,7 +79,7 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
         mAddDiary = root.findViewById(R.id.btn_add_diary);
 
-        if (mDatabase.getDiaryDAO().getDiarys().size() > 0) {
+        if (mDatabase.getDiaryDAO().getAllDiaries().size() > 0) {
             mAddDiary.setVisibility(View.GONE);
         } else {
             mAddDiary.setVisibility(View.VISIBLE);
@@ -89,14 +92,16 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(mMainPageAdapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(2,40,true));
+        recyclerView.setPadding(40,0,40,40);
+        recyclerView.addItemDecoration(new SpacesItemDecoration(6));
+
 
         return root;
     }
 
     @Override
     public void openEditPage(Diary diary) {
-        ((MainActivity) getActivity()).openEditFromMainPage(diary);
+        ((MainActivity) getActivity()).openEditFromOtherPage(diary);
     }
 
     @Override

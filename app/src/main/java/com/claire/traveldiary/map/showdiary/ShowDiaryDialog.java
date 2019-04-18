@@ -2,6 +2,7 @@ package com.claire.traveldiary.map.showdiary;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -13,13 +14,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
-import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
@@ -35,7 +40,11 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     private ConstraintLayout mLayout;
     private ShowDiaryAdapter mShowDiaryAdapter;
 
-    private List<Diary> mDiaries;
+    private List<DiaryPlace> mPlaceList;
+    private List<Diary> mDiaryList;
+
+    private ImageView mBackground;
+    private TextView mPlaceName;
 
 
     public ShowDiaryDialog() {
@@ -44,8 +53,6 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //mDatabase = DiaryDatabase.getIstance(getContext());
     }
 
     @Override
@@ -65,9 +72,18 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_popup, container, false);
 
+        mLayout = dialogView.findViewById(R.id.layout_popup);
+        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
+
+        mBackground = dialogView.findViewById(R.id.img_background);
+        mBackground.setAlpha(0.7f);
+
+        mPlaceName = dialogView.findViewById(R.id.tv_show_place);
+        mPlaceName.setText(mDiaryList.get(0).getDiaryPlace().getPlaceName());
+
         RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_popup);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext());
+        mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext(),mDiaryList);
         recyclerView.setAdapter(mShowDiaryAdapter);
 
         return dialogView;
@@ -80,24 +96,56 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     }
 
     @Override
-    public void openDiaryDialogByPlace(Diary diary) {
-//        if (mShowDiaryAdapter != null) {
-//            Log.d(TAG,"showDialog adapter is null");
-//
-//            mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext());
-//            DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
-//
-//            //mPlaces = diaryDAO.getDiarybyPlace(diary.getDiaryPlace());
-//            Log.d(TAG,"how many diaries " + diaryDAO.getDiarybyPlace(diary.getDiaryPlace()));
-//            mShowDiaryAdapter.showDiary(mDiaries);
-//        } else {
-//            Log.d(TAG,"showDialog adapter not null");
-//        }
+    public void openDiaryDialogByPlace(double lat, double lng) {
+
         DiaryDatabase diaryDatabase = DiaryDatabase.getIstance(getContext());
 
+        //find all diaries by placeName in placeObject
+        mPlaceList = diaryDatabase.getDiaryDAO().getPlacebyLatlng(lat, lng);
 
-        Log.d(TAG,"how many diaries " + mDiaries.size());
-        //mShowDiaryAdapter.showDiary(mDiaries);
+        mDiaryList = new ArrayList<>();
+
+        for (int i = 0; i < mPlaceList.size(); i++) {
+
+            Diary diary = new Diary();
+            diary  = diaryDatabase.getDiaryDAO().getDiarybyId(mPlaceList.get(i).getDiaryId());
+            mDiaryList.add(diary);
+
+            Log.d(TAG, "diary size: " + mDiaryList.size());
+        }
+
+
+        Log.d(TAG,"how many diaries in that place " + mPlaceList.size());
+        Log.d(TAG, "diary place: " + mPlaceList.get(0).getPlaceName());
+
+
+        if(mShowDiaryAdapter == null) {
+            mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext(),mDiaryList);
+            mShowDiaryAdapter.showDiary(mDiaryList);
+            Log.d(TAG,"ShowDiaryAdapter is null");
+        } else {
+            mShowDiaryAdapter.showDiary(mDiaryList);
+        }
 
     }
+
+    @Override
+    public void openEditUi(Diary diary) {
+        ((MainActivity) getActivity()).openEditFromOtherPage(diary);
+    }
+
+    @Override
+    public void closePopupUi() {
+        dismiss();
+    }
+
+    @Override
+    public void dismiss() {
+        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
+
+        //super.dismiss();
+        new Handler().postDelayed(super::dismiss, 100);
+    }
+
+
 }

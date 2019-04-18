@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,9 +32,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import mabbas007.tagsedittext.TagsEditText;
@@ -50,7 +47,6 @@ public class EditAdapter extends RecyclerView.Adapter {
 
         private Diary mDiary;
         private Diary mEditDiary;
-        private DiaryPlace mDiaryPlace;
 
         private EditContract.Presenter mPresenter;
         private GalleryAdapter mGalleryAdapter;
@@ -71,6 +67,12 @@ public class EditAdapter extends RecyclerView.Adapter {
         private String mEditContent;
         private List<String> mTagsList;
 
+        private String mPlaceId;
+        private String mPlaceName;
+        private String mCountry;
+        private double mLat;
+        private double mLng;
+
         private boolean isEdit = false;
         private boolean isSearchPlace = false;
 
@@ -90,6 +92,7 @@ public class EditAdapter extends RecyclerView.Adapter {
             private ImageButton mWeather;
             private EditText mContent;
             private TagsEditText mTags;
+            private TextView mShowTags;
 
             public EditViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -104,6 +107,7 @@ public class EditAdapter extends RecyclerView.Adapter {
                 mContent = itemView.findViewById(R.id.edit_diary_content);
                 mWeather = itemView.findViewById(R.id.choose_weather);
                 mTags = itemView.findViewById(R.id.edit_tags);
+                mShowTags = itemView.findViewById(R.id.show_tags);
             }
         }
 
@@ -134,7 +138,9 @@ public class EditAdapter extends RecyclerView.Adapter {
                         ((EditViewHolder) holder).mDate.setClickable(false);
                         ((EditViewHolder) holder).mWeather.setClickable(false);
                         ((EditViewHolder) holder).mContent.setFocusableInTouchMode(false);
-                        ((EditViewHolder) holder).mTags.setFocusableInTouchMode(false);
+                        ((EditViewHolder) holder).mTags.setVisibility(View.GONE);
+                        ((EditViewHolder) holder).mShowTags.setVisibility(View.VISIBLE);
+
 
                         //images
                         if (mDiary.getImages() != null) {
@@ -177,9 +183,11 @@ public class EditAdapter extends RecyclerView.Adapter {
                         //tags
                         if (mDiary.getTags() != null) {
                             Log.d(TAG, "tags size" + mDiary.getTags().size() + mDiary.getTags().toString());
-                            ((EditViewHolder) holder).mTags.setTags(mDiary.getTags().toString().replace("[","").replace("]","").split("\\,"));
+                            //((EditViewHolder) holder).mTags.setTags(mDiary.getTags().toString().replace("[","").replace("]","").split("\\,"));
+                            ((EditViewHolder) holder).mShowTags.setText(mDiary.getTags().toString().replace("[","").replace("]",""));
                         } else {
-                            ((EditViewHolder) holder).mTags.setHint("");
+                            //((EditViewHolder) holder).mTags.setHint("");
+                            ((EditViewHolder) holder).mShowTags.setText("");
                         }
 
 
@@ -191,10 +199,8 @@ public class EditAdapter extends RecyclerView.Adapter {
                         mLocation.setClickable(true);
                         ((EditViewHolder) holder).mTitle.setFocusableInTouchMode(true);
                         ((EditViewHolder) holder).mDate.setClickable(true);
-                        ((EditViewHolder) holder).mWeather.setClickable(true);
                         //location can't input haven't done
                         ((EditViewHolder) holder).mContent.setFocusableInTouchMode(true);
-                        ((EditViewHolder) holder).mTags.setFocusableInTouchMode(true);
 
 
                         //Gallery
@@ -220,7 +226,7 @@ public class EditAdapter extends RecyclerView.Adapter {
                             mPresenter.openWeatherDialog();
                         });
                         if (mWeatherUri == null) {
-                            ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse("android.resource://com.claire.traveldiary/2131558417"));
+                            ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse("android.resource://com.claire.traveldiary/2131558419"));
                         } else {
                             ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mWeatherUri));
                         }
@@ -234,7 +240,7 @@ public class EditAdapter extends RecyclerView.Adapter {
                             chooseLocation();
                         });
 
-                        //set tags haven't done
+                        //set tags
                         ((EditViewHolder) holder).mTags.getTags();
 
                     }
@@ -244,9 +250,11 @@ public class EditAdapter extends RecyclerView.Adapter {
                     //can edit
                     ((EditViewHolder) holder).mTitle.setFocusableInTouchMode(true);
                     ((EditViewHolder) holder).mDate.setClickable(true);
+                    ((EditViewHolder) holder).mWeather.setClickable(true);
                     //location can't input haven't done
                     ((EditViewHolder) holder).mContent.setFocusableInTouchMode(true);
-                    ((EditViewHolder) holder).mTags.setFocusableInTouchMode(true);
+                    ((EditViewHolder) holder).mTags.setVisibility(View.VISIBLE);
+                    ((EditViewHolder) holder).mShowTags.setVisibility(View.GONE);
 
 
                     //Gallery
@@ -283,8 +291,8 @@ public class EditAdapter extends RecyclerView.Adapter {
 
 
                     //Choose Weather
-                    if (mWeatherUri != null) {
-                        ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mWeatherUri));
+                    if (mWeatherUri == null) {
+                        ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mEditDiary.getWeather()));
                     }
 
                     //Choose Location
@@ -297,6 +305,7 @@ public class EditAdapter extends RecyclerView.Adapter {
                     mEditContent = ((EditViewHolder) holder).mContent.getText().toString();
 
                     //edit tags
+                    ((EditViewHolder) holder).mTags.setTags(mEditDiary.getTags().toString().replace("[","").replace("]","").split("\\,"));
                     mTagsList = ((EditViewHolder) holder).mTags.getTags();
 
                 }
@@ -359,12 +368,12 @@ public class EditAdapter extends RecyclerView.Adapter {
                         }
                     }
 
-                    mDiaryPlace = new DiaryPlace();
-                    mDiaryPlace.setPlaceId(place.getId());
-                    mDiaryPlace.setPlaceName(place.getName());
-                    mDiaryPlace.setCountry(getCountry);
-                    mDiaryPlace.setLat(place.getLatLng().latitude);
-                    mDiaryPlace.setLng(place.getLatLng().longitude);
+                    mPlaceId = place.getId();
+                    mPlaceName = place.getName();
+                    mCountry = getCountry;
+                    mLat = place.getLatLng().latitude;
+                    mLng = place.getLatLng().longitude;
+
 
                     mLocation.setText(place.getName());
                     mCardView.setVisibility(View.GONE);
@@ -397,8 +406,20 @@ public class EditAdapter extends RecyclerView.Adapter {
 
             //save diary to room
             Diary newOrUpdateDiary = new Diary();
+            DiaryPlace diaryPlace = new DiaryPlace();
+
             if (mEditDiary != null) {
                 Log.d(TAG, "have id");
+
+                //Place object
+                diaryPlace.setPlaceId(mEditDiary.getDiaryPlace().getPlaceId());
+                diaryPlace.setDiaryId(mEditDiary.getDiaryPlace().getDiaryId());
+                diaryPlace.setPlaceName(mEditDiary.getDiaryPlace().getPlaceName());
+                diaryPlace.setCountry(mEditDiary.getDiaryPlace().getCountry());
+                diaryPlace.setLat(mEditDiary.getDiaryPlace().getLat());
+                diaryPlace.setLng(mEditDiary.getDiaryPlace().getLng());
+
+                //diary object
                 newOrUpdateDiary.setId(mEditDiary.getId());
                 newOrUpdateDiary.setTitle(mEditTitle);
                 newOrUpdateDiary.setDate(mStringDate);
@@ -410,10 +431,20 @@ public class EditAdapter extends RecyclerView.Adapter {
 
             } else {
                 Log.d(TAG, "no id");
+
+                //Place object
+                diaryPlace.setPlaceId(mPlaceId);
+                diaryPlace.setDiaryId(id);
+                diaryPlace.setPlaceName(mPlaceName);
+                diaryPlace.setCountry(mCountry);
+                diaryPlace.setLat(mLat);
+                diaryPlace.setLng(mLng);
+
+                //diary object
                 newOrUpdateDiary.setId(id);
                 newOrUpdateDiary.setTitle(mEditTitle);
                 newOrUpdateDiary.setDate(mStringDate);
-                newOrUpdateDiary.setDiaryPlace(mDiaryPlace);
+                newOrUpdateDiary.setDiaryPlace(diaryPlace);
                 newOrUpdateDiary.setWeather(mWeatherUri);
                 newOrUpdateDiary.setImages(mImagesList);
                 newOrUpdateDiary.setContent(mEditContent);
@@ -422,11 +453,12 @@ public class EditAdapter extends RecyclerView.Adapter {
                 Log.d(TAG, "tagssss" + newOrUpdateDiary.getTags());
             }
 
-            diaryDAO.insertOrUpdate(newOrUpdateDiary);
+            diaryDAO.insertOrUpdateDiary(newOrUpdateDiary);
+            diaryDAO.insertOrUpdatePlace(diaryPlace);
             showDiary(newOrUpdateDiary);
 
-            Log.d(TAG, "Diary size" + diaryDAO.getDiarys().size());
-            Log.i(TAG, "Save! ");
+            Log.d(TAG, "Diary size" + diaryDAO.getAllDiaries().size());
+            Log.d(TAG, "Place size" + diaryDAO.getAllPlaces().size());
         }
 
 
