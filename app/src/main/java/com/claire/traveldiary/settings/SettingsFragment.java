@@ -14,7 +14,8 @@ import android.view.ViewGroup;
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 
-import static android.support.v4.util.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 public class SettingsFragment extends Fragment implements SettingsContract.View {
 

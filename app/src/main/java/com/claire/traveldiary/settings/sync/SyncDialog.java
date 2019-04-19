@@ -1,21 +1,18 @@
 package com.claire.traveldiary.settings.sync;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
+import android.widget.Button;
 
-import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -23,14 +20,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 
 import java.util.Arrays;
 
@@ -45,9 +35,9 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
     private ConstraintLayout mLayout;
 
     private CallbackManager mCallbackManager;
-    private LoginButton mLoginButton;
+    private Button mLoginFaceBook;
+    private Button mSync;
 
-    private FirebaseAuth mAuth;
 
     public SyncDialog() {
     }
@@ -55,12 +45,6 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -79,19 +63,27 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
         mLayout = dialogView.findViewById(R.id.sync_popup);
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
 
+        mLoginFaceBook = dialogView.findViewById(R.id.btn_login);
+        mSync = dialogView.findViewById(R.id.btn_sync);
+
+        if (isLoggedIn()) {
+            //facebook button gone
+            //sync button show
+        } else {
+
+        }
+
         //facebook login
         mCallbackManager = CallbackManager.Factory.create();
-        mLoginButton = dialogView.findViewById(R.id.login_button);
-        mLoginButton.setReadPermissions("email");
-        // If using in a fragment
-        mLoginButton.setFragment(this);
+        mLoginFaceBook.setOnClickListener(v ->
+                LoginManager.getInstance().logInWithReadPermissions(getActivity(),Arrays.asList("email")));
+
 
         // Callback registration
-        mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d("TAG","Success token : " + loginResult.getAccessToken().getToken());
-                //handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
@@ -108,11 +100,15 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
         return dialogView;
     }
 
+    public boolean isLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
+
     }
 
     @Override

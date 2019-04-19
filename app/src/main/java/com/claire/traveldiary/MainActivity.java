@@ -80,9 +80,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         startActivity(new Intent(this, LaunchActivity.class));
         init();
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
-
         mDb = FirebaseFirestore.getInstance();
         readData();
     }

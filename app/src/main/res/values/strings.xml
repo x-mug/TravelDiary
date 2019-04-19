@@ -41,10 +41,10 @@
     //dialog sync
     <string name="dialog_sync">Synchronize my diary to the cloud</string>
     <string name="dialog_btn_sync">Sync</string>
+    <string name="dialog_btn_login">Login Facebook</string>
 
     //facebook login
-    <string name="facebook_app_id">409109299636087</string> <string name="fb_login_protocol_scheme">fb409109299636087</string>
-
+    <string name="facebook_app_id">483707082365149</string> <string name="fb_login_protocol_scheme">fb483707082365149</string>
 
 
 </resources>

@@ -167,5 +167,4 @@
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 
 
-
 </android.support.constraint.ConstraintLayout>
