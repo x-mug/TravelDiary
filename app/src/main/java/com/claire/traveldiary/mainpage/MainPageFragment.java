@@ -15,15 +15,11 @@ import android.widget.ImageButton;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
-import com.claire.traveldiary.component.GridSpacingItemDecoration;
 import com.claire.traveldiary.component.SpacesItemDecoration;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.claire.traveldiary.edit.EditPresenter;
-import com.claire.traveldiary.util.Util;
-
-import java.util.ArrayList;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -36,7 +32,7 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
     private EditPresenter mEditPresenter;
 
-    private ArrayList<Diary> mDiaries;
+    private Diary mDiary;
 
     private DiaryDatabase mDatabase;
 
@@ -82,7 +78,7 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         } else {
             mAddDiary.setVisibility(View.VISIBLE);
             mAddDiary.setOnClickListener(v -> {
-                ((MainActivity) getActivity()).openEdit();
+                ((MainActivity) getActivity()).openEdit(mDiary);
             });
         }
 
@@ -99,7 +95,7 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
     @Override
     public void openEditPage(Diary diary) {
-        ((MainActivity) getActivity()).openEditFromOtherPage(diary);
+        ((MainActivity) getActivity()).openEdit(diary);
     }
 
     @Override

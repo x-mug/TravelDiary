@@ -15,9 +15,10 @@
     <string name="diary_place">My Diaries</string>
 
     //item_settings
+    <string name="settings_user">User Name</string>
     <string name="settings_data">Data</string>
     <string name="settings_system">System</string>
-    <string name="settings_backup">Backup</string>
+    <string name="settings_backup">Synchronize</string>
     <string name="settings_textsize">Textsize</string>
     <string name="settings_language">Language</string>
     <string name="settings_key">Password</string>
@@ -33,6 +34,17 @@
 
     //dialog choose weather
     <string name="dialog_choose_weather">Choose Weather</string>
+
+    //launch activity
+    <string name="launch_activity">Travel Diary</string>
+
+    //dialog sync
+    <string name="dialog_sync">Synchronize my diary to the cloud</string>
+    <string name="dialog_btn_sync">Sync</string>
+
+    //facebook login
+    <string name="facebook_app_id">409109299636087</string> <string name="fb_login_protocol_scheme">fb409109299636087</string>
+
 
 
 </resources>

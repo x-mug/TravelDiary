@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.claire.traveldiary.R;
@@ -21,7 +22,9 @@ public class SettingsAdapter extends RecyclerView.Adapter{
 
     public class SettingsHolder extends RecyclerView.ViewHolder {
 
-        private TextView mBackup;
+        private ImageView mUserImg;
+        private TextView mUserName;
+        private TextView mSync;
         private TextView mTextSize;
         private TextView mLanguage;
         private TextView mPassword;
@@ -30,6 +33,15 @@ public class SettingsAdapter extends RecyclerView.Adapter{
 
         public SettingsHolder(@NonNull View itemView) {
             super(itemView);
+
+            mUserImg = itemView.findViewById(R.id.img_profile);
+            mUserName = itemView.findViewById(R.id.tv_user_name);
+            mSync = itemView.findViewById(R.id.tv_sync);
+            mTextSize = itemView.findViewById(R.id.tv_textsize);
+            mLanguage = itemView.findViewById(R.id.tv_language);
+            mPassword = itemView.findViewById(R.id.tv_key);
+            mNotification = itemView.findViewById(R.id.tv_notification);
+            mFeedback = itemView.findViewById(R.id.tv_mail);
         }
     }
 
@@ -45,6 +57,9 @@ public class SettingsAdapter extends RecyclerView.Adapter{
 
         if (holder instanceof SettingsHolder) {
 
+            ((SettingsHolder) holder).mSync.setOnClickListener(v -> {
+                mPresenter.openSyncDialog();
+            });
         }
     }
 

@@ -17,37 +17,49 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/settings_user"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/img_profile"
+        app:layout_constraintStart_toEndOf="@+id/img_profile"
+        app:layout_constraintTop_toTopOf="@+id/img_profile" />
+
+    <TextView
         android:id="@+id/tv_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/settings_data"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/img_profile"
         app:layout_constraintTop_toBottomOf="@+id/img_profile" />
 
     <ImageView
-        android:id="@+id/img_backup"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:id="@+id/img_sync"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="8dp"
         android:background="@mipmap/ic_backup"
         app:layout_constraintStart_toStartOf="@+id/img_profile"
         app:layout_constraintTop_toBottomOf="@+id/tv_data" />
 
     <TextView
-        android:id="@+id/tv_backup"
+        android:id="@+id/tv_sync"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:drawableRight="@mipmap/ic_next"
         android:text="@string/settings_backup"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/img_backup"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/img_sync"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/img_backup"
-        app:layout_constraintTop_toTopOf="@+id/img_backup" />
+        app:layout_constraintStart_toEndOf="@+id/img_sync"
+        app:layout_constraintTop_toTopOf="@+id/img_sync" />
 
     <View
         android:id="@+id/view"
@@ -55,38 +67,39 @@
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
         android:background="@color/bottom_nav_item_normal"
-        app:layout_constraintEnd_toEndOf="@+id/tv_backup"
-        app:layout_constraintStart_toStartOf="@+id/img_backup"
-        app:layout_constraintTop_toBottomOf="@+id/img_backup" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_sync"
+        app:layout_constraintStart_toStartOf="@+id/img_sync"
+        app:layout_constraintTop_toBottomOf="@+id/img_sync" />
 
     <TextView
         android:id="@+id/tv_system"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="@string/settings_system"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/tv_data"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <ImageView
         android:id="@+id/img_textsize"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="8dp"
         android:background="@mipmap/ic_textsize"
-        app:layout_constraintStart_toStartOf="@+id/img_backup"
+        app:layout_constraintStart_toStartOf="@+id/img_sync"
         app:layout_constraintTop_toBottomOf="@+id/tv_system" />
 
     <TextView
         android:id="@+id/tv_textsize"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:drawableRight="@mipmap/ic_next"
         android:text="@string/settings_textsize"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/img_textsize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_textsize"
@@ -94,8 +107,8 @@
 
     <ImageView
         android:id="@+id/img_language"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_translate"
         app:layout_constraintStart_toStartOf="@+id/img_textsize"
@@ -105,11 +118,12 @@
         android:id="@+id/tv_language"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:drawableRight="@mipmap/ic_next"
         android:text="@string/settings_language"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/img_language"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_language"
@@ -117,8 +131,8 @@
 
     <ImageView
         android:id="@+id/img_key"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_key"
         app:layout_constraintStart_toStartOf="@+id/img_language"
@@ -128,11 +142,12 @@
         android:id="@+id/tv_key"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:drawableRight="@mipmap/ic_next"
         android:text="@string/settings_key"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/img_key"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_key"
@@ -140,8 +155,8 @@
 
     <ImageView
         android:id="@+id/img_notification"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_notification"
         app:layout_constraintStart_toStartOf="@+id/img_key"
@@ -151,11 +166,12 @@
         android:id="@+id/tv_notification"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:drawableRight="@mipmap/ic_next"
         android:text="@string/settings_notification"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/img_notification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_notification"
@@ -163,8 +179,8 @@
 
     <ImageView
         android:id="@+id/img_mail"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_email"
         app:layout_constraintStart_toStartOf="@+id/img_notification"
@@ -174,11 +190,12 @@
         android:id="@+id/tv_mail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:drawableRight="@mipmap/ic_next"
         android:text="@string/settings_feedback"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/img_mail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_mail"

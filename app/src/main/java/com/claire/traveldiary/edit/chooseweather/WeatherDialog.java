@@ -153,7 +153,6 @@ public class WeatherDialog extends DialogFragment implements WeatherContract.Vie
     }
 
     protected void setResult(String imageUri) {
-
         if (getTargetFragment() == null) {
             return;
         } else {

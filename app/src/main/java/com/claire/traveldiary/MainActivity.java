@@ -2,7 +2,6 @@ package com.claire.traveldiary;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +26,10 @@ import com.claire.traveldiary.map.showdiary.ShowDiaryDialog;
 import com.claire.traveldiary.map.showdiary.ShowDiaryPresenter;
 import com.claire.traveldiary.settings.SettingsFragment;
 import com.claire.traveldiary.settings.SettingsPresenter;
+import com.claire.traveldiary.settings.sync.SyncDialog;
+import com.claire.traveldiary.settings.sync.SyncPresenter;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,7 +40,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -52,6 +54,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private MapPresenter mMapPresenter;
     private WeatherPresenter mWeatherPresenter;
     private ShowDiaryPresenter mShowDiaryPresenter;
+    private SyncPresenter mSyncPresenter;
 
     //BottomNavigation
     private BottomNavigationView mBottomNavigation;
@@ -67,19 +70,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private FirebaseFirestore mDb;
 
+    //empty diary
+    private Diary mDiary;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //startActivity(new Intent(this, LaunchActivity.class));
+        startActivity(new Intent(this, LaunchActivity.class));
         init();
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 
         mDb = FirebaseFirestore.getInstance();
         readData();
     }
 
     private void init() {
+        setContentView(R.layout.activity_main);
         setToolbar();
         setBottomNavigation();
         openMainPage();
@@ -197,7 +206,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return true;
 
             case R.id.navigation_edit:
-                openEdit();
+                openEdit(mDiary);
                 updateEditToolbar("");
                 return true;
 
@@ -225,7 +234,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         showBottomNavigation();
     }
 
-    public void openEdit() {
+    public void openEdit(Diary diary) {
 
         EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag("Edit");
 
@@ -234,25 +243,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, fragment, "Edit").commit();
             mEditPresenter = new EditPresenter(fragment);
             fragment.setPresenter(mEditPresenter);
+
+            if (diary == null) {
+                updateEditToolbar("");
+            } else {
+                mEditPresenter.loadDiaryData(diary);
+                updateEditToolbarFromMainPage("");
+            }
         }
-        updateEditToolbar("");
         hideBottomNavigation();
-    }
 
-    public void openEditFromOtherPage(Diary diary) {
-
-        EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag("EditFromOther");
-
-        if (editFragment == null) {
-            EditFragment fragment = EditFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, fragment, "EditFromOther").commit();
-            mEditPresenter = new EditPresenter(fragment);
-            fragment.setPresenter(mEditPresenter);
-            mEditPresenter.loadDiaryData(diary);
-        }
-
-        updateEditToolbarFromMainPage("");
-        hideBottomNavigation();
     }
 
     public void openWeatherDialog() {
@@ -321,6 +321,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
         hideBottomNavigation();
+    }
+
+    public void openSyncDialog() {
+        SyncDialog dialog =
+                (SyncDialog) (this.getSupportFragmentManager().findFragmentByTag("SyncDialog"));
+
+        if (dialog == null) {
+
+            dialog = new SyncDialog();
+            mSyncPresenter = new SyncPresenter(dialog);
+            dialog.setPresenter(mSyncPresenter);
+
+            dialog.show((this.getSupportFragmentManager()),"SyncDialog");
+
+        } else if (!dialog.isAdded()) {
+
+            dialog.show(this.getSupportFragmentManager(), "SyncDialog");
+        }
     }
 
     private void updateMapToolbar(String title) {

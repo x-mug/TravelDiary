@@ -18,4 +18,14 @@ public class SettingsPresenter implements SettingsContract.Presenter {
     public void start() {
 
     }
+
+    @Override
+    public void result(int requestCode, int resultCode) {
+
+    }
+
+    @Override
+    public void openSyncDialog() {
+        mView.openSyncDialogUi();
+    }
 }

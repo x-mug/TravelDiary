@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,8 +33,6 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     private static final String TAG = "ShowDiaryDialog";
 
     private ShowDiaryContract.Presenter mPresenter;
-
-    private BottomSheetBehavior mSheetBehavior;
 
     private ConstraintLayout mLayout;
     private ShowDiaryAdapter mShowDiaryAdapter;
@@ -70,7 +67,7 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View dialogView = inflater.inflate(R.layout.dialog_popup, container, false);
+        View dialogView = inflater.inflate(R.layout.dialog_showdiary, container, false);
 
         mLayout = dialogView.findViewById(R.id.layout_popup);
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
@@ -131,7 +128,7 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
 
     @Override
     public void openEditUi(Diary diary) {
-        ((MainActivity) getActivity()).openEditFromOtherPage(diary);
+        ((MainActivity) getActivity()).openEdit(diary);
     }
 
     @Override

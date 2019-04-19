@@ -16,4 +16,7 @@
 
     <dimen name="space_grid">16dp</dimen>
 
+    //dialog sync
+    <dimen name="height_sync">150dp</dimen>
+
 </resources>

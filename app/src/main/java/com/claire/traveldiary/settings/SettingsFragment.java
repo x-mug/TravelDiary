@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
@@ -51,5 +52,10 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
         recyclerView.setAdapter(mSettingsAdapter);
 
         return root;
+    }
+
+    @Override
+    public void openSyncDialogUi() {
+        ((MainActivity) getActivity()).openSyncDialog();
     }
 }
