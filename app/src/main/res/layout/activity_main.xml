@@ -76,8 +76,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/toolbar_title"
-            android:letterSpacing="0.15"
             android:textSize="20sp"
+            android:typeface="serif"
             />
 
     </android.support.v7.widget.Toolbar>

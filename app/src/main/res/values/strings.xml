@@ -14,6 +14,15 @@
     //item_card_in_main
     <string name="diary_place">My Diaries</string>
 
+    //item_settings
+    <string name="settings_data">Data</string>
+    <string name="settings_system">System</string>
+    <string name="settings_backup">Backup</string>
+    <string name="settings_textsize">Textsize</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_key">Password</string>
+    <string name="settings_notification">Notification</string>
+    <string name="settings_feedback">Feedback</string>
 
     //item edit
     <string name="edit_diary_title_hint">Title</string>

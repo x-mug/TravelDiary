@@ -2,6 +2,7 @@ package com.claire.traveldiary.edit;
 
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -226,9 +227,10 @@ public class EditAdapter extends RecyclerView.Adapter {
                             mPresenter.openWeatherDialog();
                         });
                         if (mWeatherUri == null) {
-                            ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse("android.resource://com.claire.traveldiary/2131558419"));
+                            ((EditViewHolder) holder).mWeather.setImageResource(R.mipmap.ic_sunny);
                         } else {
                             ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mWeatherUri));
+                            //((EditViewHolder) holder).mWeather.setImageBitmap(BitmapFactory.decodeFile(mWeatherUri));
                         }
 
                         //edit content

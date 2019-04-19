@@ -319,6 +319,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, fragment, "Settings").commit();
             mSettingsPresenter = new SettingsPresenter(fragment);
         }
+
+        hideBottomNavigation();
     }
 
     private void updateMapToolbar(String title) {

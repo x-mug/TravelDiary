@@ -1,15 +1,24 @@
 package com.claire.traveldiary.edit.chooseweather;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +29,17 @@ import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.edit.EditFragment;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
 
 public class WeatherDialog extends DialogFragment implements WeatherContract.View, View.OnClickListener {
 
+    private static final String TAG = "WeatherDialog";
     public static final String IMAGE = "weathericon";
 
     private WeatherContract.Presenter mPresenter;
@@ -99,37 +115,37 @@ public class WeatherDialog extends DialogFragment implements WeatherContract.Vie
 
         switch (v.getId()) {
             case R.id.img_sunny:
-                Uri imageUri_sun = Uri.parse("android.resource://com.claire.traveldiary/" + R.mipmap.ic_sunny);
+                Uri imageUri_sun = Uri.parse("android.resource://com.claire.traveldiary/mipmap/ic_sunny");
                 setResult(imageUri_sun.toString());
                 dismiss();
                 break;
 
             case R.id.img_cloud_sun:
-                Uri imageUri_cloud_sun = Uri.parse("android.resource://com.claire.traveldiary/" + R.mipmap.ic_cloud_sun);
+                Uri imageUri_cloud_sun = Uri.parse("android.resource://com.claire.traveldiary/mipmap/ic_cloud_sun");
                 setResult(imageUri_cloud_sun.toString());
                 dismiss();
                 break;
 
             case R.id.img_cloudy:
-                Uri imageUri_cloudy = Uri.parse("android.resource://com.claire.traveldiary/" + R.mipmap.ic_cloudy);
+                Uri imageUri_cloudy = Uri.parse("android.resource://com.claire.traveldiary/mipmap/ic_cloudy");
                 setResult(imageUri_cloudy.toString());
                 dismiss();
                 break;
 
             case R.id.img_windy:
-                Uri imageUri_windy = Uri.parse("android.resource://com.claire.traveldiary/" + R.mipmap.ic_windy);
+                Uri imageUri_windy = Uri.parse("android.resource://com.claire.traveldiary/mipmap/ic_windy");
                 setResult(imageUri_windy.toString());
                 dismiss();
                 break;
 
             case R.id.img_rain:
-                Uri imageUri_rainy = Uri.parse("android.resource://com.claire.traveldiary/" + R.mipmap.ic_raining);
+                Uri imageUri_rainy = Uri.parse("android.resource://com.claire.traveldiary/mipmap/ic_raining");
                 setResult(imageUri_rainy.toString());
                 dismiss();
                 break;
 
             case R.id.img_snow:
-                Uri imageUri_snow = Uri.parse("android.resource://com.claire.traveldiary/" + R.mipmap.ic_snowflake);
+                Uri imageUri_snow = Uri.parse("android.resource://com.claire.traveldiary/mipmap/ic_snowflake");
                 setResult(imageUri_snow.toString());
                 dismiss();
                 break;
@@ -146,4 +162,6 @@ public class WeatherDialog extends DialogFragment implements WeatherContract.Vie
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
         }
     }
+
+
 }

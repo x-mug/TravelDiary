@@ -42,8 +42,6 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
     private ImageButton mAddDiary;
 
-    private int mSpace;
-
 
     public MainPageFragment() {
     }
