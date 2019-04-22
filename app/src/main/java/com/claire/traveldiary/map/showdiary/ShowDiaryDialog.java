@@ -41,7 +41,6 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     private List<Diary> mDiaryList;
 
     private ImageView mBackground;
-    private TextView mPlaceName;
 
 
     public ShowDiaryDialog() {
@@ -73,10 +72,8 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
 
         mBackground = dialogView.findViewById(R.id.img_background);
-        mBackground.setAlpha(0.7f);
+        mBackground.setAlpha(0.4f);
 
-        mPlaceName = dialogView.findViewById(R.id.tv_show_place);
-        mPlaceName.setText(mDiaryList.get(0).getDiaryPlace().getPlaceName());
 
         RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_popup);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

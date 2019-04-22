@@ -7,8 +7,9 @@ import android.content.Context;
 
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
+import com.claire.traveldiary.data.User;
 
-@Database(entities = {Diary.class, DiaryPlace.class}, version = 1, exportSchema = false)
+@Database(entities = {Diary.class, DiaryPlace.class, User.class}, version = 1, exportSchema = false)
 public abstract class DiaryDatabase extends RoomDatabase {
 
     private static DiaryDatabase INSTANCE;

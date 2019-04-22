@@ -15,7 +15,7 @@
     <string name="diary_place">My Diaries</string>
 
     //item_settings
-    <string name="settings_user">User Name</string>
+    <string name="settings_user">User</string>
     <string name="settings_data">Data</string>
     <string name="settings_system">System</string>
     <string name="settings_backup">Synchronize</string>
@@ -24,6 +24,8 @@
     <string name="settings_key">Password</string>
     <string name="settings_notification">Notification</string>
     <string name="settings_feedback">Feedback</string>
+    <string name="settings_login">LogIn</string>
+    <string name="settings_logout">LogOut</string>
 
     //item edit
     <string name="edit_diary_title_hint">Title</string>
@@ -39,12 +41,12 @@
     <string name="launch_activity">Travel Diary</string>
 
     //dialog sync
-    <string name="dialog_sync">Synchronize my diary to the cloud</string>
+    <string name="dialog_sync">Synchronize my diary to Firebase</string>
     <string name="dialog_btn_sync">Sync</string>
     <string name="dialog_btn_login">Login Facebook</string>
+    <string name="dialog_tv_sync">Please Login Your Facebook Before Synchronize Your Diary</string>
 
     //facebook login
     <string name="facebook_app_id">483707082365149</string> <string name="fb_login_protocol_scheme">fb483707082365149</string>
-
 
 </resources>

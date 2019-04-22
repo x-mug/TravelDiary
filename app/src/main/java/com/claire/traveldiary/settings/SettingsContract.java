@@ -9,6 +9,10 @@ public interface SettingsContract {
 
         void openSyncDialogUi();
 
+        void loginFacebookUi();
+
+        void logoutFacebookUi();
+
     }
 
     interface Presenter extends BasePresenter {
@@ -16,5 +20,9 @@ public interface SettingsContract {
         void result(int requestCode, int resultCode);
 
         void openSyncDialog();
+
+        void loginFacebook();
+
+        void logoutFacebook();
     }
 }

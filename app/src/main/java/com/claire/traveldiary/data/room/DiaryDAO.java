@@ -8,6 +8,7 @@ import android.arch.persistence.room.Update;
 
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
+import com.claire.traveldiary.data.User;
 
 import java.util.List;
 
@@ -24,7 +25,10 @@ public interface DiaryDAO {
     void updateDaries(Diary diaries);
 
     @Delete
-    void delete(Diary diaries);
+    void deleteDiary(Diary diaries);
+
+    @Query("SELECT * FROM diary")
+    Diary getDiary();
 
     @Query("SELECT * FROM diary")
     List<Diary> getAllDiaries();
@@ -35,6 +39,21 @@ public interface DiaryDAO {
     @Query("SELECT * FROM diary WHERE mId = :id")
     Diary getDiarybyId(int id);
 
+    //User
+    @Insert
+    void insertUser(User user);
+
+    @Delete
+    void deleteUser(User user);
+
+    @Query("SELECT * FROM user")
+    User getUser();
+
+    @Query("SELECT * FROM user WHERE mId = :id")
+    User getUserbyId(long id);
+
+    @Update(onConflict = REPLACE)
+    void updateUser(User user);
 
     //Place
     @Insert
@@ -70,6 +89,15 @@ public interface DiaryDAO {
             updatePlaces(place);
         else
             insertPlace(place);
+    }
+
+    default void insertOrUpdateUser(User user) {
+        User userFromDB = getUserbyId(user.getId());
+
+        if (userFromDB != null)
+            updateUser(user);
+        else
+            insertUser(user);
     }
 
 }

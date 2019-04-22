@@ -44,7 +44,7 @@ public class EditAdapter extends RecyclerView.Adapter {
 
     private static final String TAG = "EditAdapter";
 
-    RecyclerView.ViewHolder mHolder;
+    private RecyclerView.ViewHolder mHolder;
 
     private Diary mDiary;
     private Diary mEditDiary;

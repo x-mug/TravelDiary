@@ -46,6 +46,7 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
 
             mCard = itemView.findViewById(R.id.cardview_map);
             mImage = itemView.findViewById(R.id.image_in_map);
+            mImage.setAlpha(0.9f);
             mTitle = itemView.findViewById(R.id.tv_title);
             mDate = itemView.findViewById(R.id.tv_date);
         }

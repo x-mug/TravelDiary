@@ -18,8 +18,14 @@ import android.widget.Toast;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDatabase;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainPageAdapter extends RecyclerView.Adapter {
@@ -30,7 +36,8 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
 
-    private DiaryDatabase mDatabase;
+    private FirebaseFirestore mFirebaseDb;
+    private DiaryDatabase mRoomDb;
 
     private List<Diary> mDiaryList;
 
@@ -83,8 +90,8 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
         if (holder instanceof MainPageViewHolder) {
 
-            mDatabase = DiaryDatabase.getIstance(mContext);
-            mDiaryList = mDatabase.getDiaryDAO().getAllDiaries();
+            mRoomDb = DiaryDatabase.getIstance(mContext);
+            mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
 
             //show card
             if (mDiaryList.size() > 0) {
@@ -121,7 +128,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     isLongclick = false;
                 } else {
                     //click card
-                    mPresenter.openEdit(mDatabase.getDiaryDAO().getAllDiaries().get(position));
+                    mPresenter.openEdit(mRoomDb.getDiaryDAO().getAllDiaries().get(position));
                 }
             });
 
@@ -134,10 +141,13 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
                 //click delete
                 ((MainPageViewHolder) holder).mDelete.setOnClickListener(v1 -> {
+                    //delete diary from room
                     mPresenter.deleteDiary(mDiaryList.get(position).getId());
                     mDiaryList.remove(position);
                     notifyItemRemoved(position);
                     notifyDataSetChanged();
+
+
                     Toast.makeText(v.getContext(), "Delete Diary", Toast.LENGTH_SHORT).show();
                     ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
                     ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
@@ -160,10 +170,21 @@ public class MainPageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void updateData(ArrayList<Diary> diaries) {
-        mDiaryList = diaries;
-        notifyDataSetChanged();
-
+    private void readData() {
+        mFirebaseDb.collection("Users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 
 

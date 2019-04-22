@@ -2,6 +2,7 @@ package com.claire.traveldiary;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -28,19 +29,14 @@ import com.claire.traveldiary.settings.SettingsFragment;
 import com.claire.traveldiary.settings.SettingsPresenter;
 import com.claire.traveldiary.settings.sync.SyncDialog;
 import com.claire.traveldiary.settings.sync.SyncPresenter;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
+import com.claire.traveldiary.util.UserManager;
+import com.facebook.internal.CallbackManagerImpl;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -68,8 +64,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button mToolbarEdit;
     private Button mToolbarDone;
 
-    private FirebaseFirestore mDb;
-
     //empty diary
     private Diary mDiary;
 
@@ -80,8 +74,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         startActivity(new Intent(this, LaunchActivity.class));
         init();
 
-        mDb = FirebaseFirestore.getInstance();
-        readData();
     }
 
     private void init() {
@@ -91,45 +83,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         openMainPage();
     }
 
-    private void addData() {
-        // Create a new user with a first and last name
-        Map<String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put("last", "Lovelace");
-        user.put("born", 1815);
-
-// Add a new document with a generated ID
-        mDb.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-    }
-
-    private void readData() {
-        mDb.collection("users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
+            UserManager.getInstance().getFbCallbackManager().onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void setToolbar() {
@@ -336,6 +295,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             dialog.show(this.getSupportFragmentManager(), "SyncDialog");
         }
+    }
+
+    public void faceBookLogin() {
+
     }
 
     private void updateMapToolbar(String title) {

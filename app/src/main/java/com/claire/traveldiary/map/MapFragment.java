@@ -40,8 +40,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
     private DiaryDatabase mDatabase;
 
-    private float mLat;
-    private float mLng;
     private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
 
     public MapFragment() {
@@ -125,15 +123,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
             //mMarkerArray.add(marker);
 
-            int finalI = i;
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-                    Double latitude = marker.getPosition().latitude;
-                    Double longitude = marker.getPosition().longitude;
+            mMap.setOnInfoWindowClickListener(marker -> {
+                Double latitude = marker.getPosition().latitude;
+                Double longitude = marker.getPosition().longitude;
 
-                    ((MainActivity) getActivity()).openShowDiaryDialog(latitude, longitude);
-                }
+                ((MainActivity) getActivity()).openShowDiaryDialog(latitude, longitude);
             });
         }
 

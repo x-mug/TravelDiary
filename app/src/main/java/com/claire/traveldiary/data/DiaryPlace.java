@@ -27,8 +27,8 @@ public class DiaryPlace {
         mDiaryId = -1;
         mPlaceName = "";
         mCountry = "";
-        mLat = -1L;
-        mLng = -1L;
+        mLat = 0.0;
+        mLng = 0.0;
     }
 
     public String getPlaceId() {

@@ -237,52 +237,49 @@ public class EditFragment extends Fragment implements EditContract.View{
         int mm = calendar.get(Calendar.MONTH);
         int dd = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), android.R.style.Theme_DeviceDefault_Dialog, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), android.R.style.Theme_DeviceDefault_Dialog, (view, year, month, dayOfMonth) -> {
 
-                String monthEng = "";
+            String monthEng = "";
 
-                if ((month+1) == 1) {
-                    monthEng = "January";
-                }
-                if ((month+1) == 2) {
-                    monthEng = "February";
-                }
-                if ((month+1) == 3) {
-                    monthEng = "March";
-                }
-                if ((month+1) == 4) {
-                    monthEng = "April";
-                }
-                if ((month+1) == 5) {
-                    monthEng = "May";
-                }
-                if ((month+1) == 6) {
-                    monthEng = "June";
-                }
-                if ((month+1) == 7) {
-                    monthEng = "July";
-                }
-                if ((month+1) == 8) {
-                    monthEng = "August";
-                }
-                if ((month+1) == 9) {
-                    monthEng = "September";
-                }
-                if ((month+1) == 10) {
-                    monthEng = "October";
-                }
-                if ((month+1) == 11) {
-                    monthEng = "November";
-                }
-                if ((month+1) == 12) {
-                    monthEng = "December";
-                }
-
-                String date = dayOfMonth+"th" + " " + monthEng + " " + year;
-                mEditAdapter.updateDate(date);
+            if ((month+1) == 1) {
+                monthEng = "January";
             }
+            if ((month+1) == 2) {
+                monthEng = "February";
+            }
+            if ((month+1) == 3) {
+                monthEng = "March";
+            }
+            if ((month+1) == 4) {
+                monthEng = "April";
+            }
+            if ((month+1) == 5) {
+                monthEng = "May";
+            }
+            if ((month+1) == 6) {
+                monthEng = "June";
+            }
+            if ((month+1) == 7) {
+                monthEng = "July";
+            }
+            if ((month+1) == 8) {
+                monthEng = "August";
+            }
+            if ((month+1) == 9) {
+                monthEng = "September";
+            }
+            if ((month+1) == 10) {
+                monthEng = "October";
+            }
+            if ((month+1) == 11) {
+                monthEng = "November";
+            }
+            if ((month+1) == 12) {
+                monthEng = "December";
+            }
+
+            String date = dayOfMonth+"th" + " " + monthEng + " " + year;
+            mEditAdapter.updateDate(date);
         },yy, mm, dd);
 
         //pickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

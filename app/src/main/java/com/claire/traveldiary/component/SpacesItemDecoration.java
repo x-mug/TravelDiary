@@ -1,13 +1,8 @@
 package com.claire.traveldiary.component;
 
-import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
-
-import com.claire.traveldiary.util.Util;
 
 public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
