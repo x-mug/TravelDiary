@@ -71,8 +71,8 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
         mLayout = dialogView.findViewById(R.id.layout_popup);
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
 
-        mBackground = dialogView.findViewById(R.id.img_background);
-        mBackground.setAlpha(0.4f);
+//        mBackground = dialogView.findViewById(R.id.img_background);
+//        mBackground.setAlpha(0.4f);
 
 
         RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_popup);
@@ -136,8 +136,6 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     @Override
     public void dismiss() {
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
-
-        //super.dismiss();
         new Handler().postDelayed(super::dismiss, 100);
     }
 

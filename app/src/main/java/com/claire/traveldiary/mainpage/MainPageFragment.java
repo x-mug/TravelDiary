@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,19 @@ import android.widget.ImageButton;
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.component.SpacesItemDecoration;
+import com.claire.traveldiary.data.DeletedDiary;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.claire.traveldiary.edit.EditPresenter;
+import com.claire.traveldiary.util.UserManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.List;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -32,9 +42,9 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
     private EditPresenter mEditPresenter;
 
-    private Diary mDiary;
+    private Diary mNewDiary;
 
-    private DiaryDatabase mDatabase;
+    private DiaryDatabase mRoomDb;
 
     private ImageButton mAddDiary;
 
@@ -63,7 +73,7 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         super.onCreate(savedInstanceState);
         mMainPageAdapter = new MainPageAdapter(mPresenter,getContext());
 
-        mDatabase = DiaryDatabase.getIstance(getContext());
+        mRoomDb = DiaryDatabase.getIstance(getContext());
     }
 
     @Nullable
@@ -73,12 +83,12 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
         mAddDiary = root.findViewById(R.id.btn_add_diary);
 
-        if (mDatabase.getDiaryDAO().getAllDiaries().size() > 0) {
+        if (mRoomDb.getDiaryDAO().getAllDiaries().size() > 0) {
             mAddDiary.setVisibility(View.GONE);
         } else {
             mAddDiary.setVisibility(View.VISIBLE);
             mAddDiary.setOnClickListener(v -> {
-                ((MainActivity) getActivity()).openEdit(mDiary);
+                ((MainActivity) getActivity()).openEdit(mNewDiary);
             });
         }
 
@@ -100,8 +110,27 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
     @Override
     public void deleteDiaryUi(int id) {
-        DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
+        DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
+
+        //insert deleted diary
+        DeletedDiary deletedDiary = new DeletedDiary();
+        deletedDiary.setId(id);
+        diaryDAO.insertDeletedDiary(deletedDiary);
+        Log.d(TAG,"Deleted diary " + diaryDAO.getAllDeletedDiariesId().size());
+
+        //delete diary from room
         diaryDAO.deleteDiarybyId(id);
-        //mMainPageAdapter.updateData();
     }
+
+    @Override
+    public void loadSearchDataUi(List<Diary> diaries) {
+        if (mMainPageAdapter == null) {
+            mMainPageAdapter = new MainPageAdapter(mPresenter,getContext());
+            mMainPageAdapter.refreshUi(diaries);
+            Log.d(TAG,"Nooo");
+        } else {
+            mMainPageAdapter.refreshUi(diaries);
+        }
+    }
+
 }

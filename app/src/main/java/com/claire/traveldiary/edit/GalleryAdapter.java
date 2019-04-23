@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.TravelDiaryApplication;
+import com.claire.traveldiary.util.ImageManager;
 
 import java.util.ArrayList;
 
@@ -70,9 +71,13 @@ public class GalleryAdapter extends RecyclerView.Adapter {
             if (mImages != null) {
 
                 for(int i = 0; i < mImages.size(); i++) {
-
                     ((GalleryViewHolder) holder).mButtonAdd.setVisibility(View.INVISIBLE);
-                    ((GalleryViewHolder) holder).mImageGallery.setImageBitmap(BitmapFactory.decodeFile(mImages.get(position)));
+
+                    if (mImages.get(position).startsWith("https")) {
+                        ImageManager.getInstance().setImageByUrl(((GalleryViewHolder) holder).mImageGallery, mImages.get(position));
+                    } else {
+                        ((GalleryViewHolder) holder).mImageGallery.setImageURI(Uri.parse(mImages.get(position)));
+                    }
                 }
             }
         }

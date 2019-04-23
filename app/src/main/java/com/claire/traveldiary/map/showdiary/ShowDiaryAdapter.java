@@ -2,6 +2,7 @@ package com.claire.traveldiary.map.showdiary;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
+import com.claire.traveldiary.util.ImageManager;
 
 import java.util.List;
 
@@ -46,7 +48,6 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
 
             mCard = itemView.findViewById(R.id.cardview_map);
             mImage = itemView.findViewById(R.id.image_in_map);
-            mImage.setAlpha(0.9f);
             mTitle = itemView.findViewById(R.id.tv_title);
             mDate = itemView.findViewById(R.id.tv_date);
         }
@@ -64,7 +65,13 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
 
         if (holder instanceof ShowDiaryHolder) {
 
-            ((ShowDiaryHolder) holder).mImage.setImageBitmap(BitmapFactory.decodeFile(mDiaryList.get(position).getImages().get(0)));
+
+            if (mDiaryList.get(position).getImage().get(0).startsWith("https")) {
+                ImageManager.getInstance().setImageByUrl(
+                        ((ShowDiaryHolder) holder).mImage, mDiaryList.get(position).getImage().get(0));
+            } else {
+                ((ShowDiaryHolder) holder).mImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
+            }
             ((ShowDiaryHolder) holder).mTitle.setText(mDiaryList.get(position).getTitle());
             ((ShowDiaryHolder) holder).mDate.setText(mDiaryList.get(position).getDate());
 

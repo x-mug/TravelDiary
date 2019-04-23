@@ -1,11 +1,13 @@
 package com.claire.traveldiary.data.room;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.claire.traveldiary.data.DeletedDiary;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
 import com.claire.traveldiary.data.User;
@@ -19,13 +21,11 @@ public interface DiaryDAO {
 
     //Diary
     @Insert
-    void insertDiary(Diary diaries);
+    void insertDiary(Diary diary);
 
     @Update(onConflict = REPLACE)
     void updateDaries(Diary diaries);
 
-    @Delete
-    void deleteDiary(Diary diaries);
 
     @Query("SELECT * FROM diary")
     Diary getDiary();
@@ -39,12 +39,21 @@ public interface DiaryDAO {
     @Query("SELECT * FROM diary WHERE mId = :id")
     Diary getDiarybyId(int id);
 
+
+    //DeletedDiary
+    @Insert
+    void insertDeletedDiary(DeletedDiary deletedDiary);
+
+    @Query("DELETE FROM DeletedDiary WHERE mId = :id")
+    void removeDeletedDiary(int id);
+
+
+    @Query("SELECT * FROM deleteddiary")
+    List<DeletedDiary> getAllDeletedDiariesId();
+
     //User
     @Insert
     void insertUser(User user);
-
-    @Delete
-    void deleteUser(User user);
 
     @Query("SELECT * FROM user")
     User getUser();
@@ -71,6 +80,11 @@ public interface DiaryDAO {
     //get diary by place by placeName
     @Query("SELECT * FROM diaryplace WHERE " + " mLat = :lat AND mLng = :lng")
     List<DiaryPlace> getPlacebyLatlng(double lat, double lng);
+
+    //Search
+    @Query("SELECT * FROM Diary WHERE mTitle LIKE :title OR " + "mTags LIKE :tags")
+    List<Diary> getDiariesBySearch(String title, String tags);
+
 
 
     default void insertOrUpdateDiary(Diary diary) {

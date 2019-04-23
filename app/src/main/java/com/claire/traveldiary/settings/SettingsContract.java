@@ -9,6 +9,8 @@ public interface SettingsContract {
 
         void openSyncDialogUi();
 
+        void openDownloadDialogUi();
+
         void loginFacebookUi();
 
         void logoutFacebookUi();
@@ -20,6 +22,8 @@ public interface SettingsContract {
         void result(int requestCode, int resultCode);
 
         void openSyncDialog();
+
+        void openDownloadDialog();
 
         void loginFacebook();
 

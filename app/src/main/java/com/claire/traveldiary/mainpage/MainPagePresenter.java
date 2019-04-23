@@ -6,6 +6,8 @@ import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 
+import java.util.List;
+
 import static android.support.v4.util.Preconditions.checkNotNull;
 
 public class MainPagePresenter implements MainPageContract.Presenter {
@@ -39,5 +41,10 @@ public class MainPagePresenter implements MainPageContract.Presenter {
     @Override
     public void deleteDiary(int id) {
         mView.deleteDiaryUi(id);
+    }
+
+    @Override
+    public void loadSearchData(List<Diary> diaries) {
+        mView.loadSearchDataUi(diaries);
     }
 }

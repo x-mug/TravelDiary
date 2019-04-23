@@ -25,12 +25,12 @@ public class Diary {
     private String mDate;
 
     @TypeConverters(PlacesConverter.class)
-    private DiaryPlace mDiaryPlace;
+    private DiaryPlace mPlace;
 
     private String mWeather;
 
     @TypeConverters(ImagesConverter.class)
-    private ArrayList<String> mImages;
+    private ArrayList<String> mImage;
 
     private String mContent;
 
@@ -43,9 +43,9 @@ public class Diary {
         mId = -1;
         mTitle = "";
         mDate = "";
-        mDiaryPlace = new DiaryPlace();
+        mPlace = new DiaryPlace();
         mWeather = "ic_sunny";
-        mImages = new ArrayList<>();
+        mImage = new ArrayList<>();
         mContent = "";
         mTags = null;
     }
@@ -75,13 +75,6 @@ public class Diary {
         mDate = date;
     }
 
-    public DiaryPlace getDiaryPlace() {
-        return mDiaryPlace;
-    }
-
-    public void setDiaryPlace(DiaryPlace diaryPlace) {
-        mDiaryPlace = diaryPlace;
-    }
 
     public String getWeather() {
         return mWeather;
@@ -91,12 +84,20 @@ public class Diary {
         mWeather = weather;
     }
 
-    public ArrayList<String> getImages() {
-        return mImages;
+    public DiaryPlace getPlace() {
+        return mPlace;
     }
 
-    public void setImages(ArrayList<String> images) {
-        mImages = images;
+    public void setPlace(DiaryPlace place) {
+        mPlace = place;
+    }
+
+    public ArrayList<String> getImage() {
+        return mImage;
+    }
+
+    public void setImage(ArrayList<String> image) {
+        mImage = image;
     }
 
     public String getContent() {

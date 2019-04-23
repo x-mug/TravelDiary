@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.claire.traveldiary.TravelDiaryApplication;
+import com.claire.traveldiary.data.Diary;
+import com.claire.traveldiary.data.DiaryPlace;
 import com.claire.traveldiary.data.User;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
@@ -19,18 +21,18 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserManager {
@@ -41,9 +43,8 @@ public class UserManager {
 
     private User mUser;
 
-    private DiaryDatabase mDatabase;
+    private DiaryDatabase mRoomDb;
     private FirebaseFirestore mFirebaseDb;
-    private DatabaseReference mFirebaseRef;
 
     private CallbackManager mFbCallbackManager;
     private AccessTokenTracker mAccessTokenTracker;
@@ -133,8 +134,8 @@ public class UserManager {
                         Log.d(TAG,"user information " + id + name + email + picture);
 
                         //save user to room
-                        mDatabase = DiaryDatabase.getIstance(TravelDiaryApplication.getAppContext());
-                        DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
+                        mRoomDb = DiaryDatabase.getIstance(TravelDiaryApplication.getAppContext());
+                        DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
 
                         User user = new User();
                         user.setId(id);
@@ -154,13 +155,14 @@ public class UserManager {
                         users.put("email", email);
                         users.put("picture", picture);
 
-                        // Add a new document with a generated ID
+                        // Add a new document with a user ID
                         mFirebaseDb.collection("Users").document(id.toString())
                                 .set(users)
                                 .addOnSuccessListener(documentReference ->
                                         Log.d(TAG, "DocumentSnapshot successful written! "))
                                 .addOnFailureListener(e ->
                                         Log.w(TAG, "Error adding document", e));
+
 
                         loadCallback.onSuccess();
                     }
@@ -177,6 +179,7 @@ public class UserManager {
         // Initiate the GraphRequest
         request.executeAsync();
     }
+
 
 
     public void clearUserLogin() {

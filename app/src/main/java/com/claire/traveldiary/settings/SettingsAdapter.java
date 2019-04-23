@@ -10,12 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.TravelDiaryApplication;
+import com.claire.traveldiary.component.MyBounceInterpolator;
 import com.claire.traveldiary.data.User;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
@@ -32,7 +35,6 @@ public class SettingsAdapter extends RecyclerView.Adapter{
 
     private Context mContext;
     private DiaryDatabase mDatabase;
-    private UserManager mUserManager;
 
     public SettingsAdapter(SettingsContract.Presenter presenter, Context context) {
         mPresenter = presenter;
@@ -45,6 +47,7 @@ public class SettingsAdapter extends RecyclerView.Adapter{
         private ImageView mUserImg;
         private TextView mUserName;
         private TextView mSync;
+        private TextView mDownload;
         private TextView mTextSize;
         private TextView mLanguage;
         private TextView mPassword;
@@ -58,6 +61,7 @@ public class SettingsAdapter extends RecyclerView.Adapter{
             mUserImg = itemView.findViewById(R.id.img_profile);
             mUserName = itemView.findViewById(R.id.tv_user_name);
             mSync = itemView.findViewById(R.id.tv_sync);
+            mDownload = itemView.findViewById(R.id.tv_download);
             mTextSize = itemView.findViewById(R.id.tv_textsize);
             mLanguage = itemView.findViewById(R.id.tv_language);
             mPassword = itemView.findViewById(R.id.tv_key);
@@ -81,12 +85,18 @@ public class SettingsAdapter extends RecyclerView.Adapter{
             mDatabase = DiaryDatabase.getIstance(mContext);
             DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
 
-            //can sync
+            //click sync
             ((SettingsHolder) holder).mSync.setOnClickListener(v -> {
                 mPresenter.openSyncDialog();
             });
 
-            if (mUserManager.getInstance().isLoggedIn()) {
+            //click download
+            ((SettingsHolder) holder).mDownload.setOnClickListener(v -> {
+                mPresenter.openDownloadDialog();
+            });
+
+            //login status
+            if (UserManager.getInstance().isLoggedIn()) {
                 //set image
                 Picasso.get()
                         .load(diaryDAO.getUser().getPicture())
@@ -99,7 +109,8 @@ public class SettingsAdapter extends RecyclerView.Adapter{
 
                 //can log out
                 ((SettingsHolder) holder).mLogin.setText(R.string.settings_logout);
-                ((SettingsHolder) holder).mLogin.setOnClickListener(v -> mPresenter.logoutFacebook());
+                ((SettingsHolder) holder).mLogin.setOnClickListener(v ->
+                        mPresenter.logoutFacebook());
             } else {
                 //set image
                 ((SettingsHolder) holder).mUserImg.setImageResource(R.mipmap.ic_profile);
@@ -109,10 +120,26 @@ public class SettingsAdapter extends RecyclerView.Adapter{
 
                 //can log in
                 ((SettingsHolder) holder).mLogin.setText(R.string.settings_login);
-                ((SettingsHolder) holder).mLogin.setOnClickListener(v -> mPresenter.loginFacebook());
+                ((SettingsHolder) holder).mLogin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.loginFacebook();
+                        //click animation
+                        final Animation myAnim = AnimationUtils.loadAnimation(mContext, R.anim.anim_bounce);
+                        ((SettingsHolder) holder).mLogin.startAnimation(myAnim);
+
+                        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+                        myAnim.setInterpolator(interpolator);
+
+                        ((SettingsHolder) holder).mLogin.startAnimation(myAnim);
+                    }
+                });
             }
+
         }
+
     }
+
 
     public void updateView() {
         notifyDataSetChanged();
@@ -120,7 +147,6 @@ public class SettingsAdapter extends RecyclerView.Adapter{
 
 
     public class CircleTransform implements Transformation {
-
         @Override
         public Bitmap transform(Bitmap source) {
             int size = Math.min(source.getWidth(), source.getHeight());
@@ -146,8 +172,8 @@ public class SettingsAdapter extends RecyclerView.Adapter{
         public String key() {
             return "circle";
         }
-
     }
+
 
     @Override
     public int getItemCount() {

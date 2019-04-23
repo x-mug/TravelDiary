@@ -4,6 +4,8 @@ import com.claire.traveldiary.base.BasePresenter;
 import com.claire.traveldiary.base.BaseView;
 import com.claire.traveldiary.data.Diary;
 
+import java.util.List;
+
 public interface MainPageContract {
 
     interface View extends BaseView<Presenter> {
@@ -11,6 +13,8 @@ public interface MainPageContract {
         void openEditPage(Diary diary);
 
         void deleteDiaryUi(int id);
+
+        void loadSearchDataUi(List<Diary> diaries);
 
     }
 
@@ -21,6 +25,8 @@ public interface MainPageContract {
         void openEdit(Diary diary);
 
         void deleteDiary(int id);
+
+        void loadSearchData(List<Diary> diaries);
 
     }
 }

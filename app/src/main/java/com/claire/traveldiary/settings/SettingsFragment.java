@@ -73,13 +73,13 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void openSyncDialogUi() {
+        ((MainActivity) getActivity()).openSyncDialog();
     }
 
     @Override
-    public void openSyncDialogUi() {
-        ((MainActivity) getActivity()).openSyncDialog();
+    public void openDownloadDialogUi() {
+        ((MainActivity) getActivity()).openDownloadDialog();
     }
 
     @Override

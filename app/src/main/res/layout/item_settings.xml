@@ -31,22 +31,35 @@
         android:id="@+id/btn_login"
         android:layout_width="80dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/settings_login"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/diary_content_border"
+        android:text="@string/settings_login"
         app:layout_constraintBottom_toBottomOf="@+id/tv_user_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_user_name" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/settings_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_profile" />
 
     <TextView
         android:id="@+id/tv_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="@string/settings_data"
+        android:textStyle="bold"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/img_profile"
-        app:layout_constraintTop_toBottomOf="@+id/img_profile" />
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <ImageView
         android:id="@+id/img_sync"
@@ -56,6 +69,7 @@
         android:background="@mipmap/ic_backup"
         app:layout_constraintStart_toStartOf="@+id/img_profile"
         app:layout_constraintTop_toBottomOf="@+id/tv_data" />
+
 
     <TextView
         android:id="@+id/tv_sync"
@@ -72,15 +86,40 @@
         app:layout_constraintStart_toEndOf="@+id/img_sync"
         app:layout_constraintTop_toTopOf="@+id/img_sync" />
 
+    <ImageView
+        android:id="@+id/img_download"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@mipmap/ic_download"
+        app:layout_constraintEnd_toEndOf="@+id/img_sync"
+        app:layout_constraintStart_toStartOf="@+id/img_sync"
+        app:layout_constraintTop_toBottomOf="@+id/img_sync" />
+
+    <TextView
+        android:id="@+id/tv_download"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawableRight="@mipmap/ic_next"
+        android:gravity="center_vertical"
+        android:text="@string/settings_download"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/img_download"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_download"
+        app:layout_constraintTop_toTopOf="@+id/img_download" />
+
     <View
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
-        android:background="@color/bottom_nav_item_normal"
+        android:background="@color/settings_view"
         app:layout_constraintEnd_toEndOf="@+id/tv_sync"
         app:layout_constraintStart_toStartOf="@+id/img_sync"
-        app:layout_constraintTop_toBottomOf="@+id/img_sync" />
+        app:layout_constraintTop_toBottomOf="@+id/img_download" />
 
     <TextView
         android:id="@+id/tv_system"
@@ -88,6 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/settings_system"
+        android:textStyle="bold"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/tv_data"
         app:layout_constraintTop_toBottomOf="@+id/view" />
@@ -96,7 +136,7 @@
         android:id="@+id/img_textsize"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:background="@mipmap/ic_textsize"
         app:layout_constraintStart_toStartOf="@+id/img_sync"
         app:layout_constraintTop_toBottomOf="@+id/tv_system" />
@@ -145,22 +185,19 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginTop="16dp"
-        android:background="@mipmap/ic_key"
+        android:background="@mipmap/ic_lock"
         app:layout_constraintStart_toStartOf="@+id/img_language"
         app:layout_constraintTop_toBottomOf="@+id/img_language" />
 
     <TextView
         android:id="@+id/tv_key"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:drawableRight="@mipmap/ic_next"
-        android:text="@string/settings_key"
-        android:textSize="16sp"
         android:gravity="center_vertical"
+        android:text="@string/settings_lock"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/img_key"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_key"
         app:layout_constraintTop_toTopOf="@+id/img_key" />
 
@@ -175,16 +212,13 @@
 
     <TextView
         android:id="@+id/tv_notification"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:drawableRight="@mipmap/ic_next"
+        android:gravity="center_vertical"
         android:text="@string/settings_notification"
         android:textSize="16sp"
-        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/img_notification"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_notification"
         app:layout_constraintTop_toTopOf="@+id/img_notification" />
 
@@ -211,5 +245,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_mail"
         app:layout_constraintTop_toTopOf="@+id/img_mail" />
+
+    <Switch
+        android:id="@+id/switch_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_key"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_key"
+        app:layout_constraintTop_toTopOf="@+id/tv_key" />
+
+    <Switch
+        android:id="@+id/switch_notification"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_notification"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_notification"
+        app:layout_constraintTop_toTopOf="@+id/tv_notification" />
 
 </android.support.constraint.ConstraintLayout>

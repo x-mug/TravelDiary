@@ -1,12 +1,10 @@
 package com.claire.traveldiary;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -15,6 +13,7 @@ import android.widget.TextView;
 
 import com.claire.traveldiary.base.BaseActivity;
 import com.claire.traveldiary.data.Diary;
+import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.claire.traveldiary.edit.EditFragment;
 import com.claire.traveldiary.edit.EditPresenter;
 import com.claire.traveldiary.edit.chooseweather.WeatherDialog;
@@ -27,16 +26,14 @@ import com.claire.traveldiary.map.showdiary.ShowDiaryDialog;
 import com.claire.traveldiary.map.showdiary.ShowDiaryPresenter;
 import com.claire.traveldiary.settings.SettingsFragment;
 import com.claire.traveldiary.settings.SettingsPresenter;
+import com.claire.traveldiary.settings.download.DownloadDialog;
+import com.claire.traveldiary.settings.download.DownloadPresenter;
 import com.claire.traveldiary.settings.sync.SyncDialog;
 import com.claire.traveldiary.settings.sync.SyncPresenter;
 import com.claire.traveldiary.util.UserManager;
 import com.facebook.internal.CallbackManagerImpl;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.List;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -51,6 +48,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private WeatherPresenter mWeatherPresenter;
     private ShowDiaryPresenter mShowDiaryPresenter;
     private SyncPresenter mSyncPresenter;
+    private DownloadPresenter mDownloadPresenter;
 
     //BottomNavigation
     private BottomNavigationView mBottomNavigation;
@@ -63,6 +61,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ImageButton mToolbarBack;
     private Button mToolbarEdit;
     private Button mToolbarDone;
+
+    private DiaryDatabase mDatabase;
 
     //empty diary
     private Diary mDiary;
@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void init() {
         setContentView(R.layout.activity_main);
+        mDatabase = DiaryDatabase.getIstance(this);
         setToolbar();
         setBottomNavigation();
         openMainPage();
@@ -95,6 +96,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mToolbar = findViewById(R.id.toolbar);
         mToolbarTitle = findViewById(R.id.toolbar_title);
         mToolbarSearch = findViewById(R.id.toolbar_search);
+        mToolbarSearch.setOnQueryTextListener(onQueryTextListener);
 
         mToolbarBack = findViewById(R.id.toolbar_back);
         mToolbarBack.setOnClickListener(this);
@@ -153,8 +155,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         return result;
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
+    private SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            getTagsFromDb(query);
+            return true;
+        }
 
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            getTagsFromDb(newText);
+            return true;
+        }
+
+        private void getTagsFromDb(String searchText) {
+            searchText = "%" + searchText + "%";
+            List<Diary> diaries = mDatabase.getDiaryDAO().getDiariesBySearch(searchText, searchText);
+            if (diaries != null) {
+                mMainPagePresenter.loadSearchData(diaries);
+            }
+        }
+    };
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
         switch (item.getItemId()) {
             case R.id.navigation_main:
                 openMainPage();
@@ -297,7 +320,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    public void faceBookLogin() {
+    public void openDownloadDialog() {
+        DownloadDialog dialog =
+                (DownloadDialog) (this.getSupportFragmentManager().findFragmentByTag("DownloadDialog"));
+
+        if (dialog == null) {
+
+            dialog = new DownloadDialog();
+            mDownloadPresenter = new DownloadPresenter(dialog);
+            dialog.setPresenter(mDownloadPresenter);
+
+            dialog.show((this.getSupportFragmentManager()),"DownloadDialog");
+
+        } else if (!dialog.isAdded()) {
+
+            dialog.show(this.getSupportFragmentManager(), "DownloadDialog");
+        }
 
     }
 
@@ -383,10 +421,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        openMainPage();
-        updateMapToolbar("Memories");
-        updateEditToolbar("Memories");
-        updateEditToolbarFromMainPage("Memories");
+        getSupportFragmentManager().popBackStack();
     }
 
 

@@ -19,9 +19,10 @@
     <string name="settings_data">Data</string>
     <string name="settings_system">System</string>
     <string name="settings_backup">Synchronize</string>
-    <string name="settings_textsize">Textsize</string>
+    <string name="settings_download">Download</string>
+    <string name="settings_textsize">Fontsize</string>
     <string name="settings_language">Language</string>
-    <string name="settings_key">Password</string>
+    <string name="settings_lock">Lock</string>
     <string name="settings_notification">Notification</string>
     <string name="settings_feedback">Feedback</string>
     <string name="settings_login">LogIn</string>
@@ -45,6 +46,12 @@
     <string name="dialog_btn_sync">Sync</string>
     <string name="dialog_btn_login">Login Facebook</string>
     <string name="dialog_tv_sync">Please Login Your Facebook Before Synchronize Your Diary</string>
+
+    //dialog download
+    <string name="dialog_btn_download">Download</string>
+    <string name="dialog_download">Download my Diary from Firebase</string>
+    <string name="dialog_download_notice">* This step will replace your exist diaries *</string>
+    <string name="dialog_tv_download">Please Login Your Facebook Before Download Your Diary</string>
 
     //facebook login
     <string name="facebook_app_id">483707082365149</string> <string name="fb_login_protocol_scheme">fb483707082365149</string>

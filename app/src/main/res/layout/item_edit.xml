@@ -68,8 +68,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="8dp"
         android:visibility="gone"
+        app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="@+id/choose_weather"
         app:layout_constraintStart_toStartOf="@+id/tv_my_location"
         app:layout_constraintTop_toBottomOf="@+id/tv_my_location">
@@ -101,13 +101,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
         android:autoLink="all"
         android:background="@drawable/diary_content_border"
         android:hint="@string/edit_diary_content_hint"
         android:includeFontPadding="true"
         android:inputType="textMultiLine"
         android:lineSpacingExtra="1.5dp"
-        android:minLines="3"
+        android:minLines="4"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
@@ -115,21 +116,20 @@
         android:textAppearance="?android:attr/textAppearanceLargeInverse"
         android:textColor="@color/diary_title"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/choose_weather"
-        app:layout_constraintStart_toStartOf="@+id/tv_my_location"
-        app:layout_constraintTop_toBottomOf="@+id/autocomplete_card" />
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
         android:background="@mipmap/ic_tags"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/edit_diary_content"
-        app:layout_constraintTop_toBottomOf="@+id/edit_diary_content" />
+        app:layout_constraintStart_toStartOf="@+id/tv_my_location"
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_card" />
 
     <mabbas007.tagsedittext.TagsEditText
         android:id="@+id/edit_tags"

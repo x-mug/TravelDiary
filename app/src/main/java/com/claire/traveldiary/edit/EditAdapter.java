@@ -124,7 +124,7 @@ public class EditAdapter extends RecyclerView.Adapter {
 
         if (holder instanceof EditViewHolder) {
 
-            if (isEdit == false) {
+            if (!isEdit) {
                 if (mDiary != null) {
                     Log.d(TAG, "diary not null!" + mDiary.getTitle());
 
@@ -140,8 +140,8 @@ public class EditAdapter extends RecyclerView.Adapter {
 
 
                     //images
-                    if (mDiary.getImages() != null) {
-                        mGalleryAdapter = new GalleryAdapter(mPresenter, mDiary.getImages());
+                    if (mDiary.getImage() != null) {
+                        mGalleryAdapter = new GalleryAdapter(mPresenter, mDiary.getImage());
                         ((EditViewHolder) holder).mRecyclerGallery.setLayoutManager(new LinearLayoutManager(TravelDiaryApplication.getAppContext(),
                                 LinearLayoutManager.HORIZONTAL, false));
                         if ((((EditViewHolder) holder).mRecyclerGallery.getOnFlingListener() == null)) {
@@ -170,8 +170,8 @@ public class EditAdapter extends RecyclerView.Adapter {
                     }
 
                     //places
-                    if (mDiary.getDiaryPlace() != null) {
-                        mLocation.setText(mDiary.getDiaryPlace().getPlaceName());
+                    if (mDiary.getPlace() != null) {
+                        mLocation.setText(mDiary.getPlace().getPlaceName());
                     }
 
                     //content
@@ -254,8 +254,8 @@ public class EditAdapter extends RecyclerView.Adapter {
 
 
                 //Gallery
-                if (mEditDiary.getImages() != null) {
-                    mGalleryAdapter = new GalleryAdapter(mPresenter, mEditDiary.getImages());
+                if (mEditDiary.getImage() != null) {
+                    mGalleryAdapter = new GalleryAdapter(mPresenter, mEditDiary.getImage());
                     ((EditViewHolder) holder).mRecyclerGallery.setLayoutManager(new LinearLayoutManager(TravelDiaryApplication.getAppContext(),
                             LinearLayoutManager.HORIZONTAL, false));
                     if ((((EditViewHolder) holder).mRecyclerGallery.getOnFlingListener() == null)) {
@@ -290,15 +290,19 @@ public class EditAdapter extends RecyclerView.Adapter {
                     mPresenter.openWeatherDialog();
                 });
                 if (mWeatherUri == null) {
-                    ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mEditDiary.getWeather()));
+                    if (mEditDiary.getWeather() == null) {
+                        ((EditViewHolder) holder).mWeather.setImageResource(R.mipmap.ic_sunny);
+                    } else {
+                        ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mEditDiary.getWeather()));
+                    }
                 } else {
                     ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mWeatherUri));
                 }
 
                 //Choose Location
                 chooseLocation();
-                if (mEditDiary.getDiaryPlace() != null) {
-                    mLocation.setText(mEditDiary.getDiaryPlace().getPlaceName());
+                if (mEditDiary.getPlace() != null) {
+                    mLocation.setText(mEditDiary.getPlace().getPlaceName());
                 }
 
                 //edit content
@@ -411,24 +415,27 @@ public class EditAdapter extends RecyclerView.Adapter {
             Log.d(TAG, "have id");
 
             //Place object
-            diaryPlace.setPlaceId(mEditDiary.getDiaryPlace().getPlaceId());
-            diaryPlace.setDiaryId(mEditDiary.getDiaryPlace().getDiaryId());
-            diaryPlace.setPlaceName(mEditDiary.getDiaryPlace().getPlaceName());
-            diaryPlace.setCountry(mEditDiary.getDiaryPlace().getCountry());
-            diaryPlace.setLat(mEditDiary.getDiaryPlace().getLat());
-            diaryPlace.setLng(mEditDiary.getDiaryPlace().getLng());
+            diaryPlace.setPlaceId(mEditDiary.getPlace().getPlaceId());
+            diaryPlace.setDiaryId(mEditDiary.getPlace().getDiaryId());
+            diaryPlace.setPlaceName(mEditDiary.getPlace().getPlaceName());
+            diaryPlace.setCountry(mEditDiary.getPlace().getCountry());
+            diaryPlace.setLat(mEditDiary.getPlace().getLat());
+            diaryPlace.setLng(mEditDiary.getPlace().getLng());
 
             //diary object
             newOrUpdateDiary.setId(mEditDiary.getId());
             newOrUpdateDiary.setTitle(mEditTitle);
             newOrUpdateDiary.setDate(mStringDate);
-            newOrUpdateDiary.setDiaryPlace(mEditDiary.getDiaryPlace());
+            newOrUpdateDiary.setPlace(mEditDiary.getPlace());
             newOrUpdateDiary.setWeather(mWeatherUri);
-            newOrUpdateDiary.setImages(mEditDiary.getImages());
+            newOrUpdateDiary.setImage(mEditDiary.getImage());
             newOrUpdateDiary.setContent(mEditContent);
             newOrUpdateDiary.setTags(mTagsList);
         } else {
             Log.d(TAG, "no id");
+
+            //image
+
 
             //Place object
             diaryPlace.setPlaceId(mPlaceId);
@@ -442,9 +449,9 @@ public class EditAdapter extends RecyclerView.Adapter {
             newOrUpdateDiary.setId(id);
             newOrUpdateDiary.setTitle(mEditTitle);
             newOrUpdateDiary.setDate(mStringDate);
-            newOrUpdateDiary.setDiaryPlace(diaryPlace);
+            newOrUpdateDiary.setPlace(diaryPlace);
             newOrUpdateDiary.setWeather(mWeatherUri);
-            newOrUpdateDiary.setImages(mImagesList);
+            newOrUpdateDiary.setImage(mImagesList);
             newOrUpdateDiary.setContent(mEditContent);
             newOrUpdateDiary.setTags(mTagsList);
 

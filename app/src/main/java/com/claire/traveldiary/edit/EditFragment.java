@@ -282,10 +282,7 @@ public class EditFragment extends Fragment implements EditContract.View{
             mEditAdapter.updateDate(date);
         },yy, mm, dd);
 
-        //pickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
         pickerDialog.show();
-
     }
 
     @Override
