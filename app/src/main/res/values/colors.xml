@@ -25,6 +25,7 @@
 
     <!-- Gallery -->
     <color name="gallery_background">#F8F8FF</color>
+    <color name="gallery_background2">#F5F5F5</color>
 
 
     <color name="settings_view">#DCDCDC</color>

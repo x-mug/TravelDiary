@@ -31,8 +31,8 @@
     //item edit
     <string name="edit_diary_title_hint">Title</string>
     <string name="edit_diary_date_hint">Date</string>
-    <string name="edit_diary_location_hint">Paris, France</string>
-    <string name="edit_diary_content_hint">Your Diary Here....</string>
+    <string name="edit_diary_location_hint">Where am I ?</string>
+    <string name="edit_diary_content_hint">Write Down Your Day ....</string>
     <string name="edit_diary_tags_hint">Add tags</string>
 
     //dialog choose weather
