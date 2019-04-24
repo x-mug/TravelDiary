@@ -11,6 +11,8 @@ public interface SettingsContract {
 
         void openDownloadDialogUi();
 
+        void openFontDialogUi();
+
         void loginFacebookUi();
 
         void logoutFacebookUi();
@@ -24,6 +26,8 @@ public interface SettingsContract {
         void openSyncDialog();
 
         void openDownloadDialog();
+
+        void openFontDialog();
 
         void loginFacebook();
 

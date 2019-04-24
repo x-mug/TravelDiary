@@ -1,6 +1,10 @@
 package com.claire.traveldiary.settings.download;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,6 +30,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
 
@@ -112,10 +123,15 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                             if (task.getResult() != null) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Log.d(TAG, document.getId() + " => " + document.getData());
+                                    //save image to local
                                     Diary diary = document.toObject(Diary.class);
+                                    for (int i = 0; i < diary.getImage().size(); i++) {
+
+                                    }
+
                                     diaryDAO.insertOrUpdateDiary(diary);
                                     Log.d(TAG, "diary size : " + diaryDAO.getAllDiaries().size());
-                                    dismiss();
+
                                 }
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
@@ -124,7 +140,7 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                     }
                 });
 
-        //query users all place and save to roomdb
+        //then query users all place and save to roomdb
         mFirebaseDb.collection("Users").document(userId).collection("Places")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -146,6 +162,8 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                     }
                 });
     }
+
+
 
     @Override
     public void dismiss() {

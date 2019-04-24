@@ -44,6 +44,11 @@ public class MainPagePresenter implements MainPageContract.Presenter {
     }
 
     @Override
+    public void shareDiary(Diary diary) {
+        mView.shareDiaryUi(diary);
+    }
+
+    @Override
     public void loadSearchData(List<Diary> diaries) {
         mView.loadSearchDataUi(diaries);
     }

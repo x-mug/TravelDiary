@@ -20,7 +20,7 @@
     <string name="settings_system">System</string>
     <string name="settings_backup">Synchronize</string>
     <string name="settings_download">Download</string>
-    <string name="settings_textsize">Fontsize</string>
+    <string name="settings_textsize">Font</string>
     <string name="settings_language">Language</string>
     <string name="settings_lock">Lock</string>
     <string name="settings_notification">Notification</string>
@@ -52,6 +52,11 @@
     <string name="dialog_download">Download my Diary from Firebase</string>
     <string name="dialog_download_notice">* This step will replace your exist diaries *</string>
     <string name="dialog_tv_download">Please Login Your Facebook Before Download Your Diary</string>
+
+    //dialog fontsize
+    <string name="dialog_choose_font">Choose Font</string>
+    <string name="dialog_fontsize_ok">OK</string>
+    <string name="dialog_fontsize_cancel">Cancel</string>
 
     //facebook login
     <string name="facebook_app_id">483707082365149</string> <string name="fb_login_protocol_scheme">fb483707082365149</string>

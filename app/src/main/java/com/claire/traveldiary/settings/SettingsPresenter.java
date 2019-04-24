@@ -1,10 +1,6 @@
 package com.claire.traveldiary.settings;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
-
-import com.claire.traveldiary.TravelDiaryApplication;
-import com.claire.traveldiary.util.UserManager;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -38,6 +34,11 @@ public class SettingsPresenter implements SettingsContract.Presenter {
     @Override
     public void openDownloadDialog() {
         mView.openDownloadDialogUi();
+    }
+
+    @Override
+    public void openFontDialog() {
+        mView.openFontDialogUi();
     }
 
     @Override

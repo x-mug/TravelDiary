@@ -163,7 +163,8 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
                     //click share
                     ((MainPageViewHolder) holder).mShare.setOnClickListener(v12 -> {
-                        Log.d(TAG, "Oh Share.....");
+                        mPresenter.shareDiary(mDiaryList.get(position));
+
                         ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
                         ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                         ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);

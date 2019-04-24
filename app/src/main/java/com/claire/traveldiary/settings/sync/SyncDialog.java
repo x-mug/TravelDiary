@@ -1,6 +1,5 @@
 package com.claire.traveldiary.settings.sync;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,26 +24,19 @@ import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.claire.traveldiary.util.UserManager;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
 
@@ -205,6 +197,7 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
                                                 Log.d(TAG,"Image Url" + URL);
                                                 ArrayList<String> imagesUrl = new ArrayList<>();
                                                 imagesUrl.add(URL);
+                                                Log.d(TAG,"Image Url size" + imagesUrl.size());
 
                                                 Map<String, Object> diaries = new HashMap<>();
                                                 diaries.put("id",mDiaries.get(finalI).getId());
@@ -261,7 +254,6 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
         }
 
     }
-
 
 
     @Override

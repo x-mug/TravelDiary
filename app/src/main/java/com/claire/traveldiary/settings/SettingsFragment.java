@@ -1,7 +1,6 @@
 package com.claire.traveldiary.settings;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,16 +14,7 @@ import android.view.ViewGroup;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
-import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.util.UserManager;
-import com.facebook.FacebookSdk;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -80,6 +70,11 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
     @Override
     public void openDownloadDialogUi() {
         ((MainActivity) getActivity()).openDownloadDialog();
+    }
+
+    @Override
+    public void openFontDialogUi() {
+        ((MainActivity) getActivity()).openFontDialog();
     }
 
     @Override

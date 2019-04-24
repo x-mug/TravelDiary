@@ -28,6 +28,8 @@ import com.claire.traveldiary.settings.SettingsFragment;
 import com.claire.traveldiary.settings.SettingsPresenter;
 import com.claire.traveldiary.settings.download.DownloadDialog;
 import com.claire.traveldiary.settings.download.DownloadPresenter;
+import com.claire.traveldiary.settings.fontsize.FontDialog;
+import com.claire.traveldiary.settings.fontsize.FontPresenter;
 import com.claire.traveldiary.settings.sync.SyncDialog;
 import com.claire.traveldiary.settings.sync.SyncPresenter;
 import com.claire.traveldiary.util.UserManager;
@@ -49,6 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ShowDiaryPresenter mShowDiaryPresenter;
     private SyncPresenter mSyncPresenter;
     private DownloadPresenter mDownloadPresenter;
+    private FontPresenter mFontPresenter;
 
     //BottomNavigation
     private BottomNavigationView mBottomNavigation;
@@ -336,7 +339,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             dialog.show(this.getSupportFragmentManager(), "DownloadDialog");
         }
+    }
 
+    public void openFontDialog() {
+        FontDialog dialog =
+                (FontDialog) (this.getSupportFragmentManager().findFragmentByTag("FontDialog"));
+
+        if (dialog == null) {
+
+            dialog = new FontDialog();
+            mFontPresenter = new FontPresenter(dialog);
+            dialog.setPresenter(mFontPresenter);
+
+            dialog.show((this.getSupportFragmentManager()),"FontDialog");
+
+        } else if (!dialog.isAdded()) {
+
+            dialog.show(this.getSupportFragmentManager(), "FontDialog");
+        }
     }
 
     private void updateMapToolbar(String title) {

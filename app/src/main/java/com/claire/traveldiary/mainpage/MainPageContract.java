@@ -14,6 +14,8 @@ public interface MainPageContract {
 
         void deleteDiaryUi(int id);
 
+        void shareDiaryUi(Diary diary);
+
         void loadSearchDataUi(List<Diary> diaries);
 
     }
@@ -25,6 +27,8 @@ public interface MainPageContract {
         void openEdit(Diary diary);
 
         void deleteDiary(int id);
+
+        void shareDiary(Diary diary);
 
         void loadSearchData(List<Diary> diaries);
 

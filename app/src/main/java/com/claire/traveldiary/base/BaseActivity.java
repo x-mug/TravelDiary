@@ -23,6 +23,11 @@ public class BaseActivity extends AppCompatActivity {
         setStatusBar();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
     /**
      * To change status bar to transparent.
      * @notice this method have to be used before setContentView.

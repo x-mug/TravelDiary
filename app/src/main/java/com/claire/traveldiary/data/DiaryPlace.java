@@ -15,6 +15,7 @@ public class DiaryPlace {
     @PrimaryKey
     @NonNull
     private int mDiaryId;
+
     private String mPlaceId;
     private String mPlaceName;
     private String mCountry;

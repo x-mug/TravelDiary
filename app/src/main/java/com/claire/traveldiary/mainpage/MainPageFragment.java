@@ -2,10 +2,17 @@ package com.claire.traveldiary.mainpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -14,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.claire.traveldiary.BuildConfig;
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.component.SpacesItemDecoration;
@@ -29,6 +37,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
@@ -74,6 +88,10 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         mMainPageAdapter = new MainPageAdapter(mPresenter,getContext());
 
         mRoomDb = DiaryDatabase.getIstance(getContext());
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
     }
 
     @Nullable
@@ -120,6 +138,33 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
         //delete diary from room
         diaryDAO.deleteDiarybyId(id);
+    }
+
+    @Override
+    public void shareDiaryUi(Diary diary) {
+        //image
+        ArrayList<Uri> imageUri = new ArrayList<>();
+        for (int i = 0; i < diary.getImage().size(); i++) {
+            Intent sendIntent = new Intent();
+
+            if (diary.getImage().get(i).startsWith("https:")) {
+                Uri uriFromHttp = Uri.parse(diary.getImage().get(i));
+                imageUri.add(uriFromHttp);
+                sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+            } else {
+                Uri uriFromLocal = Uri.parse("file://" + diary.getImage().get(i));
+                imageUri.add(uriFromLocal);
+                sendIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUri);
+            }
+
+            sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, diary.getTitle());
+            sendIntent.putExtra(Intent.EXTRA_TEXT, diary.getContent());
+            sendIntent.setType("*/*");
+            startActivity(Intent.createChooser(sendIntent, "Share Diary To Your Friends!"));
+        }
+
     }
 
     @Override

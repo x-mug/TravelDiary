@@ -17,13 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.claire.traveldiary.R;
-import com.claire.traveldiary.TravelDiaryApplication;
 import com.claire.traveldiary.component.MyBounceInterpolator;
-import com.claire.traveldiary.data.User;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.claire.traveldiary.util.UserManager;
-import com.facebook.AccessToken;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -94,6 +91,10 @@ public class SettingsAdapter extends RecyclerView.Adapter{
             ((SettingsHolder) holder).mDownload.setOnClickListener(v -> {
                 mPresenter.openDownloadDialog();
             });
+
+            //click choose font size
+            ((SettingsHolder) holder).mTextSize.setOnClickListener(v ->
+                    mPresenter.openFontDialog());
 
             //login status
             if (UserManager.getInstance().isLoggedIn()) {
