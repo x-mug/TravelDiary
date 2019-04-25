@@ -5,6 +5,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.Update;
 
 import com.claire.traveldiary.data.DeletedDiary;
@@ -12,6 +13,7 @@ import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
 import com.claire.traveldiary.data.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
@@ -25,6 +27,10 @@ public interface DiaryDAO {
 
     @Update(onConflict = REPLACE)
     void updateDaries(Diary diaries);
+
+    @TypeConverters(ImagesConverter.class)
+    @Query("UPDATE Diary SET mImage = :image WHERE mId = :id" )
+    void updateImageFromFirebase(ArrayList<String> image, int id);
 
 
     @Query("SELECT * FROM diary")
@@ -76,6 +82,9 @@ public interface DiaryDAO {
 
     @Query("SELECT * FROM diaryplace WHERE mDiaryId = :id")
     DiaryPlace getPlacebyDiaryId(int id);
+
+    @Query("DELETE FROM DiaryPlace WHERE mDiaryId = :id")
+    void deletePlacebyId(int id);
 
     //get diary by place by placeName
     @Query("SELECT * FROM diaryplace WHERE " + " mLat = :lat AND mLng = :lng")

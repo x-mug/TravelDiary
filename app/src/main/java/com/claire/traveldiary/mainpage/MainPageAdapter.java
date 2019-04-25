@@ -1,7 +1,8 @@
 package com.claire.traveldiary.mainpage;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -19,8 +20,6 @@ import android.widget.Toast;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDatabase;
-import com.claire.traveldiary.util.ImageManager;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -38,6 +37,8 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
     private boolean isLongclick = false;
     private boolean isSearch = false;
+
+    private Typeface mTypeface;
 
 
     public MainPageAdapter(MainPageContract.Presenter presenter, Context context) {
@@ -69,6 +70,69 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             mDiaryDate = itemView.findViewById(R.id.tv_diary_date);
             mDelete = itemView.findViewById(R.id.btn_delete_diary);
             mShare = itemView.findViewById(R.id.btn_share_diary);
+
+
+            SharedPreferences sharedPreferences = mContext.getSharedPreferences("FONT", Context.MODE_PRIVATE);
+            String fontType = sharedPreferences.getString("fontValue", "");
+            switch (fontType) {
+                case "allura":
+                    mTypeface = mContext.getResources().getFont(R.font.allura_regular);
+                    setTypeface(mTypeface);
+                    break;
+                case "amatic":
+                    mTypeface = mContext.getResources().getFont(R.font.amatic_regular);
+                    setTypefaceBig(mTypeface);
+                    break;
+                case "blackjack":
+                    mTypeface = mContext.getResources().getFont(R.font.blackjack);
+                    setTypeface(mTypeface);
+                    break;
+                case "brizel":
+                    mTypeface = mContext.getResources().getFont(R.font.brizel);
+                    setTypefaceMid(mTypeface);
+                    break;
+                case "dancing":
+                    mTypeface = mContext.getResources().getFont(R.font.dancing_regular);
+                    setTypeface(mTypeface);
+                    break;
+                case "farsan":
+                    mTypeface = mContext.getResources().getFont(R.font.farsan_regular);
+                    setTypefaceMid(mTypeface);
+                    break;
+                case "handwriting":
+                    mTypeface = mContext.getResources().getFont(R.font.justan_regular);
+                    setTypefaceBig(mTypeface);
+                    break;
+                case "kaushan":
+                    mTypeface = mContext.getResources().getFont(R.font.kaushan_regular);
+                    setTypeface(mTypeface);
+                    break;
+                case"default":
+                    mDiaryTitle.setTypeface(Typeface.SERIF);
+                    mDiaryDate.setTypeface(Typeface.SERIF);
+                    break;
+            }
+        }
+
+        public void setTypeface(Typeface mTypeface) {
+            mDiaryTitle.setTypeface(mTypeface);
+            mDiaryDate.setTypeface(mTypeface);
+            mDiaryTitle.setTextSize(24);
+            mDiaryDate.setTextSize(18);
+        }
+
+        public void setTypefaceMid(Typeface mTypeface) {
+            mDiaryTitle.setTypeface(mTypeface);
+            mDiaryDate.setTypeface(mTypeface);
+            mDiaryTitle.setTextSize(26);
+            mDiaryDate.setTextSize(20);
+        }
+
+        public void setTypefaceBig(Typeface mTypeface) {
+            mDiaryTitle.setTypeface(mTypeface);
+            mDiaryDate.setTypeface(mTypeface);
+            mDiaryTitle.setTextSize(30);
+            mDiaryDate.setTextSize(24);
         }
     }
 
@@ -99,12 +163,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 //show card
                 if (mDiaryList.size() > 0) {
                     if (mDiaryList.get(position).getImage() != null) {
-                        if (mDiaryList.get(position).getImage().get(0).startsWith("https")) {
-                            ImageManager.getInstance().setImageByUrl(
-                                    ((MainPageViewHolder) holder).mMainImage, mDiaryList.get(position).getImage().get(0));
-                        } else {
-                            ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
-                        }
+                        ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
                     }
 
                     if (mDiaryList.get(position).getTitle() != null) {
@@ -179,24 +238,19 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 Log.d(TAG,"My Main Page Search Results");
                 if (mDiaryList.size() > 0) {
                     if (mDiaryList.get(position).getImage() != null) {
-                        if (mDiaryList.get(position).getImage().get(0).startsWith("https")) {
-                            ImageManager.getInstance().setImageByUrl(
-                                    ((MainPageViewHolder) holder).mMainImage, mDiaryList.get(position).getImage().get(0));
-                        } else {
-                            ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
-                        }
+                        ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
                     }
 
                     if (mDiaryList.get(position).getTitle() != null) {
                         ((MainPageViewHolder) holder).mDiaryTitle.setText(mDiaryList.get(position).getTitle());
                     } else {
-                        ((MainPageViewHolder) holder).mDiaryTitle.setText("Travel");
+                        ((MainPageViewHolder) holder).mDiaryTitle.setText(R.string.diary_title);
                     }
 
                     if (mDiaryList.get(position).getDate() != null) {
                         ((MainPageViewHolder) holder).mDiaryDate.setText(mDiaryList.get(position).getDate());
                     } else {
-                        ((MainPageViewHolder) holder).mDiaryDate.setText("11 January 2019");
+                        ((MainPageViewHolder) holder).mDiaryDate.setText(R.string.diary_date);
                     }
 
                 }
@@ -207,10 +261,8 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     public void refreshUi(List<Diary> diaries) {
         mDiaryList = diaries;
         notifyDataSetChanged();
-
         isSearch = true;
     }
-
 
     @Override
     public int getItemCount() {

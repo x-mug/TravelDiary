@@ -20,7 +20,10 @@ public abstract class DiaryDatabase extends RoomDatabase {
     public static DiaryDatabase getIstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE =
-                    Room.databaseBuilder(context.getApplicationContext(), DiaryDatabase.class, "diary_db").allowMainThreadQueries().build();
+                    Room.databaseBuilder(context.getApplicationContext(), DiaryDatabase.class, "diary_db")
+                            .allowMainThreadQueries()
+                            .fallbackToDestructiveMigration()
+                            .build();
         }
         return INSTANCE;
     }

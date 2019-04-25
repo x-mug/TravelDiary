@@ -72,12 +72,7 @@ public class GalleryAdapter extends RecyclerView.Adapter {
 
                 for(int i = 0; i < mImages.size(); i++) {
                     ((GalleryViewHolder) holder).mButtonAdd.setVisibility(View.INVISIBLE);
-
-                    if (mImages.get(position).startsWith("https")) {
-                        ImageManager.getInstance().setImageByUrl(((GalleryViewHolder) holder).mImageGallery, mImages.get(position));
-                    } else {
-                        ((GalleryViewHolder) holder).mImageGallery.setImageURI(Uri.parse(mImages.get(position)));
-                    }
+                    ((GalleryViewHolder) holder).mImageGallery.setImageURI(Uri.parse(mImages.get(position)));
                 }
             }
         }

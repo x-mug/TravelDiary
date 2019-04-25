@@ -1,10 +1,6 @@
 package com.claire.traveldiary.settings.download;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,11 +26,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -46,6 +42,8 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
 
     private DownloadContract.Presenter mPresenter;
 
+    private StorageReference mReference;
+    private FirebaseStorage mStorage;
     private FirebaseFirestore mFirebaseDb;
     private DiaryDatabase mRoomDb;
 
@@ -69,6 +67,8 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFirebaseDb = FirebaseFirestore.getInstance();
+        mStorage = FirebaseStorage.getInstance();
+        mReference = mStorage.getReferenceFromUrl("gs://traveldiary-236516.appspot.com/");
         mRoomDb = DiaryDatabase.getIstance(getContext());
 
     }
@@ -112,57 +112,85 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
         mUser = diaryDAO.getUser();
         String userId = String.valueOf(mUser.getId());
 
-
         //query users all diary and save to roomdb
         mFirebaseDb.collection("Users").document(userId).collection("Diaries")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                    //save image to local
-                                    Diary diary = document.toObject(Diary.class);
-                                    for (int i = 0; i < diary.getImage().size(); i++) {
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult() != null) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Diary diary = document.toObject(Diary.class);
+                                diaryDAO.insertOrUpdateDiary(diary);
+                                Log.d(TAG, "diary size : " + diaryDAO.getAllDiaries().size());
 
-                                    }
-
-                                    diaryDAO.insertOrUpdateDiary(diary);
-                                    Log.d(TAG, "diary size : " + diaryDAO.getAllDiaries().size());
-
-                                }
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
+                                //update image to local
+                                ArrayList<String> imageUrl = (ArrayList<String>) document.get("image");
+                                downloadImage(imageUrl,0, image ->
+                                        diaryDAO.updateImageFromFirebase(image, Integer.parseInt(document.getId())));
                             }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
 
         //then query users all place and save to roomdb
         mFirebaseDb.collection("Users").document(userId).collection("Places")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                    DiaryPlace diaryPlace = document.toObject(DiaryPlace.class);
-                                    diaryDAO.insertOrUpdatePlace(diaryPlace);
-                                    Log.d(TAG, "place size : " + diaryDAO.getAllPlaces().size());
-                                    dismiss();
-                                }
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult() != null) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                DiaryPlace diaryPlace = document.toObject(DiaryPlace.class);
+                                diaryDAO.insertOrUpdatePlace(diaryPlace);
+                                Log.d(TAG, "place size : " + diaryDAO.getAllPlaces().size());
+                                dismiss();
                             }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
     }
 
+
+    private void downloadImage(ArrayList<String> imageUrl, int i, DownloadCallback downloadCallback) {
+        Log.d(TAG, "imageurl" + imageUrl);
+        int j = i + 1;
+
+        for (int k = 0; k < imageUrl.size(); k++) {
+            StorageReference reference = mStorage.getReferenceFromUrl(imageUrl.get(k));
+            ArrayList<String> imageLocalPath = new ArrayList<>();
+            try {
+                File localFile = File.createTempFile("images", "jpg");
+                reference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                    String imageFullPath = localFile.getAbsolutePath();
+                    imageLocalPath.add(imageFullPath);
+                    Log.d(TAG, "image download from firebase " + imageFullPath);
+                    if (j < imageUrl.size()) {
+                        downloadImage(imageUrl, j, downloadCallback);
+                    } else {
+                        downloadCallback.onCompleted(imageLocalPath);
+                    }
+                }).addOnFailureListener(exception -> {
+                    // Handle any errors
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    interface DownloadCallback {
+
+        void onCompleted(ArrayList<String> image);
+    }
 
 
     @Override

@@ -145,20 +145,13 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         //image
         ArrayList<Uri> imageUri = new ArrayList<>();
         for (int i = 0; i < diary.getImage().size(); i++) {
+            Uri uriFromLocal = Uri.parse("file://" + diary.getImage().get(i));
+            imageUri.add(uriFromLocal);
+
             Intent sendIntent = new Intent();
-
-            if (diary.getImage().get(i).startsWith("https:")) {
-                Uri uriFromHttp = Uri.parse(diary.getImage().get(i));
-                imageUri.add(uriFromHttp);
-                sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-            } else {
-                Uri uriFromLocal = Uri.parse("file://" + diary.getImage().get(i));
-                imageUri.add(uriFromLocal);
-                sendIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUri);
-            }
-
             sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
             sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            sendIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUri);
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, diary.getTitle());
             sendIntent.putExtra(Intent.EXTRA_TEXT, diary.getContent());
             sendIntent.setType("*/*");
