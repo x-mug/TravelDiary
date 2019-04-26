@@ -195,7 +195,6 @@ public class EditAdapter extends RecyclerView.Adapter {
                     mLocation.setClickable(true);
                     ((EditViewHolder) holder).mTitle.setFocusableInTouchMode(true);
                     ((EditViewHolder) holder).mDate.setClickable(true);
-                    //location can't input haven't done
                     ((EditViewHolder) holder).mContent.setFocusableInTouchMode(true);
 
 
@@ -207,6 +206,7 @@ public class EditAdapter extends RecyclerView.Adapter {
                         new LinearSnapHelper().attachToRecyclerView((((EditViewHolder) holder).mRecyclerGallery));
                     }
                     ((EditViewHolder) holder).mRecyclerGallery.setAdapter(mGalleryAdapter);
+
 
                     //edit title
                     mEditTitle = ((EditViewHolder) holder).mTitle.getText().toString();
@@ -247,7 +247,7 @@ public class EditAdapter extends RecyclerView.Adapter {
                 ((EditViewHolder) holder).mTitle.setFocusableInTouchMode(true);
                 ((EditViewHolder) holder).mDate.setClickable(true);
                 ((EditViewHolder) holder).mWeather.setClickable(true);
-                //location can't input haven't done
+                mLocation.setClickable(true);
                 ((EditViewHolder) holder).mContent.setFocusableInTouchMode(true);
                 ((EditViewHolder) holder).mTags.setVisibility(View.VISIBLE);
                 ((EditViewHolder) holder).mShowTags.setVisibility(View.GONE);
@@ -300,10 +300,15 @@ public class EditAdapter extends RecyclerView.Adapter {
                 }
 
                 //Choose Location
-                chooseLocation();
-                if (mEditDiary.getPlace() != null) {
+                if (mEditDiary.getPlace().getPlaceName().equals("")) {
+                    mLocation.setText(R.string.edit_diary_location_hint);
+                } else {
                     mLocation.setText(mEditDiary.getPlace().getPlaceName());
                 }
+                mLocation.setOnClickListener(v -> {
+                    mCardView.setVisibility(View.VISIBLE);
+                    chooseLocation();
+                });
 
                 //edit content
                 mEditContent = ((EditViewHolder) holder).mContent.getText().toString();
@@ -391,6 +396,7 @@ public class EditAdapter extends RecyclerView.Adapter {
     }
 
     public void saveDiaryDataToRoom() {
+        notifyDataSetChanged();
 
         mEditTitle = ((EditViewHolder) mHolder).mTitle.getText().toString();
         mStringDate = ((EditViewHolder) mHolder).mDate.getText().toString();
@@ -415,18 +421,18 @@ public class EditAdapter extends RecyclerView.Adapter {
             Log.d(TAG, "have id");
 
             //Place object
-            diaryPlace.setPlaceId(mEditDiary.getPlace().getPlaceId());
+            diaryPlace.setPlaceId(mPlaceId);
             diaryPlace.setDiaryId(mEditDiary.getPlace().getDiaryId());
-            diaryPlace.setPlaceName(mEditDiary.getPlace().getPlaceName());
-            diaryPlace.setCountry(mEditDiary.getPlace().getCountry());
-            diaryPlace.setLat(mEditDiary.getPlace().getLat());
-            diaryPlace.setLng(mEditDiary.getPlace().getLng());
+            diaryPlace.setPlaceName(mPlaceName);
+            diaryPlace.setCountry(mCountry);
+            diaryPlace.setLat(mLat);
+            diaryPlace.setLng(mLng);
 
             //diary object
             newOrUpdateDiary.setId(mEditDiary.getId());
             newOrUpdateDiary.setTitle(mEditTitle);
             newOrUpdateDiary.setDate(mStringDate);
-            newOrUpdateDiary.setPlace(mEditDiary.getPlace());
+            newOrUpdateDiary.setPlace(diaryPlace);
             newOrUpdateDiary.setWeather(mWeatherUri);
             newOrUpdateDiary.setImage(mEditDiary.getImage());
             newOrUpdateDiary.setContent(mEditContent);
@@ -434,28 +440,49 @@ public class EditAdapter extends RecyclerView.Adapter {
         } else {
             Log.d(TAG, "no id");
 
-            //image
+            //handle image
+            if (mImagesList == null) {
+                Log.d(TAG, "user didn't choose image");
+                String fileName = "android.resource://" + mContext.getPackageName() + "/" + R.drawable.img_summer_evening;
+                ArrayList<String> defaultImage = new ArrayList<>();
+                defaultImage.add(fileName);
 
+                //Place object
+                diaryPlace.setPlaceId(mPlaceId);
+                diaryPlace.setDiaryId(id);
+                diaryPlace.setPlaceName(mPlaceName);
+                diaryPlace.setCountry(mCountry);
+                diaryPlace.setLat(mLat);
+                diaryPlace.setLng(mLng);
 
-            //Place object
-            diaryPlace.setPlaceId(mPlaceId);
-            diaryPlace.setDiaryId(id);
-            diaryPlace.setPlaceName(mPlaceName);
-            diaryPlace.setCountry(mCountry);
-            diaryPlace.setLat(mLat);
-            diaryPlace.setLng(mLng);
+                //diary object
+                newOrUpdateDiary.setId(id);
+                newOrUpdateDiary.setTitle(mEditTitle);
+                newOrUpdateDiary.setDate(mStringDate);
+                newOrUpdateDiary.setPlace(diaryPlace);
+                newOrUpdateDiary.setWeather(mWeatherUri);
+                newOrUpdateDiary.setImage(defaultImage);
+                newOrUpdateDiary.setContent(mEditContent);
+                newOrUpdateDiary.setTags(mTagsList);
+            } else {
+                //Place object
+                diaryPlace.setPlaceId(mPlaceId);
+                diaryPlace.setDiaryId(id);
+                diaryPlace.setPlaceName(mPlaceName);
+                diaryPlace.setCountry(mCountry);
+                diaryPlace.setLat(mLat);
+                diaryPlace.setLng(mLng);
 
-            //diary object
-            newOrUpdateDiary.setId(id);
-            newOrUpdateDiary.setTitle(mEditTitle);
-            newOrUpdateDiary.setDate(mStringDate);
-            newOrUpdateDiary.setPlace(diaryPlace);
-            newOrUpdateDiary.setWeather(mWeatherUri);
-            newOrUpdateDiary.setImage(mImagesList);
-            newOrUpdateDiary.setContent(mEditContent);
-            newOrUpdateDiary.setTags(mTagsList);
-
-            Log.d(TAG, "tagssss" + newOrUpdateDiary.getTags());
+                //diary object
+                newOrUpdateDiary.setId(id);
+                newOrUpdateDiary.setTitle(mEditTitle);
+                newOrUpdateDiary.setDate(mStringDate);
+                newOrUpdateDiary.setPlace(diaryPlace);
+                newOrUpdateDiary.setWeather(mWeatherUri);
+                newOrUpdateDiary.setImage(mImagesList);
+                newOrUpdateDiary.setContent(mEditContent);
+                newOrUpdateDiary.setTags(mTagsList);
+            }
         }
 
         diaryDAO.insertOrUpdateDiary(newOrUpdateDiary);

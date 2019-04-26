@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.claire.traveldiary.TravelDiaryApplication;
+import com.claire.traveldiary.data.DeletedDiary;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
 import com.claire.traveldiary.data.User;
@@ -19,6 +20,8 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,6 +51,7 @@ public class UserManager {
 
     private CallbackManager mFbCallbackManager;
     private AccessTokenTracker mAccessTokenTracker;
+    private ProfileTracker mProfileTracker;
 
 
     private static class UserManagerHolder {
@@ -103,6 +107,8 @@ public class UserManager {
         };
 
         logoutFacebook();
+        //cleanDatabase();
+
     }
 
     private void loginFacebook(Context context) {
@@ -134,7 +140,7 @@ public class UserManager {
                         Log.d(TAG,"user information " + id + name + email + picture);
 
                         //save user to room
-                        mRoomDb = DiaryDatabase.getIstance(TravelDiaryApplication.getAppContext());
+                        mRoomDb = DiaryDatabase.getIstance(mContext);
                         DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
 
                         User user = new User();
@@ -185,6 +191,16 @@ public class UserManager {
     public void clearUserLogin() {
         setUser(null);
     }
+
+    public void cleanDatabase() {
+        mRoomDb = DiaryDatabase.getIstance(mContext);
+        DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
+        diaryDAO.cleanUser();
+        diaryDAO.deleteAllDiaries();
+        diaryDAO.deleteAllPlaces();
+        diaryDAO.removeAllDeletedDiaries();
+    }
+
 
     public CallbackManager getFbCallbackManager() {
         return mFbCallbackManager;

@@ -12,6 +12,7 @@
         android:layout_width="150dp"
         android:layout_height="210dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="4dp"

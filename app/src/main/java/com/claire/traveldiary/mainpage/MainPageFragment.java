@@ -114,7 +114,7 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(mMainPageAdapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setPadding(40,0,40,40);
+        recyclerView.setPadding(40,0,40,0);
         recyclerView.addItemDecoration(new SpacesItemDecoration(6));
 
 

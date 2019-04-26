@@ -45,6 +45,9 @@ public interface DiaryDAO {
     @Query("SELECT * FROM diary WHERE mId = :id")
     Diary getDiarybyId(int id);
 
+    @Query("DELETE FROM Diary")
+    void deleteAllDiaries();
+
 
     //DeletedDiary
     @Insert
@@ -56,6 +59,9 @@ public interface DiaryDAO {
 
     @Query("SELECT * FROM deleteddiary")
     List<DeletedDiary> getAllDeletedDiariesId();
+
+    @Query("DELETE FROM DeletedDiary")
+    void removeAllDeletedDiaries();
 
     //User
     @Insert
@@ -69,6 +75,9 @@ public interface DiaryDAO {
 
     @Update(onConflict = REPLACE)
     void updateUser(User user);
+
+    @Query("DELETE FROM user")
+    void cleanUser();
 
     //Place
     @Insert
@@ -93,6 +102,9 @@ public interface DiaryDAO {
     //Search
     @Query("SELECT * FROM Diary WHERE mTitle LIKE :title OR " + "mTags LIKE :tags")
     List<Diary> getDiariesBySearch(String title, String tags);
+
+    @Query("DELETE FROM DiaryPlace")
+    void deleteAllPlaces();
 
 
 
