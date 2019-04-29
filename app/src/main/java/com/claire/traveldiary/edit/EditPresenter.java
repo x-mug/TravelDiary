@@ -65,4 +65,5 @@ public class EditPresenter implements EditContract.Presenter {
         mView.clickEditDiaryUi();
     }
 
+
 }

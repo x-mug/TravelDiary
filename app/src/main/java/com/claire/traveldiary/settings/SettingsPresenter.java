@@ -42,6 +42,11 @@ public class SettingsPresenter implements SettingsContract.Presenter {
     }
 
     @Override
+    public void openLanguageDialog() {
+        mView.openLanguageDialogUi();
+    }
+
+    @Override
     public void loginFacebook() {
         mView.loginFacebookUi();
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
@@ -72,45 +73,47 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             mShare = itemView.findViewById(R.id.btn_share_diary);
 
 
-            SharedPreferences sharedPreferences = mContext.getSharedPreferences("FONT", Context.MODE_PRIVATE);
-            String fontType = sharedPreferences.getString("fontValue", "");
-            switch (fontType) {
-                case "allura":
-                    mTypeface = mContext.getResources().getFont(R.font.allura_regular);
-                    setTypeface(mTypeface);
-                    break;
-                case "amatic":
-                    mTypeface = mContext.getResources().getFont(R.font.amatic_regular);
-                    setTypefaceBig(mTypeface);
-                    break;
-                case "blackjack":
-                    mTypeface = mContext.getResources().getFont(R.font.blackjack);
-                    setTypeface(mTypeface);
-                    break;
-                case "brizel":
-                    mTypeface = mContext.getResources().getFont(R.font.brizel);
-                    setTypefaceMid(mTypeface);
-                    break;
-                case "dancing":
-                    mTypeface = mContext.getResources().getFont(R.font.dancing_regular);
-                    setTypeface(mTypeface);
-                    break;
-                case "farsan":
-                    mTypeface = mContext.getResources().getFont(R.font.farsan_regular);
-                    setTypefaceMid(mTypeface);
-                    break;
-                case "handwriting":
-                    mTypeface = mContext.getResources().getFont(R.font.justan_regular);
-                    setTypefaceBig(mTypeface);
-                    break;
-                case "kaushan":
-                    mTypeface = mContext.getResources().getFont(R.font.kaushan_regular);
-                    setTypeface(mTypeface);
-                    break;
-                case"default":
-                    mDiaryTitle.setTypeface(Typeface.SERIF);
-                    mDiaryDate.setTypeface(Typeface.SERIF);
-                    break;
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("FONT", Context.MODE_PRIVATE);
+                String fontType = sharedPreferences.getString("fontValue", "");
+                switch (fontType) {
+                    case "allura":
+                        mTypeface = mContext.getResources().getFont(R.font.allura_regular);
+                        setTypeface(mTypeface);
+                        break;
+                    case "amatic":
+                        mTypeface = mContext.getResources().getFont(R.font.amatic_regular);
+                        setTypefaceBig(mTypeface);
+                        break;
+                    case "blackjack":
+                        mTypeface = mContext.getResources().getFont(R.font.blackjack);
+                        setTypeface(mTypeface);
+                        break;
+                    case "brizel":
+                        mTypeface = mContext.getResources().getFont(R.font.brizel);
+                        setTypefaceMid(mTypeface);
+                        break;
+                    case "dancing":
+                        mTypeface = mContext.getResources().getFont(R.font.dancing_regular);
+                        setTypeface(mTypeface);
+                        break;
+                    case "farsan":
+                        mTypeface = mContext.getResources().getFont(R.font.farsan_regular);
+                        setTypefaceMid(mTypeface);
+                        break;
+                    case "handwriting":
+                        mTypeface = mContext.getResources().getFont(R.font.justan_regular);
+                        setTypefaceBig(mTypeface);
+                        break;
+                    case "kaushan":
+                        mTypeface = mContext.getResources().getFont(R.font.kaushan_regular);
+                        setTypeface(mTypeface);
+                        break;
+                    case"default":
+                        mDiaryTitle.setTypeface(Typeface.SERIF);
+                        mDiaryDate.setTypeface(Typeface.SERIF);
+                        break;
+                }
             }
         }
 
@@ -262,6 +265,10 @@ public class MainPageAdapter extends RecyclerView.Adapter {
         mDiaryList = diaries;
         notifyDataSetChanged();
         isSearch = true;
+    }
+
+    public void refresh() {
+        notifyDataSetChanged();
     }
 
     @Override

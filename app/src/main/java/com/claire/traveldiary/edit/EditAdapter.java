@@ -294,6 +294,7 @@ public class EditAdapter extends RecyclerView.Adapter {
                         ((EditViewHolder) holder).mWeather.setImageResource(R.mipmap.ic_sunny);
                     } else {
                         ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mEditDiary.getWeather()));
+                        mWeatherUri = mEditDiary.getWeather();
                     }
                 } else {
                     ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mWeatherUri));
@@ -421,12 +422,21 @@ public class EditAdapter extends RecyclerView.Adapter {
             Log.d(TAG, "have id");
 
             //Place object
-            diaryPlace.setPlaceId(mPlaceId);
-            diaryPlace.setDiaryId(mEditDiary.getPlace().getDiaryId());
-            diaryPlace.setPlaceName(mPlaceName);
-            diaryPlace.setCountry(mCountry);
-            diaryPlace.setLat(mLat);
-            diaryPlace.setLng(mLng);
+            if (mPlaceId == null) {
+                diaryPlace.setPlaceId(mEditDiary.getPlace().getPlaceId());
+                diaryPlace.setDiaryId(mEditDiary.getPlace().getDiaryId());
+                diaryPlace.setPlaceName(mEditDiary.getPlace().getPlaceName());
+                diaryPlace.setCountry(mEditDiary.getPlace().getCountry());
+                diaryPlace.setLat(mEditDiary.getPlace().getLat());
+                diaryPlace.setLng(mEditDiary.getPlace().getLng());
+            } else {
+                diaryPlace.setPlaceId(mPlaceId);
+                diaryPlace.setDiaryId(mEditDiary.getPlace().getDiaryId());
+                diaryPlace.setPlaceName(mPlaceName);
+                diaryPlace.setCountry(mCountry);
+                diaryPlace.setLat(mLat);
+                diaryPlace.setLng(mLng);
+            }
 
             //diary object
             newOrUpdateDiary.setId(mEditDiary.getId());

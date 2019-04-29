@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -30,8 +32,11 @@ import com.claire.traveldiary.settings.download.DownloadDialog;
 import com.claire.traveldiary.settings.download.DownloadPresenter;
 import com.claire.traveldiary.settings.fontsize.FontDialog;
 import com.claire.traveldiary.settings.fontsize.FontPresenter;
+import com.claire.traveldiary.settings.language.LanguageDialog;
+import com.claire.traveldiary.settings.language.LanguagePresenter;
 import com.claire.traveldiary.settings.sync.SyncDialog;
 import com.claire.traveldiary.settings.sync.SyncPresenter;
+import com.claire.traveldiary.util.ActivityUtils;
 import com.claire.traveldiary.util.UserManager;
 import com.facebook.internal.CallbackManagerImpl;
 
@@ -52,6 +57,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private SyncPresenter mSyncPresenter;
     private DownloadPresenter mDownloadPresenter;
     private FontPresenter mFontPresenter;
+    private LanguagePresenter mLanguagePresenter;
 
     //BottomNavigation
     private BottomNavigationView mBottomNavigation;
@@ -123,8 +129,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.toolbar_back:
-                openMainPage();
-                updateMapToolbar(getResources().getString(R.string.toolbar_title));
+                getSupportFragmentManager().popBackStack();
                 break;
             case R.id.toolbar_menu:
                 openSettings();
@@ -196,7 +201,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 openMap();
                 updateMapToolbar("");
                 return true;
-
             default:
                 return false;
         }
@@ -207,11 +211,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         MainPageFragment mainPageFragment = (MainPageFragment) getSupportFragmentManager().findFragmentByTag("MainPage");
 
         if (mainPageFragment == null) {
-            MainPageFragment fragment = MainPageFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, fragment, "MainPage").commit();
-            mMainPagePresenter = new MainPagePresenter(fragment);
-            fragment.setPresenter(mMainPagePresenter);
+            mainPageFragment = MainPageFragment.newInstance();
         }
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mainPageFragment, "MainPage").commit();
+        mMainPagePresenter = new MainPagePresenter(mainPageFragment);
+        mainPageFragment.setPresenter(mMainPagePresenter);
+
 
         showBottomNavigation();
     }
@@ -221,10 +226,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag("Edit");
 
         if (editFragment == null) {
-            EditFragment fragment = EditFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, fragment, "Edit").commit();
-            mEditPresenter = new EditPresenter(fragment);
-            fragment.setPresenter(mEditPresenter);
+            editFragment = EditFragment.newInstance();
+            getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, editFragment, "Edit").addToBackStack(null).commit();
+
+            mEditPresenter = new EditPresenter(editFragment);
+            editFragment.setPresenter(mEditPresenter);
 
             if (diary == null) {
                 updateEditToolbar("");
@@ -281,26 +287,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentByTag("Map");
 
         if (mapFragment == null) {
-            MapFragment fragment = MapFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, fragment, "Map").commit();
-            mMapPresenter = new MapPresenter(fragment);
-            fragment.setPresenter(mMapPresenter);
+            mapFragment = MapFragment.newInstance();
         }
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mapFragment, "Map").addToBackStack("Map").commit();
+        mMapPresenter = new MapPresenter(mapFragment);
+        mapFragment.setPresenter(mMapPresenter);
 
         hideBottomNavigation();
     }
 
 
     private void openSettings() {
-
-        //hideBottomNavigation();
         SettingsFragment settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("Settings");
 
         if (settingsFragment == null) {
-            SettingsFragment fragment = SettingsFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, fragment, "Settings").commit();
-            mSettingsPresenter = new SettingsPresenter(fragment);
+            settingsFragment = SettingsFragment.newInstance();
         }
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, settingsFragment, "Settings").addToBackStack(null).commit();
+        mSettingsPresenter = new SettingsPresenter(settingsFragment);
+        settingsFragment.setPresenter(mSettingsPresenter);
 
         hideBottomNavigation();
     }
@@ -359,14 +366,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void updateMapToolbar(String title) {
+    public void openLanguageDialog() {
+        LanguageDialog dialog =
+                (LanguageDialog) (this.getSupportFragmentManager().findFragmentByTag("LanguageDialog"));
+
+        if (dialog == null) {
+
+            dialog = new LanguageDialog();
+            mLanguagePresenter = new LanguagePresenter(dialog);
+            dialog.setPresenter(mLanguagePresenter);
+
+            dialog.show((this.getSupportFragmentManager()),"LanguageDialog");
+
+        } else if (!dialog.isAdded()) {
+
+            dialog.show(this.getSupportFragmentManager(), "LanguageDialog");
+        }
+    }
+
+    public void updateMapToolbar(String title) {
 
         if ("".equals(title)) {
             mToolbarTitle.setVisibility(View.GONE);
             mToolbarSearch.setVisibility(View.GONE);
             mToolbarBack.setVisibility(View.VISIBLE);
             mToolbarMenu.setVisibility(View.GONE);
-
+            mToolbarEdit.setVisibility(View.GONE);
+            mToolbarDone.setVisibility(View.GONE);
 
         } else {
             mToolbarTitle.setVisibility(View.VISIBLE);
@@ -376,7 +402,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mToolbarTitle.setText(title);
             mToolbarDone.setVisibility(View.GONE);
             mToolbarEdit.setVisibility(View.GONE);
-
         }
     }
 
@@ -439,10 +464,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mEditPresenter.clickEditDiary();
     }
 
+
+
     @Override
     public void onBackPressed() {
-        getSupportFragmentManager().popBackStack();
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0 ){
+            getSupportFragmentManager().popBackStack();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.dialog_title)
+                    .setMessage(R.string.dialog_content)
+                    .setIcon(R.mipmap.ic_sad_face)
+                    .setPositiveButton(R.string.dialog_leave, (dialog, which) -> finish())
+                    .setNegativeButton(R.string.dialog_stay,
+                            (dialog, which) -> {
+                                // TODO Auto-generated method stub
+                            }).show();
+        }
     }
-
-
 }

@@ -2,6 +2,7 @@ package com.claire.traveldiary.settings.fontsize;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.claire.traveldiary.R;
 
@@ -110,10 +112,14 @@ public class FontDialog extends DialogFragment implements FontContract.View {
 
     private void setFont(String font) {
         //save to share pref
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FONT", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("fontValue", font);
-        editor.commit();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("FONT", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("fontValue", font);
+            editor.commit();
+        } else {
+            Toast.makeText(getContext(), "Please update your Android SDK to 26", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

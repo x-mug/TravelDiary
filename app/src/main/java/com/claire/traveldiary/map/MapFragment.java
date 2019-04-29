@@ -115,21 +115,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
 
             LatLng location = new LatLng(diaryDAO.getAllPlaces().get(i).getLat(), diaryDAO.getAllPlaces().get(i).getLng());
 
-            mMap.addMarker(new MarkerOptions()
-                    .position(location)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
-                    .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
-                    .title(diaryDAO.getAllPlaces().get(i).getPlaceName()));
+            if (diaryDAO.getAllPlaces().get(i).getLat() != 0.0 && diaryDAO.getAllPlaces().get(i).getLng() != 0.0) {
+                mMap.addMarker(new MarkerOptions()
+                        .position(location)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
+                        .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
+                        .title(diaryDAO.getAllPlaces().get(i).getPlaceName()));
 
-            //mMarkerArray.add(marker);
+                //mMarkerArray.add(marker);
 
-            mMap.setOnInfoWindowClickListener(marker -> {
-                Double latitude = marker.getPosition().latitude;
-                Double longitude = marker.getPosition().longitude;
+                mMap.setOnInfoWindowClickListener(marker -> {
+                    Double latitude = marker.getPosition().latitude;
+                    Double longitude = marker.getPosition().longitude;
 
-                ((MainActivity) getActivity()).openShowDiaryDialog(latitude, longitude);
-            });
+                    ((MainActivity) getActivity()).openShowDiaryDialog(latitude, longitude);
+                });
+            }
         }
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((MainActivity) getActivity()).showBottomNavigation();
+        ((MainActivity) getActivity()).updateMapToolbar(getResources().getString(R.string.toolbar_title));
     }
 }

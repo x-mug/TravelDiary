@@ -29,9 +29,12 @@ import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.edit.chooseweather.WeatherContract;
 import com.claire.traveldiary.edit.chooseweather.WeatherDialog;
+import com.claire.traveldiary.mainpage.MainPageAdapter;
+import com.claire.traveldiary.mainpage.MainPagePresenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 import static android.support.v4.util.Preconditions.checkNotNull;
@@ -49,6 +52,8 @@ public class EditFragment extends Fragment implements EditContract.View{
 
     private RecyclerView mRecyclerEdit;
     private EditAdapter mEditAdapter;
+    private MainPagePresenter mMainPagePresenter;
+    private MainPageAdapter mMainPageAdapter;
 
     //gallery
     private ArrayList<String> mImagesList;
@@ -84,7 +89,9 @@ public class EditFragment extends Fragment implements EditContract.View{
         View root = inflater.inflate(R.layout.fragment_edit, container, false);
 
         mRecyclerEdit = root.findViewById(R.id.recycler_edit);
-        mRecyclerEdit.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mRecyclerEdit.setLayoutManager(layoutManager);
         mRecyclerEdit.setAdapter(mEditAdapter);
 
         return root;
@@ -313,9 +320,19 @@ public class EditFragment extends Fragment implements EditContract.View{
         }
     }
 
+
     @Override
     public void onDestroy() {
-        Log.d(TAG,"edit fragment destroy ! ");
         super.onDestroy();
+
+        if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            ((MainActivity) getActivity()).updateMapToolbar("");
+        } else {
+            ((MainActivity) getActivity()).showBottomNavigation();
+            ((MainActivity) getActivity()).updateMapToolbar(getResources().getString(R.string.toolbar_title));
+            mMainPageAdapter = new MainPageAdapter(mMainPagePresenter,getContext());
+            mMainPageAdapter.refresh();
+        }
     }
+
 }

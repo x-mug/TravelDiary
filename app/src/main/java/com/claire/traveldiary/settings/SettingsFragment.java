@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
+import com.claire.traveldiary.mainpage.MainPageAdapter;
+import com.claire.traveldiary.mainpage.MainPagePresenter;
 import com.claire.traveldiary.util.UserManager;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -25,6 +27,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
 
     private SettingsContract.Presenter mPresenter;
     private SettingsAdapter mSettingsAdapter;
+
 
 
     public SettingsFragment() {}
@@ -78,6 +81,11 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
     }
 
     @Override
+    public void openLanguageDialogUi() {
+        ((MainActivity) getActivity()).openLanguageDialog();
+    }
+
+    @Override
     public void loginFacebookUi() {
         UserManager.getInstance().loginDiaryByFacebook(getActivity(), new UserManager.LoadCallback() {
             @Override
@@ -119,4 +127,10 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((MainActivity) getActivity()).showBottomNavigation();
+        ((MainActivity) getActivity()).updateMapToolbar(getResources().getString(R.string.toolbar_title));
+    }
 }

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
@@ -20,12 +21,11 @@ import com.claire.traveldiary.data.DiaryPlace;
 import com.claire.traveldiary.data.User;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
+import com.claire.traveldiary.mainpage.MainPageAdapter;
+import com.claire.traveldiary.mainpage.MainPagePresenter;
 import com.claire.traveldiary.util.UserManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -41,6 +41,9 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     private static final String TAG = "DownloadDialog";
 
     private DownloadContract.Presenter mPresenter;
+
+    private MainPagePresenter mMainPagePresenter;
+    private MainPageAdapter mMainPageAdapter;
 
     private StorageReference mReference;
     private FirebaseStorage mStorage;
@@ -126,7 +129,8 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
 
                                 //update image to local
                                 ArrayList<String> imageUrl = (ArrayList<String>) document.get("image");
-                                downloadImage(imageUrl,0, image ->
+                                ArrayList<String> imageLocalPath = new ArrayList<>();
+                                downloadImage(imageUrl, imageLocalPath, 0, image ->
                                         diaryDAO.updateImageFromFirebase(image, Integer.parseInt(document.getId())));
                             }
                         } else {
@@ -148,6 +152,9 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                                 diaryDAO.insertOrUpdatePlace(diaryPlace);
                                 Log.d(TAG, "place size : " + diaryDAO.getAllPlaces().size());
                                 dismiss();
+                                mMainPageAdapter = new MainPageAdapter(mMainPagePresenter,getContext());
+                                mMainPageAdapter.refresh();
+                                Toast.makeText(getContext(), "Successfully Download!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -158,32 +165,29 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     }
 
 
-    private void downloadImage(ArrayList<String> imageUrl, int i, DownloadCallback downloadCallback) {
+    private void downloadImage(ArrayList<String> imageUrl, ArrayList<String> imageLocalPath, int i, DownloadCallback downloadCallback) {
         Log.d(TAG, "imageurl" + imageUrl);
         int j = i + 1;
 
-        for (int k = 0; k < imageUrl.size(); k++) {
-            StorageReference reference = mStorage.getReferenceFromUrl(imageUrl.get(k));
-            ArrayList<String> imageLocalPath = new ArrayList<>();
-            try {
-                File localFile = File.createTempFile("images", "jpg");
-                reference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-                    String imageFullPath = localFile.getAbsolutePath();
-                    imageLocalPath.add(imageFullPath);
-                    Log.d(TAG, "image download from firebase " + imageFullPath);
-                    if (j < imageUrl.size()) {
-                        downloadImage(imageUrl, j, downloadCallback);
-                    } else {
-                        downloadCallback.onCompleted(imageLocalPath);
-                    }
-                }).addOnFailureListener(exception -> {
-                    // Handle any errors
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        StorageReference reference = mStorage.getReferenceFromUrl(imageUrl.get(i));
 
+        try {
+            File localFile = File.createTempFile("images", "jpg");
+            reference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                String imageFullPath = localFile.getAbsolutePath();
+                imageLocalPath.add(imageFullPath);
+                Log.d(TAG, "image download from firebase " + imageFullPath);
+                if (j < imageUrl.size()) {
+                    downloadImage(imageUrl, imageLocalPath, j, downloadCallback);
+                } else {
+                    downloadCallback.onCompleted(imageLocalPath);
+                }
+            }).addOnFailureListener(exception -> {
+                // Handle any errors
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

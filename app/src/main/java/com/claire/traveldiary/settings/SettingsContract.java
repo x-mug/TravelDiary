@@ -13,6 +13,8 @@ public interface SettingsContract {
 
         void openFontDialogUi();
 
+        void openLanguageDialogUi();
+
         void loginFacebookUi();
 
         void logoutFacebookUi();
@@ -28,6 +30,8 @@ public interface SettingsContract {
         void openDownloadDialog();
 
         void openFontDialog();
+
+        void openLanguageDialog();
 
         void loginFacebook();
 

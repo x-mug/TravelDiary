@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.load.engine.Resource;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.DeletedDiary;
 import com.claire.traveldiary.data.Diary;
@@ -34,8 +34,6 @@ import com.google.firebase.storage.UploadTask;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -158,53 +156,35 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
             ArrayList<String> images = new ArrayList<>();
             images = mDiaries.get(i).getImage();
 
-            for (int j = 0 ; j < images.size(); j++) {
-                Uri file = Uri.fromFile(new File(images.get(j)));
-                StorageReference storageRef = mStorage.getReference().child(file.getLastPathSegment());
-                int finalI = i;
-                storageRef.putFile(file)
-                        .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                if(task.isSuccessful()){
-                                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            String URL = uri.toString();
-                                            //This is your image url do whatever you want with it.
-                                            Log.d(TAG,"Image Url" + URL);
-                                            ArrayList<String> imagesUrl = new ArrayList<>();
-                                            imagesUrl.add(URL);
-                                            Log.d(TAG,"Image Url size" + imagesUrl.size());
+            int finalI = i;
+            ArrayList<String> imageUrl = new ArrayList<>();
+            uploadImage(images, imageUrl, 0, new UpLoadCallback() {
+                @Override
+                public void onCompleted(ArrayList<String> imagesUrl) {
+                    Map<String, Object> diaries = new HashMap<>();
+                    diaries.put("id",mDiaries.get(finalI).getId());
+                    diaries.put("title",mDiaries.get(finalI).getTitle());
+                    diaries.put("date",mDiaries.get(finalI).getDate());
+                    diaries.put("place",mDiaries.get(finalI).getPlace());
+                    diaries.put("weather",mDiaries.get(finalI).getWeather());
+                    diaries.put("image", imagesUrl);
+                    diaries.put("content",mDiaries.get(finalI).getContent());
+                    diaries.put("tags",mDiaries.get(finalI).getTags());
 
-                                            Map<String, Object> diaries = new HashMap<>();
-                                            diaries.put("id",mDiaries.get(finalI).getId());
-                                            diaries.put("title",mDiaries.get(finalI).getTitle());
-                                            diaries.put("date",mDiaries.get(finalI).getDate());
-                                            diaries.put("place",mDiaries.get(finalI).getPlace());
-                                            diaries.put("weather",mDiaries.get(finalI).getWeather());
-                                            diaries.put("image",imagesUrl);
-                                            diaries.put("content",mDiaries.get(finalI).getContent());
-                                            diaries.put("tags",mDiaries.get(finalI).getTags());
+                    String diaryId = String.valueOf(mDiaries.get(finalI).getId());
 
-                                            String diaryId = String.valueOf(mDiaries.get(finalI).getId());
-
-                                            //sync all diaries to firebase
-                                            mFirebaseDb.collection("Users").document(userId).collection("Diaries").document(diaryId)
-                                                    .set(diaries)
-                                                    .addOnSuccessListener(aVoid -> {
-                                                        Log.d(TAG, "All Diaries successfully written!");
-                                                        dismiss();
-                                                    })
-                                                    .addOnFailureListener(e ->
-                                                            Log.w(TAG, "Error writing document", e));
-                                        }
-                                    });
-                                }
-                            }
-                        });
-
-            }
+                    //sync all diaries to firebase
+                    mFirebaseDb.collection("Users").document(userId).collection("Diaries").document(diaryId)
+                            .set(diaries)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d(TAG, "All Diaries successfully written!");
+                                dismiss();
+                                Toast.makeText(getContext(), "Successfully Sync!", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e ->
+                                    Log.w(TAG, "Error writing document", e));
+                }
+            });
         }
 
         //then save new places to firebase
@@ -223,12 +203,45 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
                     .set(places)
                     .addOnSuccessListener(aVoid -> {
                         Log.d(TAG, "All Places successfully written!");
-                        dismiss();
                     })
                     .addOnFailureListener(e ->
                             Log.w(TAG, "Error writing document", e));
         }
 
+    }
+
+    private void uploadImage(ArrayList<String> images, ArrayList<String> imageUrl, int i, UpLoadCallback upLoadCallback) {
+        int j = i + 1;
+
+        Uri file = Uri.fromFile(new File(images.get(i)));
+        StorageReference storageRef = mStorage.getReference().child(file.getLastPathSegment());
+        storageRef.putFile(file)
+                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if(task.isSuccessful()){
+                            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String URL = uri.toString();
+                                    Log.d(TAG,"Image Url" + URL);
+                                    imageUrl.add(URL);
+                                    //This is your image url do whatever you want with it.
+                                    if (j < images.size()) {
+                                        uploadImage(images, imageUrl, j, upLoadCallback);
+                                    } else {
+                                        upLoadCallback.onCompleted(imageUrl);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+    }
+
+    interface UpLoadCallback {
+
+        void onCompleted(ArrayList<String> imagesUrl);
     }
 
 

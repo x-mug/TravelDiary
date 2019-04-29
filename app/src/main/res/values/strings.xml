@@ -1,9 +1,15 @@
 <resources>
-    <string name="app_name">TravelDiary</string>
+    <string name="app_name">Travel Diary</string>
+
+    //main activity
+    <string name="dialog_leave">Yes I must leave</string>
+    <string name="dialog_stay">Okay I will stay here</string>
+    <string name="dialog_title">Do not leave me alone...</string>
+    <string name="dialog_content">Are you sure you want to leave?</string>
 
     //main page
     <string name="toolbar_title">Memories</string>
-    <string name="search_hint">search here....</string>
+    <string name="search_hint">Search</string>
     <string name="toolbar_edit">Edit</string>
     <string name="toolbar_done">Done</string>
 
@@ -57,6 +63,11 @@
     <string name="dialog_choose_font">Choose Diary Font</string>
     <string name="dialog_fontsize_ok">OK</string>
     <string name="dialog_fontsize_cancel">Cancel</string>
+
+    //dialog language
+    <string name="dialog_eng">English</string>
+    <string name="dialog_chi">Chinese</string>
+    <string name="dialog_choose_language">Choose Language</string>
 
     //facebook login
     <string name="facebook_app_id">483707082365149</string> <string name="fb_login_protocol_scheme">fb483707082365149</string>

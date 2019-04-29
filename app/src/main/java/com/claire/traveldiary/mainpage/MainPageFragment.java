@@ -171,4 +171,5 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         }
     }
 
+
 }

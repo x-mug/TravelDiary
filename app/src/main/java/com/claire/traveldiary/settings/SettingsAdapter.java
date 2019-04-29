@@ -96,6 +96,14 @@ public class SettingsAdapter extends RecyclerView.Adapter{
             ((SettingsHolder) holder).mTextSize.setOnClickListener(v ->
                     mPresenter.openFontDialog());
 
+            //click choose language
+            ((SettingsHolder) holder).mLanguage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPresenter.openLanguageDialog();
+                }
+            });
+
             //login status
             if (UserManager.getInstance().isLoggedIn()) {
                 //set image
