@@ -70,7 +70,7 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
                         break;
                     case "blackjack":
                         mTypeface = mContext.getResources().getFont(R.font.blackjack);
-                        setTypeface(mTypeface);
+                        setTypefaceMid(mTypeface);
                         break;
                     case "brizel":
                         mTypeface = mContext.getResources().getFont(R.font.brizel);
@@ -120,7 +120,6 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
             mTitle.setTextSize(30);
             mDate.setTextSize(24);
         }
-
     }
 
     @NonNull
@@ -135,10 +134,16 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
 
         if (holder instanceof ShowDiaryHolder) {
 
-            if (mDiaryList != null) {
-                ((ShowDiaryHolder) holder).mImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
-                ((ShowDiaryHolder) holder).mTitle.setText(mDiaryList.get(position).getTitle());
-                ((ShowDiaryHolder) holder).mDate.setText(mDiaryList.get(position).getDate());
+            if (mDiaryList.size() > 0) {
+                if (mDiaryList.get(position).getImage().size() > 0) {
+                    ((ShowDiaryHolder) holder).mImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
+                }
+                if (mDiaryList.get(position).getTitle() != null) {
+                    ((ShowDiaryHolder) holder).mTitle.setText(mDiaryList.get(position).getTitle());
+                }
+                if (mDiaryList.get(position).getDate() != null) {
+                    ((ShowDiaryHolder) holder).mDate.setText(mDiaryList.get(position).getDate());
+                }
 
                 //click card into edit page
                 ((ShowDiaryHolder) holder).mCard.setOnClickListener(v -> {
@@ -146,8 +151,6 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
                     mPresenter.closePopup();
                 });
             }
-
-
         }
     }
 

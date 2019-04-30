@@ -8,19 +8,22 @@
 
     <EditText
         android:id="@+id/edit_diary_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@null"
         android:cursorVisible="false"
-        android:gravity="center"
+        android:gravity="left"
         android:hint="@string/edit_diary_title_hint"
         android:singleLine="true"
         android:textColor="@color/diary_title"
         android:textSize="24sp"
         android:typeface="serif"
+        android:freezesText="true"
+        app:layout_constraintEnd_toStartOf="@+id/edit_diary_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recycler_gallery" />
 
@@ -36,6 +39,7 @@
         android:textColorHint="@color/bottom_nav_item_normal"
         android:textSize="16sp"
         android:typeface="serif"
+        android:freezesText="true"
         app:layout_constraintBottom_toBottomOf="@+id/edit_diary_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/edit_diary_title" />
@@ -100,6 +104,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/edit_diary_location_hint"
         android:textSize="16sp"
+        android:freezesText="true"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/edit_diary_date" />
 
@@ -111,6 +116,8 @@
         android:layout_marginBottom="24dp"
         android:autoLink="all"
         android:background="@drawable/diary_content_border"
+        android:freezesText="true"
+        android:gravity="top"
         android:hint="@string/edit_diary_content_hint"
         android:includeFontPadding="true"
         android:inputType="textMultiLine"
@@ -138,42 +145,32 @@
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/autocomplete_card" />
 
+
     <mabbas007.tagsedittext.TagsEditText
         android:id="@+id/edit_tags"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:background="@null"
+        android:freezesText="true"
         android:hint="@string/edit_diary_tags_hint"
-        android:textColorHint="@color/diary_title"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
+        android:textColorHint="@color/diary_title"
         android:textSize="16sp"
         app:allowSpaceInTag="true"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/edit_diary_content"
+        app:layout_constraintEnd_toEndOf="@+id/choose_weather"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
         app:tagsBackground="@drawable/tags_border"
         app:tagsCloseImagePadding="1dp"
         app:tagsCloseImageRight="@mipmap/ic_close"
-        app:tagsPaddingLeft="6dp"
+        app:tagsPaddingBottom="3dp"
+        app:tagsPaddingLeft="7dp"
         app:tagsPaddingRight="4dp"
-        app:tagsPaddingTop="3dp" />
-
-    <TextView
-        android:id="@+id/show_tags"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/edit_diary_tags_hint"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/edit_diary_content"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
-
+        app:tagsPaddingTop="3dp"
+        app:tagsTextColor="#888888" />
 
 
 </android.support.constraint.ConstraintLayout>

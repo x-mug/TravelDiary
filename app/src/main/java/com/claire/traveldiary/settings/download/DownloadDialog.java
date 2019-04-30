@@ -169,24 +169,27 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
         Log.d(TAG, "imageurl" + imageUrl);
         int j = i + 1;
 
-        StorageReference reference = mStorage.getReferenceFromUrl(imageUrl.get(i));
-
-        try {
-            File localFile = File.createTempFile("images", "jpg");
-            reference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-                String imageFullPath = localFile.getAbsolutePath();
-                imageLocalPath.add(imageFullPath);
-                Log.d(TAG, "image download from firebase " + imageFullPath);
-                if (j < imageUrl.size()) {
-                    downloadImage(imageUrl, imageLocalPath, j, downloadCallback);
-                } else {
-                    downloadCallback.onCompleted(imageLocalPath);
-                }
-            }).addOnFailureListener(exception -> {
-                // Handle any errors
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (imageUrl.size() == 0) {
+            downloadCallback.onCompleted(imageLocalPath);
+        } else {
+            StorageReference reference = mStorage.getReferenceFromUrl(imageUrl.get(i));
+            try {
+                File localFile = File.createTempFile("images", "jpg");
+                reference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                    String imageFullPath = localFile.getAbsolutePath();
+                    imageLocalPath.add(imageFullPath);
+                    Log.d(TAG, "image download from firebase " + imageFullPath);
+                    if (j < imageUrl.size()) {
+                        downloadImage(imageUrl, imageLocalPath, j, downloadCallback);
+                    } else {
+                        downloadCallback.onCompleted(imageLocalPath);
+                    }
+                }).addOnFailureListener(exception -> {
+                    // Handle any errors
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

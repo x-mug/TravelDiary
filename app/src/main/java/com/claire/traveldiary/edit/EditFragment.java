@@ -104,6 +104,16 @@ public class EditFragment extends Fragment implements EditContract.View{
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mPresenter.result(requestCode, resultCode);
@@ -210,7 +220,6 @@ public class EditFragment extends Fragment implements EditContract.View{
     public void openWeatherDialogUi() {
         ((MainActivity) getActivity()).openWeatherDialog();
     }
-
 
 
     @Override
@@ -334,5 +343,4 @@ public class EditFragment extends Fragment implements EditContract.View{
             mMainPageAdapter.refresh();
         }
     }
-
 }

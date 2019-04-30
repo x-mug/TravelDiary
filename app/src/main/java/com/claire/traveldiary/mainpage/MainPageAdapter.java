@@ -87,7 +87,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                         break;
                     case "blackjack":
                         mTypeface = mContext.getResources().getFont(R.font.blackjack);
-                        setTypeface(mTypeface);
+                        setTypefaceMid(mTypeface);
                         break;
                     case "brizel":
                         mTypeface = mContext.getResources().getFont(R.font.brizel);
@@ -166,19 +166,21 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 //show card
                 if (mDiaryList.size() > 0) {
                     if (mDiaryList.get(position).getImage() != null) {
-                        ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
+                        if (mDiaryList.get(position).getImage().size() > 0) {
+                            ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
+                        }
                     }
 
                     if (mDiaryList.get(position).getTitle() != null) {
                         ((MainPageViewHolder) holder).mDiaryTitle.setText(mDiaryList.get(position).getTitle());
                     } else {
-                        ((MainPageViewHolder) holder).mDiaryTitle.setText("Travel");
+                        ((MainPageViewHolder) holder).mDiaryTitle.setText(R.string.diary_title);
                     }
 
                     if (mDiaryList.get(position).getDate() != null) {
                         ((MainPageViewHolder) holder).mDiaryDate.setText(mDiaryList.get(position).getDate());
                     } else {
-                        ((MainPageViewHolder) holder).mDiaryDate.setText("11 January 2019");
+                        ((MainPageViewHolder) holder).mDiaryDate.setText(R.string.diary_date);
                     }
                 }
 
@@ -241,7 +243,9 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 Log.d(TAG,"My Main Page Search Results");
                 if (mDiaryList.size() > 0) {
                     if (mDiaryList.get(position).getImage() != null) {
-                        ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
+                        if (mDiaryList.get(position).getImage().size() > 0) {
+                            ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
+                        }
                     }
 
                     if (mDiaryList.get(position).getTitle() != null) {

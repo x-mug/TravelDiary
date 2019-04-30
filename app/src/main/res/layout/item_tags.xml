@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <mabbas007.tagsedittext.TagsEditText
+        android:id="@+id/edit_tags"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:freezesText="true"
+        android:hint="@string/edit_diary_tags_hint"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColorHint="@color/diary_title"
+        android:textSize="16sp"
+        app:allowSpaceInTag="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tagsBackground="@drawable/tags_border"
+        app:tagsCloseImagePadding="1dp"
+        app:tagsCloseImageRight="@mipmap/ic_close"
+        app:tagsPaddingBottom="3dp"
+        app:tagsPaddingLeft="7dp"
+        app:tagsPaddingRight="4dp"
+        app:tagsPaddingTop="3dp"
+        app:tagsTextColor="#888888" />
+
+</android.support.constraint.ConstraintLayout>

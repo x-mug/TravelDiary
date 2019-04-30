@@ -23,6 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
+                                                <entry key="scalingPercent" value="105" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -45,7 +46,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="83" />
+                                                <entry key="scalingPercent" value="141" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -57,7 +58,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="color" value="ffffff" />
+                                                <entry key="color" value="646464" />
                                                 <entry key="scalingPercent" value="0" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
@@ -70,7 +71,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="fontFamily" value="YuKyokasho" />
+                                                <entry key="fontFamily" value="Serif" />
                                                 <entry key="text" value="T" />
                                               </map>
                                             </option>
@@ -81,11 +82,11 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="backgroundColor" value="f5f5f5" />
-                                      <entry key="backgroundImage" value="$USER_HOME$/Downloads/A healthy way of life-2.jpg" />
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="ffffff" />
+                                      <entry key="backgroundImage" value="$USER_HOME$/Downloads/Kat sur Instagram _ Another weekly spread in my bullet journal, simple and minimal, with a little more emphasis on the tracker (because I've been questionable….jpg" />
                                       <entry key="backgroundLayerName" value="ic_launcher_background" />
-                                      <entry key="foregroundAssetType" value="TEXT" />
-                                      <entry key="foregroundImage" value="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/pisa.png" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/AppIcons-5/Assets.xcassets/AppIcon.appiconset/1024.png" />
                                       <entry key="foregroundLayerName" value="ic_launcher_foreground" />
                                       <entry key="outputName" value="ic_traveldiary_launcher" />
                                     </map>

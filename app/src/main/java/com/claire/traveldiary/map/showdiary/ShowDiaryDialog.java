@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
+import com.claire.traveldiary.component.SpacesItemDecoration;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
 import com.claire.traveldiary.data.room.DiaryDatabase;
@@ -71,14 +72,13 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
         mLayout = dialogView.findViewById(R.id.layout_popup);
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
 
-//        mBackground = dialogView.findViewById(R.id.img_background);
-//        mBackground.setAlpha(0.4f);
-
 
         RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_popup);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext(),mDiaryList);
         recyclerView.setAdapter(mShowDiaryAdapter);
+        recyclerView.setPadding(0,0,0,40);
+        recyclerView.addItemDecoration(new SpacesItemDecoration(6));
 
         return dialogView;
     }

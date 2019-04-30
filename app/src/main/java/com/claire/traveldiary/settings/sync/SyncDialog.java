@@ -158,6 +158,7 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
 
             int finalI = i;
             ArrayList<String> imageUrl = new ArrayList<>();
+
             uploadImage(images, imageUrl, 0, new UpLoadCallback() {
                 @Override
                 public void onCompleted(ArrayList<String> imagesUrl) {
@@ -213,30 +214,28 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
     private void uploadImage(ArrayList<String> images, ArrayList<String> imageUrl, int i, UpLoadCallback upLoadCallback) {
         int j = i + 1;
 
-        Uri file = Uri.fromFile(new File(images.get(i)));
-        StorageReference storageRef = mStorage.getReference().child(file.getLastPathSegment());
-        storageRef.putFile(file)
-                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+        if (images == null) {
+            upLoadCallback.onCompleted(imageUrl);
+        } else {
+            Uri file = Uri.fromFile(new File(images.get(i)));
+            StorageReference storageRef = mStorage.getReference().child(file.getLastPathSegment());
+            storageRef.putFile(file)
+                    .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
-                            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    String URL = uri.toString();
-                                    Log.d(TAG,"Image Url" + URL);
-                                    imageUrl.add(URL);
-                                    //This is your image url do whatever you want with it.
-                                    if (j < images.size()) {
-                                        uploadImage(images, imageUrl, j, upLoadCallback);
-                                    } else {
-                                        upLoadCallback.onCompleted(imageUrl);
-                                    }
+                            storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                                String URL = uri.toString();
+                                Log.d(TAG,"Image Url" + URL);
+                                imageUrl.add(URL);
+                                //This is your image url do whatever you want with it.
+                                if (j < images.size()) {
+                                    uploadImage(images, imageUrl, j, upLoadCallback);
+                                } else {
+                                    upLoadCallback.onCompleted(imageUrl);
                                 }
                             });
                         }
-                    }
-                });
+                    });
+        }
     }
 
     interface UpLoadCallback {

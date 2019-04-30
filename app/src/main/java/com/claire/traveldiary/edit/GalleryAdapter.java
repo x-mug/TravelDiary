@@ -1,13 +1,9 @@
 package com.claire.traveldiary.edit;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +11,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.claire.traveldiary.R;
-import com.claire.traveldiary.TravelDiaryApplication;
-import com.claire.traveldiary.util.ImageManager;
 
 import java.util.ArrayList;
 
@@ -28,7 +22,8 @@ public class GalleryAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private ArrayList<String> mImages;
-    //private ImageView mImageGallery;
+
+    private boolean canOpenGallery = true;
 
 
     public GalleryAdapter(EditContract.Presenter presenter, ArrayList<String> images) {
@@ -63,11 +58,18 @@ public class GalleryAdapter extends RecyclerView.Adapter {
 
         if (holder instanceof GalleryViewHolder) {
 
-            //upload photo
-            ((GalleryViewHolder) holder).mButtonAdd.setOnClickListener(v -> {
-                mPresenter.openGallery();
-            });
+            if (canOpenGallery) {
+                ((GalleryViewHolder) holder).mButtonAdd.setOnClickListener(v -> {
+                    mPresenter.openGallery();
+                });
+                ((GalleryViewHolder) holder).mImageGallery.setOnClickListener(v -> {
+                    mPresenter.openGallery();
+                });
+            } else {
+                ((GalleryViewHolder) holder).mImageGallery.setClickable(false);
+            }
 
+            //upload photo
             if (mImages != null) {
                 for(int i = 0; i < mImages.size(); i++) {
                     ((GalleryViewHolder) holder).mButtonAdd.setVisibility(View.INVISIBLE);
@@ -82,6 +84,14 @@ public class GalleryAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void setOpenGallery(int status) {
+        if (status == 0) {
+            canOpenGallery = false;
+        } else {
+            canOpenGallery = true;
+        }
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {

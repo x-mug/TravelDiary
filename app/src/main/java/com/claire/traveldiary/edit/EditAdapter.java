@@ -10,13 +10,16 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.TravelDiaryApplication;
@@ -33,7 +36,9 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import mabbas007.tagsedittext.TagsEditText;
@@ -51,6 +56,7 @@ public class EditAdapter extends RecyclerView.Adapter {
 
     private EditContract.Presenter mPresenter;
     private GalleryAdapter mGalleryAdapter;
+    private TagsAdapter mTagsAdapter;
 
     private Context mContext;
     private DiaryDatabase mDatabase;
@@ -58,7 +64,6 @@ public class EditAdapter extends RecyclerView.Adapter {
     //view holder
     private TextView mLocation;
     private CardView mCardView;
-
 
     //data to room
     private String mEditTitle;
@@ -75,7 +80,7 @@ public class EditAdapter extends RecyclerView.Adapter {
     private double mLng;
 
     private boolean isEdit = false;
-    private boolean isSearchPlace = false;
+
 
 
     public EditAdapter(EditContract.Presenter presenter, Context context, Diary diary) {
@@ -87,17 +92,18 @@ public class EditAdapter extends RecyclerView.Adapter {
     public class EditViewHolder extends RecyclerView.ViewHolder {
 
         private RecyclerView mRecyclerGallery;
+        //private RecyclerView mRecyclerTags;
         private EditText mTitle;
         private TextView mDate;
         private ImageButton mWeather;
         private EditText mContent;
         private TagsEditText mTags;
-        private TextView mShowTags;
 
         public EditViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mRecyclerGallery = itemView.findViewById(R.id.recycler_gallery);
+            //mRecyclerTags = itemView.findViewById(R.id.recycler_tags);
             mLocation = itemView.findViewById(R.id.tv_my_location);
             mCardView = itemView.findViewById(R.id.autocomplete_card);
             mTitle = itemView.findViewById(R.id.edit_diary_title);
@@ -105,7 +111,6 @@ public class EditAdapter extends RecyclerView.Adapter {
             mContent = itemView.findViewById(R.id.edit_diary_content);
             mWeather = itemView.findViewById(R.id.choose_weather);
             mTags = itemView.findViewById(R.id.edit_tags);
-            mShowTags = itemView.findViewById(R.id.show_tags);
         }
     }
 
@@ -135,28 +140,25 @@ public class EditAdapter extends RecyclerView.Adapter {
                     ((EditViewHolder) holder).mDate.setClickable(false);
                     ((EditViewHolder) holder).mWeather.setClickable(false);
                     ((EditViewHolder) holder).mContent.setFocusableInTouchMode(false);
-                    ((EditViewHolder) holder).mTags.setVisibility(View.GONE);
-                    ((EditViewHolder) holder).mShowTags.setVisibility(View.VISIBLE);
-
+                    ((EditViewHolder) holder).mTags.setFocusableInTouchMode(false);
 
                     //images
                     if (mDiary.getImage() != null) {
-                        mGalleryAdapter = new GalleryAdapter(mPresenter, mDiary.getImage());
-                        ((EditViewHolder) holder).mRecyclerGallery.setLayoutManager(new LinearLayoutManager(TravelDiaryApplication.getAppContext(),
-                                LinearLayoutManager.HORIZONTAL, false));
-                        if ((((EditViewHolder) holder).mRecyclerGallery.getOnFlingListener() == null)) {
-                            new LinearSnapHelper().attachToRecyclerView((((EditViewHolder) holder).mRecyclerGallery));
+                        if (mDiary.getImage().size() > 0) {
+                            mGalleryAdapter = new GalleryAdapter(mPresenter, mDiary.getImage());
+                        } else {
+                            mGalleryAdapter = new GalleryAdapter(mPresenter, mImagesList);
                         }
-                        ((EditViewHolder) holder).mRecyclerGallery.setAdapter(mGalleryAdapter);
                     } else {
                         mGalleryAdapter = new GalleryAdapter(mPresenter, mImagesList);
-                        ((EditViewHolder) holder).mRecyclerGallery.setLayoutManager(new LinearLayoutManager(TravelDiaryApplication.getAppContext(),
-                                LinearLayoutManager.HORIZONTAL, false));
-                        if ((((EditViewHolder) holder).mRecyclerGallery.getOnFlingListener() == null)) {
-                            new LinearSnapHelper().attachToRecyclerView((((EditViewHolder) holder).mRecyclerGallery));
-                        }
-                        ((EditViewHolder) holder).mRecyclerGallery.setAdapter(mGalleryAdapter);
                     }
+                    mGalleryAdapter.setOpenGallery(0);
+                    ((EditViewHolder) holder).mRecyclerGallery.setLayoutManager(new LinearLayoutManager(TravelDiaryApplication.getAppContext(),
+                            LinearLayoutManager.HORIZONTAL, false));
+                    if ((((EditViewHolder) holder).mRecyclerGallery.getOnFlingListener() == null)) {
+                        new LinearSnapHelper().attachToRecyclerView((((EditViewHolder) holder).mRecyclerGallery));
+                    }
+                    ((EditViewHolder) holder).mRecyclerGallery.setAdapter(mGalleryAdapter);
 
                     //title
                     ((EditViewHolder) holder).mTitle.setText(mDiary.getTitle());
@@ -180,11 +182,9 @@ public class EditAdapter extends RecyclerView.Adapter {
                     //tags
                     if (mDiary.getTags() != null) {
                         Log.d(TAG, "tags size" + mDiary.getTags().size() + mDiary.getTags().toString());
-                        //((EditViewHolder) holder).mTags.setTags(mDiary.getTags().toString().replace("[","").replace("]","").split("\\,"));
-                        ((EditViewHolder) holder).mShowTags.setText(mDiary.getTags().toString().replace("[","").replace("]",""));
+                        ((EditViewHolder) holder).mTags.setTags(mDiary.getTags().toString().replace("[","").replace("]","").split("\\,"));
                     } else {
-                        //((EditViewHolder) holder).mTags.setHint("");
-                        ((EditViewHolder) holder).mShowTags.setText("");
+                        ((EditViewHolder) holder).mTags.setHint("");
                     }
 
                 } else {
@@ -200,7 +200,7 @@ public class EditAdapter extends RecyclerView.Adapter {
 
                     //Gallery
                     mGalleryAdapter = new GalleryAdapter(mPresenter, mImagesList);
-                    ((EditViewHolder) holder).mRecyclerGallery.setLayoutManager(new LinearLayoutManager(TravelDiaryApplication.getAppContext(),
+                    ((EditViewHolder) holder).mRecyclerGallery.setLayoutManager(new LinearLayoutManager(mContext,
                             LinearLayoutManager.HORIZONTAL, false));
                     if ((((EditViewHolder) holder).mRecyclerGallery.getOnFlingListener() == null)) {
                         new LinearSnapHelper().attachToRecyclerView((((EditViewHolder) holder).mRecyclerGallery));
@@ -249,28 +249,28 @@ public class EditAdapter extends RecyclerView.Adapter {
                 ((EditViewHolder) holder).mWeather.setClickable(true);
                 mLocation.setClickable(true);
                 ((EditViewHolder) holder).mContent.setFocusableInTouchMode(true);
-                ((EditViewHolder) holder).mTags.setVisibility(View.VISIBLE);
-                ((EditViewHolder) holder).mShowTags.setVisibility(View.GONE);
+                ((EditViewHolder) holder).mTags.setFocusableInTouchMode(true);
 
 
                 //Gallery
-                if (mEditDiary.getImage() != null) {
-                    mGalleryAdapter = new GalleryAdapter(mPresenter, mEditDiary.getImage());
-                    ((EditViewHolder) holder).mRecyclerGallery.setLayoutManager(new LinearLayoutManager(TravelDiaryApplication.getAppContext(),
-                            LinearLayoutManager.HORIZONTAL, false));
-                    if ((((EditViewHolder) holder).mRecyclerGallery.getOnFlingListener() == null)) {
-                        new LinearSnapHelper().attachToRecyclerView((((EditViewHolder) holder).mRecyclerGallery));
+                if (mImagesList == null) {
+                    if (mEditDiary.getImage() != null) {
+                        if (mEditDiary.getImage().size() > 0) {
+                            mGalleryAdapter = new GalleryAdapter(mPresenter, mEditDiary.getImage());
+                        } else {
+                            mGalleryAdapter = new GalleryAdapter(mPresenter, mImagesList);
+                        }
                     }
-                    ((EditViewHolder) holder).mRecyclerGallery.setAdapter(mGalleryAdapter);
                 } else {
                     mGalleryAdapter = new GalleryAdapter(mPresenter, mImagesList);
-                    ((EditViewHolder) holder).mRecyclerGallery.setLayoutManager(new LinearLayoutManager(TravelDiaryApplication.getAppContext(),
-                            LinearLayoutManager.HORIZONTAL, false));
-                    if ((((EditViewHolder) holder).mRecyclerGallery.getOnFlingListener() == null)) {
-                        new LinearSnapHelper().attachToRecyclerView((((EditViewHolder) holder).mRecyclerGallery));
-                    }
-                    ((EditViewHolder) holder).mRecyclerGallery.setAdapter(mGalleryAdapter);
                 }
+                mGalleryAdapter.setOpenGallery(1);
+                ((EditViewHolder) holder).mRecyclerGallery.setLayoutManager(new LinearLayoutManager(TravelDiaryApplication.getAppContext(),
+                        LinearLayoutManager.HORIZONTAL, false));
+                if ((((EditViewHolder) holder).mRecyclerGallery.getOnFlingListener() == null)) {
+                    new LinearSnapHelper().attachToRecyclerView((((EditViewHolder) holder).mRecyclerGallery));
+                }
+                ((EditViewHolder) holder).mRecyclerGallery.setAdapter(mGalleryAdapter);
 
                 //edit title
                 mEditTitle = ((EditViewHolder) holder).mTitle.getText().toString();
@@ -301,10 +301,12 @@ public class EditAdapter extends RecyclerView.Adapter {
                 }
 
                 //Choose Location
-                if (mEditDiary.getPlace().getPlaceName().equals("")) {
-                    mLocation.setText(R.string.edit_diary_location_hint);
-                } else {
-                    mLocation.setText(mEditDiary.getPlace().getPlaceName());
+                if (mLocation == null) {
+                    if (mEditDiary.getPlace().getPlaceName().equals("")) {
+                        mLocation.setText(R.string.edit_diary_location_hint);
+                    } else {
+                        mLocation.setText(mEditDiary.getPlace().getPlaceName());
+                    }
                 }
                 mLocation.setOnClickListener(v -> {
                     mCardView.setVisibility(View.VISIBLE);
@@ -315,9 +317,13 @@ public class EditAdapter extends RecyclerView.Adapter {
                 mEditContent = ((EditViewHolder) holder).mContent.getText().toString();
 
                 //edit tags
-                ((EditViewHolder) holder).mTags.setTags(mEditDiary.getTags().toString().replace("[","").replace("]","").split("\\,"));
-                mTagsList = ((EditViewHolder) holder).mTags.getTags();
-
+                if (mTagsList == null) {
+                    if (mEditDiary.getTags() != null) {
+                        ((EditViewHolder) holder).mTags.setTags(mEditDiary.getTags().toString().replace("[","").replace("]","").split("\\,"));
+                    }
+                } else {
+                    mTagsList = ((EditViewHolder) holder).mTags.getTags();
+                }
             }
         }
     }
@@ -444,59 +450,38 @@ public class EditAdapter extends RecyclerView.Adapter {
             newOrUpdateDiary.setDate(mStringDate);
             newOrUpdateDiary.setPlace(diaryPlace);
             newOrUpdateDiary.setWeather(mWeatherUri);
-            newOrUpdateDiary.setImage(mEditDiary.getImage());
+            if (mImagesList == null) {
+                newOrUpdateDiary.setImage(mEditDiary.getImage());
+            } else {
+                newOrUpdateDiary.setImage(mImagesList);
+            }
             newOrUpdateDiary.setContent(mEditContent);
             newOrUpdateDiary.setTags(mTagsList);
         } else {
             Log.d(TAG, "no id");
 
-            //handle image
-            if (mImagesList == null) {
-                Log.d(TAG, "user didn't choose image");
-                String fileName = "android.resource://" + mContext.getPackageName() + "/" + R.drawable.img_summer_evening;
-                ArrayList<String> defaultImage = new ArrayList<>();
-                defaultImage.add(fileName);
+            //Place object
+            diaryPlace.setPlaceId(mPlaceId);
+            diaryPlace.setDiaryId(id);
+            diaryPlace.setPlaceName(mPlaceName);
+            diaryPlace.setCountry(mCountry);
+            diaryPlace.setLat(mLat);
+            diaryPlace.setLng(mLng);
 
-                //Place object
-                diaryPlace.setPlaceId(mPlaceId);
-                diaryPlace.setDiaryId(id);
-                diaryPlace.setPlaceName(mPlaceName);
-                diaryPlace.setCountry(mCountry);
-                diaryPlace.setLat(mLat);
-                diaryPlace.setLng(mLng);
-
-                //diary object
-                newOrUpdateDiary.setId(id);
-                newOrUpdateDiary.setTitle(mEditTitle);
-                newOrUpdateDiary.setDate(mStringDate);
-                newOrUpdateDiary.setPlace(diaryPlace);
-                newOrUpdateDiary.setWeather(mWeatherUri);
-                newOrUpdateDiary.setImage(defaultImage);
-                newOrUpdateDiary.setContent(mEditContent);
-                newOrUpdateDiary.setTags(mTagsList);
-            } else {
-                //Place object
-                diaryPlace.setPlaceId(mPlaceId);
-                diaryPlace.setDiaryId(id);
-                diaryPlace.setPlaceName(mPlaceName);
-                diaryPlace.setCountry(mCountry);
-                diaryPlace.setLat(mLat);
-                diaryPlace.setLng(mLng);
-
-                //diary object
-                newOrUpdateDiary.setId(id);
-                newOrUpdateDiary.setTitle(mEditTitle);
-                newOrUpdateDiary.setDate(mStringDate);
-                newOrUpdateDiary.setPlace(diaryPlace);
-                newOrUpdateDiary.setWeather(mWeatherUri);
-                newOrUpdateDiary.setImage(mImagesList);
-                newOrUpdateDiary.setContent(mEditContent);
-                newOrUpdateDiary.setTags(mTagsList);
-            }
+            //diary object
+            newOrUpdateDiary.setId(id);
+            newOrUpdateDiary.setTitle(mEditTitle);
+            newOrUpdateDiary.setDate(mStringDate);
+            newOrUpdateDiary.setPlace(diaryPlace);
+            newOrUpdateDiary.setWeather(mWeatherUri);
+            newOrUpdateDiary.setImage(mImagesList);
+            newOrUpdateDiary.setContent(mEditContent);
+            newOrUpdateDiary.setTags(mTagsList);
         }
 
         diaryDAO.insertOrUpdateDiary(newOrUpdateDiary);
         diaryDAO.insertOrUpdatePlace(diaryPlace);
+        Toast.makeText(mContext, "Save!", Toast.LENGTH_SHORT).show();
         showDiary(newOrUpdateDiary);
 
         Log.d(TAG, "Diary size" + diaryDAO.getAllDiaries().size());

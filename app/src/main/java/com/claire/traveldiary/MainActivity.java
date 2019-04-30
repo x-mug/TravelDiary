@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -38,9 +39,14 @@ import com.claire.traveldiary.settings.sync.SyncDialog;
 import com.claire.traveldiary.settings.sync.SyncPresenter;
 import com.claire.traveldiary.util.ActivityUtils;
 import com.claire.traveldiary.util.UserManager;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.internal.CallbackManagerImpl;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -80,9 +86,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         startActivity(new Intent(this, LaunchActivity.class));
         init();
-
     }
 
     private void init() {
