@@ -47,6 +47,11 @@ public class SettingsPresenter implements SettingsContract.Presenter {
     }
 
     @Override
+    public void openFeedback() {
+        mView.openFeedbackUi();
+    }
+
+    @Override
     public void loginFacebook() {
         mView.loginFacebookUi();
     }

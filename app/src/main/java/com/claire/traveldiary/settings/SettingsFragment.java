@@ -1,6 +1,8 @@
 package com.claire.traveldiary.settings;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -83,6 +85,15 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
     @Override
     public void openLanguageDialogUi() {
         ((MainActivity) getActivity()).openLanguageDialog();
+    }
+
+    @Override
+    public void openFeedbackUi() {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:wanruaiai@gmail.com"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Travel Diary Feedback");
+        intent.putExtra(Intent.EXTRA_TEXT, "Write Down Your Feedback");
+        startActivity(Intent.createChooser(intent, "Send feedback"));
     }
 
     @Override

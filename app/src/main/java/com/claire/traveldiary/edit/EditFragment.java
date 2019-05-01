@@ -14,27 +14,24 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
-import com.claire.traveldiary.edit.chooseweather.WeatherContract;
-import com.claire.traveldiary.edit.chooseweather.WeatherDialog;
+import com.claire.traveldiary.edit.weather.WeatherContract;
+import com.claire.traveldiary.edit.weather.WeatherDialog;
 import com.claire.traveldiary.mainpage.MainPageAdapter;
 import com.claire.traveldiary.mainpage.MainPagePresenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 import static android.support.v4.util.Preconditions.checkNotNull;
@@ -89,7 +86,6 @@ public class EditFragment extends Fragment implements EditContract.View{
         View root = inflater.inflate(R.layout.fragment_edit, container, false);
 
         mRecyclerEdit = root.findViewById(R.id.recycler_edit);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerEdit.setLayoutManager(layoutManager);
         mRecyclerEdit.setAdapter(mEditAdapter);
@@ -184,7 +180,6 @@ public class EditFragment extends Fragment implements EditContract.View{
         } catch (Exception e) {
             Toast.makeText(getActivity(), "Something went wrong.....", Toast.LENGTH_LONG).show();
         }
-
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -236,9 +231,11 @@ public class EditFragment extends Fragment implements EditContract.View{
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
             return;
-
         }
+        openGalleryAfterPermission();
+    }
 
+    private void openGalleryAfterPermission() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -339,8 +336,6 @@ public class EditFragment extends Fragment implements EditContract.View{
         } else {
             ((MainActivity) getActivity()).showBottomNavigation();
             ((MainActivity) getActivity()).updateMapToolbar(getResources().getString(R.string.toolbar_title));
-            mMainPageAdapter = new MainPageAdapter(mMainPagePresenter,getContext());
-            mMainPageAdapter.refresh();
         }
     }
 }

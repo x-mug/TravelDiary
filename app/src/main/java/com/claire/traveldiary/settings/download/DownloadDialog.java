@@ -21,8 +21,6 @@ import com.claire.traveldiary.data.DiaryPlace;
 import com.claire.traveldiary.data.User;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
-import com.claire.traveldiary.mainpage.MainPageAdapter;
-import com.claire.traveldiary.mainpage.MainPagePresenter;
 import com.claire.traveldiary.util.UserManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -42,8 +40,6 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
 
     private DownloadContract.Presenter mPresenter;
 
-    private MainPagePresenter mMainPagePresenter;
-    private MainPageAdapter mMainPageAdapter;
 
     private StorageReference mReference;
     private FirebaseStorage mStorage;
@@ -80,6 +76,7 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_download, container, false);
+        this.getDialog().setCanceledOnTouchOutside(true);
 
         mLayout = dialogView.findViewById(R.id.download_popup);
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
@@ -139,7 +136,6 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                     }
                 });
 
-
         //then query users all place and save to roomdb
         mFirebaseDb.collection("Users").document(userId).collection("Places")
                 .get()
@@ -152,8 +148,6 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                                 diaryDAO.insertOrUpdatePlace(diaryPlace);
                                 Log.d(TAG, "place size : " + diaryDAO.getAllPlaces().size());
                                 dismiss();
-                                mMainPageAdapter = new MainPageAdapter(mMainPagePresenter,getContext());
-                                mMainPageAdapter.refresh();
                                 Toast.makeText(getContext(), "Successfully Download!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
@@ -161,7 +155,6 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                         }
                     }
                 });
-
     }
 
 

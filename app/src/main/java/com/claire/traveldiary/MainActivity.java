@@ -6,8 +6,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -19,8 +17,8 @@ import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.claire.traveldiary.edit.EditFragment;
 import com.claire.traveldiary.edit.EditPresenter;
-import com.claire.traveldiary.edit.chooseweather.WeatherDialog;
-import com.claire.traveldiary.edit.chooseweather.WeatherPresenter;
+import com.claire.traveldiary.edit.weather.WeatherDialog;
+import com.claire.traveldiary.edit.weather.WeatherPresenter;
 import com.claire.traveldiary.mainpage.MainPageFragment;
 import com.claire.traveldiary.mainpage.MainPagePresenter;
 import com.claire.traveldiary.map.MapFragment;
@@ -37,12 +35,9 @@ import com.claire.traveldiary.settings.language.LanguageDialog;
 import com.claire.traveldiary.settings.language.LanguagePresenter;
 import com.claire.traveldiary.settings.sync.SyncDialog;
 import com.claire.traveldiary.settings.sync.SyncPresenter;
-import com.claire.traveldiary.util.ActivityUtils;
 import com.claire.traveldiary.util.UserManager;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.internal.CallbackManagerImpl;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import java.util.List;
 
@@ -112,6 +107,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mToolbarTitle = findViewById(R.id.toolbar_title);
         mToolbarSearch = findViewById(R.id.toolbar_search);
         mToolbarSearch.setOnQueryTextListener(onQueryTextListener);
+        mToolbarSearch.setOnCloseListener(() -> {
+            mMainPagePresenter.refreshSearchStatus();
+            return false;
+        });
 
         mToolbarBack = findViewById(R.id.toolbar_back);
         mToolbarBack.setOnClickListener(this);
@@ -172,13 +171,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String query) {
-            getTagsFromDb(query);
+            if (query.equals("")) {
+                mMainPagePresenter.refreshSearchStatus();
+            } else {
+                getTagsFromDb(query);
+            }
             return true;
         }
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            getTagsFromDb(newText);
+            if (newText.equals("")) {
+                mMainPagePresenter.refreshSearchStatus();
+            } else {
+                getTagsFromDb(newText);
+            }
             return true;
         }
 
@@ -190,6 +197,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }
     };
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
         switch (item.getItemId()) {
@@ -274,16 +282,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 (ShowDiaryDialog) (this.getSupportFragmentManager().findFragmentByTag("ShowDiaryDialog"));
 
         if (dialog == null) {
-
             dialog = new ShowDiaryDialog();
             mShowDiaryPresenter = new ShowDiaryPresenter(dialog);
             dialog.setPresenter(mShowDiaryPresenter);
             mShowDiaryPresenter.loadDiaryByPlace(lat, lng);
-
             dialog.show((this.getSupportFragmentManager()),"ShowDiaryDialog");
 
         } else if (!dialog.isAdded()) {
-
             dialog.show(this.getSupportFragmentManager(), "ShowDiaryDialog");
         }
     }
@@ -323,15 +328,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 (SyncDialog) (this.getSupportFragmentManager().findFragmentByTag("SyncDialog"));
 
         if (dialog == null) {
-
             dialog = new SyncDialog();
             mSyncPresenter = new SyncPresenter(dialog);
             dialog.setPresenter(mSyncPresenter);
-
             dialog.show((this.getSupportFragmentManager()),"SyncDialog");
 
         } else if (!dialog.isAdded()) {
-
             dialog.show(this.getSupportFragmentManager(), "SyncDialog");
         }
     }
@@ -341,15 +343,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 (DownloadDialog) (this.getSupportFragmentManager().findFragmentByTag("DownloadDialog"));
 
         if (dialog == null) {
-
             dialog = new DownloadDialog();
             mDownloadPresenter = new DownloadPresenter(dialog);
             dialog.setPresenter(mDownloadPresenter);
-
             dialog.show((this.getSupportFragmentManager()),"DownloadDialog");
 
         } else if (!dialog.isAdded()) {
-
             dialog.show(this.getSupportFragmentManager(), "DownloadDialog");
         }
     }
@@ -359,15 +358,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 (FontDialog) (this.getSupportFragmentManager().findFragmentByTag("FontDialog"));
 
         if (dialog == null) {
-
             dialog = new FontDialog();
             mFontPresenter = new FontPresenter(dialog);
             dialog.setPresenter(mFontPresenter);
-
             dialog.show((this.getSupportFragmentManager()),"FontDialog");
-
         } else if (!dialog.isAdded()) {
-
             dialog.show(this.getSupportFragmentManager(), "FontDialog");
         }
     }

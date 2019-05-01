@@ -135,9 +135,12 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
         if (holder instanceof ShowDiaryHolder) {
 
             if (mDiaryList.size() > 0) {
-                if (mDiaryList.get(position).getImage().size() > 0) {
-                    ((ShowDiaryHolder) holder).mImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
+                if (mDiaryList.get(position).getImage() != null) {
+                    if (mDiaryList.get(position).getImage().size() > 0) {
+                        ((ShowDiaryHolder) holder).mImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
+                    }
                 }
+
                 if (mDiaryList.get(position).getTitle() != null) {
                     ((ShowDiaryHolder) holder).mTitle.setText(mDiaryList.get(position).getTitle());
                 }

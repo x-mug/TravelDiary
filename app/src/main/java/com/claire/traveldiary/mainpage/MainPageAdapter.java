@@ -49,7 +49,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
     private class MainPageViewHolder extends RecyclerView.ViewHolder {
 
-        private ConstraintLayout mLayout;
         private ConstraintLayout mLongClickView;
         private CardView mCard;
         private ImageView mMainImage;
@@ -62,7 +61,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
         public MainPageViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mLayout = itemView.findViewById(R.id.card_space);
             mLongClickView = itemView.findViewById(R.id.constraint_background);
             mCard = itemView.findViewById(R.id.cardview_mainpage);
             mMainImage = itemView.findViewById(R.id.main_img_card);
@@ -160,118 +158,103 @@ public class MainPageAdapter extends RecyclerView.Adapter {
         if (holder instanceof MainPageViewHolder) {
 
             if (!isSearch) {
-                Log.d(TAG,"My Main Page");
+                Log.d(TAG,"Main Page");
                 mRoomDb = DiaryDatabase.getIstance(mContext);
                 mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
-                //show card
-                if (mDiaryList.size() > 0) {
-                    if (mDiaryList.get(position).getImage() != null) {
-                        if (mDiaryList.get(position).getImage().size() > 0) {
-                            ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
-                        }
-                    }
+            } else {
+                Log.d(TAG,"Main Page Search Results");
+            }
 
-                    if (mDiaryList.get(position).getTitle() != null) {
-                        ((MainPageViewHolder) holder).mDiaryTitle.setText(mDiaryList.get(position).getTitle());
-                    } else {
-                        ((MainPageViewHolder) holder).mDiaryTitle.setText(R.string.diary_title);
-                    }
-
-                    if (mDiaryList.get(position).getDate() != null) {
-                        ((MainPageViewHolder) holder).mDiaryDate.setText(mDiaryList.get(position).getDate());
-                    } else {
-                        ((MainPageViewHolder) holder).mDiaryDate.setText(R.string.diary_date);
+            //show card
+            if (mDiaryList.size() > 0) {
+                if (mDiaryList.get(position).getImage() != null) {
+                    if (mDiaryList.get(position).getImage().size() > 0) {
+                        ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
                     }
                 }
 
-                //click space return original card view
-                ((MainPageViewHolder) holder).mLayout.setOnClickListener(v -> {
+                if (mDiaryList.get(position).getTitle() != null) {
+                    ((MainPageViewHolder) holder).mDiaryTitle.setText(mDiaryList.get(position).getTitle());
+                } else {
+                    ((MainPageViewHolder) holder).mDiaryTitle.setText(R.string.diary_title);
+                }
+
+                if (mDiaryList.get(position).getDate() != null) {
+                    ((MainPageViewHolder) holder).mDiaryDate.setText(mDiaryList.get(position).getDate());
+                } else {
+                    ((MainPageViewHolder) holder).mDiaryDate.setText(R.string.diary_date);
+                }
+            }
+
+
+            //click card
+            ((MainPageViewHolder) holder).mCard.setOnClickListener(v -> {
+                if (isLongclick) {
+                    ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
+                    ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
+                    ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
+                    isLongclick = false;
+                } else {
+                    //click card
+                    mPresenter.openEdit(mDiaryList.get(position));
+                }
+            });
+
+            //long click delete or share
+            ((MainPageViewHolder) holder).mCard.setOnLongClickListener(v -> {
+                ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.VISIBLE);
+                ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.GONE);
+                ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.GONE);
+
+                //click delete
+                ((MainPageViewHolder) holder).mDelete.setOnClickListener(v1 -> {
+                    //delete diary from room
+                    mPresenter.deleteDiary(mDiaryList.get(position).getId());
+                    mDiaryList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyDataSetChanged();
+
+                    Toast.makeText(v.getContext(), "Delete Diary", Toast.LENGTH_SHORT).show();
+                    ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
+                    ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
+                    ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
+
+                });
+
+                //click share
+                ((MainPageViewHolder) holder).mShare.setOnClickListener(v12 -> {
+                    mPresenter.shareDiary(mDiaryList.get(position));
+
                     ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
                     ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                     ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
                 });
 
+                isLongclick = true;
 
-                ((MainPageViewHolder) holder).mCard.setOnClickListener(v -> {
-                    if (isLongclick) {
-                        ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
-                        ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
-                        ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
-                        isLongclick = false;
-                    } else {
-                        //click card
-                        mPresenter.openEdit(mRoomDb.getDiaryDAO().getAllDiaries().get(position));
-                    }
-                });
-
-                //long click delete or share
-                ((MainPageViewHolder) holder).mCard.setOnLongClickListener(v -> {
-                    ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.VISIBLE);
-                    ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.GONE);
-                    ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.GONE);
-
-                    //click delete
-                    ((MainPageViewHolder) holder).mDelete.setOnClickListener(v1 -> {
-                        //delete diary from room
-                        mPresenter.deleteDiary(mDiaryList.get(position).getId());
-                        mDiaryList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyDataSetChanged();
-
-                        Toast.makeText(v.getContext(), "Delete Diary", Toast.LENGTH_SHORT).show();
-                        ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
-                        ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
-                        ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
-
-                    });
-
-                    //click share
-                    ((MainPageViewHolder) holder).mShare.setOnClickListener(v12 -> {
-                        mPresenter.shareDiary(mDiaryList.get(position));
-
-                        ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
-                        ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
-                        ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
-                    });
-
-                    isLongclick = true;
-
-                    return true;
-                });
-
-            } else {
-                Log.d(TAG,"My Main Page Search Results");
-                if (mDiaryList.size() > 0) {
-                    if (mDiaryList.get(position).getImage() != null) {
-                        if (mDiaryList.get(position).getImage().size() > 0) {
-                            ((MainPageViewHolder) holder).mMainImage.setImageURI(Uri.parse(mDiaryList.get(position).getImage().get(0)));
-                        }
-                    }
-
-                    if (mDiaryList.get(position).getTitle() != null) {
-                        ((MainPageViewHolder) holder).mDiaryTitle.setText(mDiaryList.get(position).getTitle());
-                    } else {
-                        ((MainPageViewHolder) holder).mDiaryTitle.setText(R.string.diary_title);
-                    }
-
-                    if (mDiaryList.get(position).getDate() != null) {
-                        ((MainPageViewHolder) holder).mDiaryDate.setText(mDiaryList.get(position).getDate());
-                    } else {
-                        ((MainPageViewHolder) holder).mDiaryDate.setText(R.string.diary_date);
-                    }
-
-                }
-            }
+                return true;
+            });
         }
     }
 
     public void refreshUi(List<Diary> diaries) {
         mDiaryList = diaries;
-        notifyDataSetChanged();
         isSearch = true;
+        notifyDataSetChanged();
     }
 
-    public void refresh() {
+    public void refreshSearchStatus() {
+        mRoomDb = DiaryDatabase.getIstance(mContext);
+        mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
+        isSearch = false;
+        notifyDataSetChanged();
+    }
+
+    public void refreshAfterDownload() {
+        if (!isSearch) {
+            mRoomDb = DiaryDatabase.getIstance(mContext);
+            mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
+        }
         notifyDataSetChanged();
     }
 

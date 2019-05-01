@@ -2,17 +2,12 @@ package com.claire.traveldiary.mainpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -21,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.claire.traveldiary.BuildConfig;
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.component.SpacesItemDecoration;
@@ -30,18 +24,7 @@ import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.claire.traveldiary.edit.EditPresenter;
-import com.claire.traveldiary.util.UserManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +75,12 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMainPageAdapter.refreshAfterDownload();
     }
 
     @Nullable
@@ -157,19 +146,15 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
             sendIntent.setType("*/*");
             startActivity(Intent.createChooser(sendIntent, "Share Diary To Your Friends!"));
         }
-
     }
 
     @Override
     public void loadSearchDataUi(List<Diary> diaries) {
-        if (mMainPageAdapter == null) {
-            mMainPageAdapter = new MainPageAdapter(mPresenter,getContext());
-            mMainPageAdapter.refreshUi(diaries);
-            Log.d(TAG,"Nooo");
-        } else {
-            mMainPageAdapter.refreshUi(diaries);
-        }
+        mMainPageAdapter.refreshUi(diaries);
     }
 
-
+    @Override
+    public void refreshSearchStatusUi() {
+        mMainPageAdapter.refreshSearchStatus();
+    }
 }

@@ -14,7 +14,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.component.MyBounceInterpolator;
@@ -47,8 +49,8 @@ public class SettingsAdapter extends RecyclerView.Adapter{
         private TextView mDownload;
         private TextView mTextSize;
         private TextView mLanguage;
-        private TextView mPassword;
-        private TextView mNotification;
+        private Switch mLock;
+        private Switch mNotification;
         private TextView mFeedback;
 
         public SettingsHolder(@NonNull View itemView) {
@@ -61,8 +63,8 @@ public class SettingsAdapter extends RecyclerView.Adapter{
             mDownload = itemView.findViewById(R.id.tv_download);
             mTextSize = itemView.findViewById(R.id.tv_textsize);
             mLanguage = itemView.findViewById(R.id.tv_language);
-            mPassword = itemView.findViewById(R.id.tv_key);
-            mNotification = itemView.findViewById(R.id.tv_notification);
+            mLock = itemView.findViewById(R.id.switch_password);
+            mNotification = itemView.findViewById(R.id.switch_notification);
             mFeedback = itemView.findViewById(R.id.tv_mail);
         }
     }
@@ -97,12 +99,30 @@ public class SettingsAdapter extends RecyclerView.Adapter{
                     mPresenter.openFontDialog());
 
             //click choose language
-            ((SettingsHolder) holder).mLanguage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mPresenter.openLanguageDialog();
+            ((SettingsHolder) holder).mLanguage.setOnClickListener(v ->
+                    mPresenter.openLanguageDialog());
+
+            //switch notification
+            ((SettingsHolder) holder).mNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    Toast.makeText(mContext, "Notification on!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "Notification off!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            //switch lock
+            ((SettingsHolder) holder).mLock.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    Toast.makeText(mContext, "Lock Coming Soon!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "Lock Coming Soon!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            //click feedback
+            ((SettingsHolder) holder).mFeedback.setOnClickListener(v ->
+                    mPresenter.openFeedback());
 
             //login status
             if (UserManager.getInstance().isLoggedIn()) {
@@ -129,31 +149,25 @@ public class SettingsAdapter extends RecyclerView.Adapter{
 
                 //can log in
                 ((SettingsHolder) holder).mLogin.setText(R.string.settings_login);
-                ((SettingsHolder) holder).mLogin.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mPresenter.loginFacebook();
-                        //click animation
-                        final Animation myAnim = AnimationUtils.loadAnimation(mContext, R.anim.anim_bounce);
-                        ((SettingsHolder) holder).mLogin.startAnimation(myAnim);
+                ((SettingsHolder) holder).mLogin.setOnClickListener(v -> {
+                    mPresenter.loginFacebook();
+                    //click animation
+                    final Animation myAnim = AnimationUtils.loadAnimation(mContext, R.anim.anim_bounce);
+                    ((SettingsHolder) holder).mLogin.startAnimation(myAnim);
 
-                        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
-                        myAnim.setInterpolator(interpolator);
+                    MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+                    myAnim.setInterpolator(interpolator);
 
-                        ((SettingsHolder) holder).mLogin.startAnimation(myAnim);
-                    }
+                    ((SettingsHolder) holder).mLogin.startAnimation(myAnim);
                 });
             }
-
         }
-
     }
 
 
     public void updateView() {
         notifyDataSetChanged();
     }
-
 
     public class CircleTransform implements Transformation {
         @Override

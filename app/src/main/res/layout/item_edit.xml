@@ -112,7 +112,7 @@
         android:id="@+id/edit_diary_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:autoLink="all"
         android:background="@drawable/diary_content_border"
@@ -140,7 +140,7 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@mipmap/ic_tags"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/autocomplete_card" />

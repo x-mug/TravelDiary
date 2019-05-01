@@ -40,6 +40,8 @@ public class LanguageDialog extends DialogFragment implements LanguageContract.V
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_language, container, false);
+        getDialog().setCancelable(true);
+        getDialog().setCanceledOnTouchOutside(true);
 
 
         return dialogView;

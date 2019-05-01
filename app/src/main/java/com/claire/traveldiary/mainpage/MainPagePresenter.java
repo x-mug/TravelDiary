@@ -52,4 +52,9 @@ public class MainPagePresenter implements MainPageContract.Presenter {
     public void loadSearchData(List<Diary> diaries) {
         mView.loadSearchDataUi(diaries);
     }
+
+    @Override
+    public void refreshSearchStatus() {
+        mView.refreshSearchStatusUi();
+    }
 }

@@ -35,7 +35,7 @@
                 android:adjustViewBounds="true"
                 android:background="@drawable/card_img_rounded"
                 android:scaleType="centerCrop"
-                android:src="@drawable/images"
+                android:src="@drawable/card_default"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -24,13 +24,9 @@ import com.claire.traveldiary.data.User;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.claire.traveldiary.util.UserManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 
 import java.io.File;
@@ -86,6 +82,7 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_sync, container, false);
+        this.getDialog().setCanceledOnTouchOutside(true);
 
         mLayout = dialogView.findViewById(R.id.sync_popup);
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
@@ -106,7 +103,7 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
                     insertOrUpdateDataToFirebase());
         } else {
             mSync.setClickable(false);
-            mSyncTextView.setText(getActivity().getResources().getString(R.string.dialog_tv_sync));
+            mSyncTextView.setText(R.string.dialog_tv_sync);
             mSync.setTextColor(getActivity().getResources().getColor(R.color.white));
         }
     }
@@ -179,8 +176,7 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
                             .set(diaries)
                             .addOnSuccessListener(aVoid -> {
                                 Log.d(TAG, "All Diaries successfully written!");
-                                dismiss();
-                                Toast.makeText(getContext(), "Successfully Sync!", Toast.LENGTH_SHORT).show();
+
                             })
                             .addOnFailureListener(e ->
                                     Log.w(TAG, "Error writing document", e));
@@ -204,6 +200,8 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
                     .set(places)
                     .addOnSuccessListener(aVoid -> {
                         Log.d(TAG, "All Places successfully written!");
+                        dismiss();
+                        Toast.makeText(getContext(), "Successfully Sync!", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e ->
                             Log.w(TAG, "Error writing document", e));
@@ -246,8 +244,9 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
 
     @Override
     public void dismiss() {
-        //mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
+        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
         new Handler().postDelayed(super::dismiss, 200);
     }
+
 
 }

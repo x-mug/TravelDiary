@@ -18,6 +18,8 @@ public interface MainPageContract {
 
         void loadSearchDataUi(List<Diary> diaries);
 
+        void refreshSearchStatusUi();
+
     }
 
     interface Presenter extends BasePresenter {
@@ -31,6 +33,8 @@ public interface MainPageContract {
         void shareDiary(Diary diary);
 
         void loadSearchData(List<Diary> diaries);
+
+        void refreshSearchStatus();
 
     }
 }

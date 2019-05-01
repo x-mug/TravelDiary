@@ -56,7 +56,6 @@ public class EditAdapter extends RecyclerView.Adapter {
 
     private EditContract.Presenter mPresenter;
     private GalleryAdapter mGalleryAdapter;
-    private TagsAdapter mTagsAdapter;
 
     private Context mContext;
     private DiaryDatabase mDatabase;
@@ -92,7 +91,6 @@ public class EditAdapter extends RecyclerView.Adapter {
     public class EditViewHolder extends RecyclerView.ViewHolder {
 
         private RecyclerView mRecyclerGallery;
-        //private RecyclerView mRecyclerTags;
         private EditText mTitle;
         private TextView mDate;
         private ImageButton mWeather;
@@ -103,7 +101,6 @@ public class EditAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             mRecyclerGallery = itemView.findViewById(R.id.recycler_gallery);
-            //mRecyclerTags = itemView.findViewById(R.id.recycler_tags);
             mLocation = itemView.findViewById(R.id.tv_my_location);
             mCardView = itemView.findViewById(R.id.autocomplete_card);
             mTitle = itemView.findViewById(R.id.edit_diary_title);
@@ -114,14 +111,12 @@ public class EditAdapter extends RecyclerView.Adapter {
         }
     }
 
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new EditViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_edit, parent, false));
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -237,7 +232,7 @@ public class EditAdapter extends RecyclerView.Adapter {
                     });
 
                     //set tags
-                    ((EditViewHolder) holder).mTags.getTags();
+                    mTagsList = ((EditViewHolder) holder).mTags.getTags();
                 }
 
             } else {

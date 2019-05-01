@@ -118,7 +118,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
             if (diaryDAO.getAllPlaces().get(i).getLat() != 0.0 && diaryDAO.getAllPlaces().get(i).getLng() != 0.0) {
                 mMap.addMarker(new MarkerOptions()
                         .position(location)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.pin))
                         .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
                         .title(diaryDAO.getAllPlaces().get(i).getPlaceName()));
 
