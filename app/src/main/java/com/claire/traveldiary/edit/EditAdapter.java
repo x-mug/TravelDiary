@@ -295,8 +295,12 @@ public class EditAdapter extends RecyclerView.Adapter {
                     ((EditViewHolder) holder).mWeather.setImageURI(Uri.parse(mWeatherUri));
                 }
 
+
                 //Choose Location
-                if (mLocation == null) {
+//                if (mLocation == null) {
+//
+//                }
+                if (mEditDiary.getPlace() != null) {
                     if (mEditDiary.getPlace().getPlaceName().equals("")) {
                         mLocation.setText(R.string.edit_diary_location_hint);
                     } else {

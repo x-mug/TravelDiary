@@ -69,7 +69,6 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
         mStorage = FirebaseStorage.getInstance();
         mReference = mStorage.getReferenceFromUrl("gs://traveldiary-236516.appspot.com/");
         mRoomDb = DiaryDatabase.getIstance(getContext());
-
     }
 
     @Nullable
@@ -84,7 +83,6 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
         mDownload = dialogView.findViewById(R.id.btn_download);
         mDownloadTextView = dialogView.findViewById(R.id.tv_download);
         mDownloadNotice = dialogView.findViewById(R.id.download_notice);
-
 
         return dialogView;
     }

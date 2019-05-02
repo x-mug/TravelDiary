@@ -6,6 +6,7 @@ import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
@@ -57,4 +58,11 @@ public class MainPagePresenter implements MainPageContract.Presenter {
     public void refreshSearchStatus() {
         mView.refreshSearchStatusUi();
     }
+
+    @Override
+    public void changeLayout(int status) {
+        mView.changeLayoutUi(status);
+    }
+
+
 }

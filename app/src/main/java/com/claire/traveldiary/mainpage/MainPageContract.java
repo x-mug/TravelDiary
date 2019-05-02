@@ -20,6 +20,8 @@ public interface MainPageContract {
 
         void refreshSearchStatusUi();
 
+        void changeLayoutUi(int status);
+
     }
 
     interface Presenter extends BasePresenter {
@@ -36,5 +38,8 @@ public interface MainPageContract {
 
         void refreshSearchStatus();
 
+        void changeLayout(int status);
+
     }
+
 }

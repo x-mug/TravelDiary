@@ -8,6 +8,9 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -18,12 +21,12 @@ import android.widget.ImageButton;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
+import com.claire.traveldiary.component.GridSpacingItemDecoration;
 import com.claire.traveldiary.component.SpacesItemDecoration;
 import com.claire.traveldiary.data.DeletedDiary;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
-import com.claire.traveldiary.edit.EditPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +40,14 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
     private MainPageContract.Presenter mPresenter;
     private MainPageAdapter mMainPageAdapter;
 
-    private EditPresenter mEditPresenter;
-
     private Diary mNewDiary;
 
     private DiaryDatabase mRoomDb;
 
+    private RecyclerView mRecyclerView;
     private ImageButton mAddDiary;
+
+    private int mLayoutStatus;
 
 
     public MainPageFragment() {
@@ -89,6 +93,11 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         View root = inflater.inflate(R.layout.fragment_mainpage, container, false);
 
         mAddDiary = root.findViewById(R.id.btn_add_diary);
+        mRecyclerView = root.findViewById(R.id.recycler_main_page);
+        mRecyclerView.setAdapter(mMainPageAdapter);
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(6));
+        //mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2,10,true));
+
 
         if (mRoomDb.getDiaryDAO().getAllDiaries().size() > 0) {
             mAddDiary.setVisibility(View.GONE);
@@ -99,15 +108,27 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
             });
         }
 
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_main_page);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setAdapter(mMainPageAdapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setPadding(40,0,40,0);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(6));
-
+        if(mLayoutStatus == 0) {
+            setGridLayout();
+        } else {
+            setWaterfallLayout();
+        }
 
         return root;
+    }
+
+    private void setGridLayout() {
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setPadding(40,0,40,0);
+        mMainPageAdapter.notifyDataSetChanged();
+    }
+
+    private void setWaterfallLayout() {
+        //mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setHasFixedSize(true);
+        mMainPageAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -157,4 +178,19 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
     public void refreshSearchStatusUi() {
         mMainPageAdapter.refreshSearchStatus();
     }
+
+    @Override
+    public void changeLayoutUi(int status) {
+        if (status == 0) {
+            Log.d(TAG,"status 0");
+            mLayoutStatus = status;
+            setGridLayout();
+        } else {
+            Log.d(TAG,"status 1");
+            mLayoutStatus = status;
+            setWaterfallLayout();
+        }
+    }
+
+
 }

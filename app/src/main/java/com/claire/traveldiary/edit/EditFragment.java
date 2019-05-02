@@ -99,15 +99,6 @@ public class EditFragment extends Fragment implements EditContract.View{
         mEditAdapter.showDiary(mDiary);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -250,7 +241,7 @@ public class EditFragment extends Fragment implements EditContract.View{
         int mm = calendar.get(Calendar.MONTH);
         int dd = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), android.R.style.Theme_DeviceDefault_Dialog, (view, year, month, dayOfMonth) -> {
+        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), android.R.style.Theme_DeviceDefault_Light_Dialog, (view, year, month, dayOfMonth) -> {
 
             String monthEng = "";
 

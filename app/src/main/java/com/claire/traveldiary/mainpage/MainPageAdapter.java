@@ -28,6 +28,9 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
     private static final String TAG = "MainPageAdapter";
 
+    private static final int TYPE_GRID = 0;
+    private static final int TYPE_WATERFALL = 1;
+
     private MainPageContract.Presenter mPresenter;
 
     private Context mContext;
@@ -142,8 +145,17 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
 
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_in_mainpage, parent, false);
+//        switch (viewType) {
+//            case TYPE_GRID:
+//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_in_mainpage, parent, false);
+//                return new MainPageViewHolder(view);
+//            case TYPE_WATERFALL:
+//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_in_map, parent, false);
+//                return new MainPageViewHolder(view);
+//        }
+//            return null;
 
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_in_mainpage, parent, false);
         return new MainPageViewHolder(view);
     }
 
@@ -234,6 +246,14 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
                 return true;
             });
+        }
+    }
+
+    public void setViewtype(int status) {
+        if (status == 0) {
+
+        } else {
+
         }
     }
 

@@ -156,31 +156,28 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
             int finalI = i;
             ArrayList<String> imageUrl = new ArrayList<>();
 
-            uploadImage(images, imageUrl, 0, new UpLoadCallback() {
-                @Override
-                public void onCompleted(ArrayList<String> imagesUrl) {
-                    Map<String, Object> diaries = new HashMap<>();
-                    diaries.put("id",mDiaries.get(finalI).getId());
-                    diaries.put("title",mDiaries.get(finalI).getTitle());
-                    diaries.put("date",mDiaries.get(finalI).getDate());
-                    diaries.put("place",mDiaries.get(finalI).getPlace());
-                    diaries.put("weather",mDiaries.get(finalI).getWeather());
-                    diaries.put("image", imagesUrl);
-                    diaries.put("content",mDiaries.get(finalI).getContent());
-                    diaries.put("tags",mDiaries.get(finalI).getTags());
+            uploadImage(images, imageUrl, 0, imagesUrl -> {
+                Map<String, Object> diaries = new HashMap<>();
+                diaries.put("id",mDiaries.get(finalI).getId());
+                diaries.put("title",mDiaries.get(finalI).getTitle());
+                diaries.put("date",mDiaries.get(finalI).getDate());
+                diaries.put("place",mDiaries.get(finalI).getPlace());
+                diaries.put("weather",mDiaries.get(finalI).getWeather());
+                diaries.put("image", imagesUrl);
+                diaries.put("content",mDiaries.get(finalI).getContent());
+                diaries.put("tags",mDiaries.get(finalI).getTags());
 
-                    String diaryId = String.valueOf(mDiaries.get(finalI).getId());
+                String diaryId = String.valueOf(mDiaries.get(finalI).getId());
 
-                    //sync all diaries to firebase
-                    mFirebaseDb.collection("Users").document(userId).collection("Diaries").document(diaryId)
-                            .set(diaries)
-                            .addOnSuccessListener(aVoid -> {
-                                Log.d(TAG, "All Diaries successfully written!");
+                //sync all diaries to firebase
+                mFirebaseDb.collection("Users").document(userId).collection("Diaries").document(diaryId)
+                        .set(diaries)
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d(TAG, "All Diaries successfully written!");
 
-                            })
-                            .addOnFailureListener(e ->
-                                    Log.w(TAG, "Error writing document", e));
-                }
+                        })
+                        .addOnFailureListener(e ->
+                                Log.w(TAG, "Error writing document", e));
             });
         }
 
@@ -206,7 +203,6 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
                     .addOnFailureListener(e ->
                             Log.w(TAG, "Error writing document", e));
         }
-
     }
 
     private void uploadImage(ArrayList<String> images, ArrayList<String> imageUrl, int i, UpLoadCallback upLoadCallback) {
@@ -247,6 +243,4 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
         new Handler().postDelayed(super::dismiss, 200);
     }
-
-
 }

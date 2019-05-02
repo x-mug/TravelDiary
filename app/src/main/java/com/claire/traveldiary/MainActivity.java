@@ -77,6 +77,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     //empty diary
     private Diary mDiary;
 
+    private boolean isDefaultLayout = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,6 +205,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (item.getItemId()) {
             case R.id.navigation_main:
                 openMainPage();
+
+                if (!isDefaultLayout) {
+                    item.setIcon(R.mipmap.ic_waterfall_layout);
+                    isDefaultLayout = true;
+                    mMainPagePresenter.changeLayout(1);
+                } else {
+                    item.setIcon(R.mipmap.ic_dashboard);
+                    isDefaultLayout = false;
+                    mMainPagePresenter.changeLayout(0);
+                }
                 updateMapToolbar(getResources().getString(R.string.toolbar_title));
                 return true;
 
@@ -231,9 +243,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mMainPagePresenter = new MainPagePresenter(mainPageFragment);
         mainPageFragment.setPresenter(mMainPagePresenter);
 
-
         showBottomNavigation();
     }
+
 
     public void openEdit(Diary diary) {
 
