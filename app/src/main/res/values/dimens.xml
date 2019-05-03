@@ -19,4 +19,8 @@
     //dialog sync
     <dimen name="height_sync">150dp</dimen>
 
+    <!-- Card -->
+    <dimen name="card_height_grid">150dp</dimen>
+    <dimen name="card_width_grid">200dp</dimen>
+
 </resources>

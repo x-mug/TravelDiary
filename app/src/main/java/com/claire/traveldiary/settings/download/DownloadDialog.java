@@ -31,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
 
@@ -125,14 +126,52 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                                 //update image to local
                                 ArrayList<String> imageUrl = (ArrayList<String>) document.get("image");
                                 ArrayList<String> imageLocalPath = new ArrayList<>();
-                                downloadImage(imageUrl, imageLocalPath, 0, image ->
-                                        diaryDAO.updateImageFromFirebase(image, Integer.parseInt(document.getId())));
+                                downloadImage(imageUrl, imageLocalPath, 0, new DownloadImageCallback() {
+                                    @Override
+                                    public void onCompleted(ArrayList<String> image) {
+                                        diaryDAO.updateImageFromFirebase(image, Integer.parseInt(document.getId()));
+                                        downloadPlace(userId,0, new DownloadPlaceCallback() {
+                                            @Override
+                                            public void onCompleted() {
+                                                Toast.makeText(getContext(), "Successfully Download!", Toast.LENGTH_SHORT).show();
+                                                dismiss();
+                                            }
+                                        });
+                                    }
+                                });
+
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
+//        //then query users all place and save to roomdb
+//        mFirebaseDb.collection("Users").document(userId).collection("Places")
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        if (task.getResult() != null) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                                DiaryPlace diaryPlace = document.toObject(DiaryPlace.class);
+//                                diaryDAO.insertOrUpdatePlace(diaryPlace);
+//                                Log.d(TAG, "place size : " + diaryDAO.getAllPlaces().size());
+//                                dismiss();
+//                                Toast.makeText(getContext(), "Successfully Download!", Toast.LENGTH_SHORT).show();
+//                            }
+//                        } else {
+//                            Log.d(TAG, "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                });
+    }
+
+
+    private void downloadPlace(String userId, int i, DownloadPlaceCallback downloadPlaceCallback) {
+        DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
+        int j = i + 1;
 
         //then query users all place and save to roomdb
         mFirebaseDb.collection("Users").document(userId).collection("Places")
@@ -145,8 +184,11 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                                 DiaryPlace diaryPlace = document.toObject(DiaryPlace.class);
                                 diaryDAO.insertOrUpdatePlace(diaryPlace);
                                 Log.d(TAG, "place size : " + diaryDAO.getAllPlaces().size());
-                                dismiss();
-                                Toast.makeText(getContext(), "Successfully Download!", Toast.LENGTH_SHORT).show();
+                                if (j < task.getResult().size()) {
+                                    downloadPlace(userId, j, downloadPlaceCallback);
+                                } else {
+                                    downloadPlaceCallback.onCompleted();
+                                }
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -156,12 +198,12 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     }
 
 
-    private void downloadImage(ArrayList<String> imageUrl, ArrayList<String> imageLocalPath, int i, DownloadCallback downloadCallback) {
+    private void downloadImage(ArrayList<String> imageUrl, ArrayList<String> imageLocalPath, int i, DownloadImageCallback downloadImageCallback) {
         Log.d(TAG, "imageurl" + imageUrl);
         int j = i + 1;
 
         if (imageUrl.size() == 0) {
-            downloadCallback.onCompleted(imageLocalPath);
+            downloadImageCallback.onCompleted(imageLocalPath);
         } else {
             StorageReference reference = mStorage.getReferenceFromUrl(imageUrl.get(i));
             try {
@@ -171,9 +213,9 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                     imageLocalPath.add(imageFullPath);
                     Log.d(TAG, "image download from firebase " + imageFullPath);
                     if (j < imageUrl.size()) {
-                        downloadImage(imageUrl, imageLocalPath, j, downloadCallback);
+                        downloadImage(imageUrl, imageLocalPath, j, downloadImageCallback);
                     } else {
-                        downloadCallback.onCompleted(imageLocalPath);
+                        downloadImageCallback.onCompleted(imageLocalPath);
                     }
                 }).addOnFailureListener(exception -> {
                     // Handle any errors
@@ -185,9 +227,14 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     }
 
 
-    interface DownloadCallback {
+    interface DownloadImageCallback {
 
         void onCompleted(ArrayList<String> image);
+    }
+
+    interface DownloadPlaceCallback {
+
+        void onCompleted();
     }
 
 

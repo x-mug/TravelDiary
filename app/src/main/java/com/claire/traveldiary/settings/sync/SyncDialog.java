@@ -146,70 +146,93 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
             Log.d(TAG,"DeletedDiaryList is null ");
         }
 
-
-        //then save new diaries to firebase
-        for (int i = 0; i < mDiaries.size(); i++) {
-            //upload images to storage
-            ArrayList<String> images = new ArrayList<>();
-            images = mDiaries.get(i).getImage();
-
-            int finalI = i;
-            ArrayList<String> imageUrl = new ArrayList<>();
-
-            uploadImage(images, imageUrl, 0, imagesUrl -> {
-                Map<String, Object> diaries = new HashMap<>();
-                diaries.put("id",mDiaries.get(finalI).getId());
-                diaries.put("title",mDiaries.get(finalI).getTitle());
-                diaries.put("date",mDiaries.get(finalI).getDate());
-                diaries.put("place",mDiaries.get(finalI).getPlace());
-                diaries.put("weather",mDiaries.get(finalI).getWeather());
-                diaries.put("image", imagesUrl);
-                diaries.put("content",mDiaries.get(finalI).getContent());
-                diaries.put("tags",mDiaries.get(finalI).getTags());
-
-                String diaryId = String.valueOf(mDiaries.get(finalI).getId());
-
-                //sync all diaries to firebase
-                mFirebaseDb.collection("Users").document(userId).collection("Diaries").document(diaryId)
-                        .set(diaries)
-                        .addOnSuccessListener(aVoid -> {
-                            Log.d(TAG, "All Diaries successfully written!");
-
-                        })
-                        .addOnFailureListener(e ->
-                                Log.w(TAG, "Error writing document", e));
-            });
-        }
-
-        //then save new places to firebase
-        for (int j = 0; j < mPlaceList.size(); j++) {
-            String diaryId = String.valueOf(mDiaries.get(j).getId());
-            Map<String, Object> places = new HashMap<>();
-            places.put("diaryId",mPlaceList.get(j).getDiaryId());
-            places.put("placeId",mPlaceList.get(j).getPlaceId());
-            places.put("placeName",mPlaceList.get(j).getPlaceName());
-            places.put("country",mPlaceList.get(j).getCountry());
-            places.put("lat",mPlaceList.get(j).getLat());
-            places.put("lng",mPlaceList.get(j).getLng());
-
-            //sync all places to firebase
-            mFirebaseDb.collection("Users").document(userId).collection("Places").document(diaryId)
-                    .set(places)
-                    .addOnSuccessListener(aVoid -> {
-                        Log.d(TAG, "All Places successfully written!");
-                        dismiss();
+        uploadDiaries(mDiaries, 0, userId, new UpLoadDiaryCallback() {
+            @Override
+            public void onCompleted() {
+                uploadPlaces(mPlaceList, 0, userId, new UpLoadPlaceCallback() {
+                    @Override
+                    public void onCompleted() {
                         Toast.makeText(getContext(), "Successfully Sync!", Toast.LENGTH_SHORT).show();
+                        dismiss();
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void uploadDiaries(List<Diary> diaryList, int i, String userId, UpLoadDiaryCallback upLoadDiaryCallback) {
+        int j = i + 1;
+
+        //upload images to storage
+        ArrayList<String> images = new ArrayList<>();
+        images = mDiaries.get(i).getImage();
+
+        //int finalI = i;
+        ArrayList<String> imageUrl = new ArrayList<>();
+
+        uploadImage(images, imageUrl, 0, imagesUrl -> {
+            Map<String, Object> diaries = new HashMap<>();
+            diaries.put("id",mDiaries.get(i).getId());
+            diaries.put("title",mDiaries.get(i).getTitle());
+            diaries.put("date",mDiaries.get(i).getDate());
+            diaries.put("place",mDiaries.get(i).getPlace());
+            diaries.put("weather",mDiaries.get(i).getWeather());
+            diaries.put("image", imagesUrl);
+            diaries.put("content",mDiaries.get(i).getContent());
+            diaries.put("tags",mDiaries.get(i).getTags());
+
+            String diaryId = String.valueOf(mDiaries.get(i).getId());
+
+            //sync all diaries to firebase
+            mFirebaseDb.collection("Users").document(userId).collection("Diaries").document(diaryId)
+                    .set(diaries)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d(TAG, "All Diaries successfully written!");
+                        if (j < diaryList.size()) {
+                            uploadDiaries(diaryList, j, userId, upLoadDiaryCallback);
+                        } else {
+                            upLoadDiaryCallback.onCompleted();
+                        }
                     })
                     .addOnFailureListener(e ->
                             Log.w(TAG, "Error writing document", e));
-        }
+        });
     }
 
-    private void uploadImage(ArrayList<String> images, ArrayList<String> imageUrl, int i, UpLoadCallback upLoadCallback) {
+    private void uploadPlaces(List<DiaryPlace> diaryPlaceList, int i, String userId, UpLoadPlaceCallback upLoadPlaceCallback) {
+        int j = i + 1;
+
+        Map<String, Object> places = new HashMap<>();
+        places.put("diaryId",mPlaceList.get(i).getDiaryId());
+        places.put("placeId",mPlaceList.get(i).getPlaceId());
+        places.put("placeName",mPlaceList.get(i).getPlaceName());
+        places.put("country",mPlaceList.get(i).getCountry());
+        places.put("lat",mPlaceList.get(i).getLat());
+        places.put("lng",mPlaceList.get(i).getLng());
+
+        String diaryId = String.valueOf(mPlaceList.get(i).getDiaryId());
+
+        //sync all places to firebase
+        mFirebaseDb.collection("Users").document(userId).collection("Places").document(diaryId)
+                .set(places)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "All Places successfully written!");
+                    if (j < diaryPlaceList.size()) {
+                        uploadPlaces(diaryPlaceList, j, userId, upLoadPlaceCallback);
+                    } else {
+                        upLoadPlaceCallback.onCompleted();
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Log.w(TAG, "Error writing document", e));
+    }
+
+    private void uploadImage(ArrayList<String> images, ArrayList<String> imageUrl, int i, UpLoadImageCallback upLoadImageCallback) {
         int j = i + 1;
 
         if (images == null) {
-            upLoadCallback.onCompleted(imageUrl);
+            upLoadImageCallback.onCompleted(imageUrl);
         } else {
             Uri file = Uri.fromFile(new File(images.get(i)));
             StorageReference storageRef = mStorage.getReference().child(file.getLastPathSegment());
@@ -222,9 +245,9 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
                                 imageUrl.add(URL);
                                 //This is your image url do whatever you want with it.
                                 if (j < images.size()) {
-                                    uploadImage(images, imageUrl, j, upLoadCallback);
+                                    uploadImage(images, imageUrl, j, upLoadImageCallback);
                                 } else {
-                                    upLoadCallback.onCompleted(imageUrl);
+                                    upLoadImageCallback.onCompleted(imageUrl);
                                 }
                             });
                         }
@@ -232,15 +255,25 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
         }
     }
 
-    interface UpLoadCallback {
+    interface UpLoadImageCallback {
 
         void onCompleted(ArrayList<String> imagesUrl);
+    }
+
+    interface UpLoadDiaryCallback {
+
+        void onCompleted();
+    }
+
+    interface UpLoadPlaceCallback {
+
+        void onCompleted();
     }
 
 
     @Override
     public void dismiss() {
-        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
+        //mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
         new Handler().postDelayed(super::dismiss, 200);
     }
 }

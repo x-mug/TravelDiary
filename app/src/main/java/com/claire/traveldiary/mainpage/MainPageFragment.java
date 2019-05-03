@@ -72,9 +72,8 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMainPageAdapter = new MainPageAdapter(mPresenter,getContext());
-
         mRoomDb = DiaryDatabase.getIstance(getContext());
+        mMainPageAdapter = new MainPageAdapter(mPresenter,getContext());
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -95,9 +94,15 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         mAddDiary = root.findViewById(R.id.btn_add_diary);
         mRecyclerView = root.findViewById(R.id.recycler_main_page);
         mRecyclerView.setAdapter(mMainPageAdapter);
-        mRecyclerView.addItemDecoration(new SpacesItemDecoration(6));
-        //mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2,10,true));
+        mRecyclerView.setPadding(40,0,40,0);
 
+
+        if (mLayoutStatus == 0) {
+            setWaterfallLayout();
+        }
+        if (mLayoutStatus == 1) {
+            setLinearLayout();
+        }
 
         if (mRoomDb.getDiaryDAO().getAllDiaries().size() > 0) {
             mAddDiary.setVisibility(View.GONE);
@@ -108,26 +113,35 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
             });
         }
 
-        if(mLayoutStatus == 0) {
-            setGridLayout();
-        } else {
-            setWaterfallLayout();
-        }
-
         return root;
     }
 
     private void setGridLayout() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setPadding(40,0,40,0);
+        mMainPageAdapter.getItemViewType(2);
         mMainPageAdapter.notifyDataSetChanged();
     }
 
     private void setWaterfallLayout() {
-        //mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        if (mRecyclerView.getItemDecorationCount() > 0) {
+            mRecyclerView.removeItemDecorationAt(0);
+        }
+        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(40));
         mRecyclerView.setHasFixedSize(true);
+        mMainPageAdapter.getItemViewType(0);
+        mMainPageAdapter.notifyDataSetChanged();
+    }
+
+    private void setLinearLayout() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        if (mRecyclerView.getItemDecorationCount() > 0) {
+            mRecyclerView.removeItemDecorationAt(0);
+        }
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(40));
+        mRecyclerView.setHasFixedSize(true);
+        mMainPageAdapter.getItemViewType(1);
         mMainPageAdapter.notifyDataSetChanged();
     }
 
@@ -184,13 +198,13 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         if (status == 0) {
             Log.d(TAG,"status 0");
             mLayoutStatus = status;
-            setGridLayout();
+            mMainPageAdapter.changeLayout(0);
+            setWaterfallLayout();
         } else {
             Log.d(TAG,"status 1");
             mLayoutStatus = status;
-            setWaterfallLayout();
+            mMainPageAdapter.changeLayout(1);
+            setLinearLayout();
         }
     }
-
-
 }

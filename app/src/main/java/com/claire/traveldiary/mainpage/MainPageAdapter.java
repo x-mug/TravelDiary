@@ -8,11 +8,13 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,8 +30,11 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
     private static final String TAG = "MainPageAdapter";
 
-    private static final int TYPE_GRID = 0;
-    private static final int TYPE_WATERFALL = 1;
+    private int VIEW_TYPE = TYPE_WATERFALL;
+
+    private static final int TYPE_WATERFALL = 0;
+    private static final int TYPE_LINEAR = 1;
+    private static final int TYPE_GRID = 2;
 
     private MainPageContract.Presenter mPresenter;
 
@@ -145,24 +150,20 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
 
-//        switch (viewType) {
-//            case TYPE_GRID:
-//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_in_mainpage, parent, false);
-//                return new MainPageViewHolder(view);
-//            case TYPE_WATERFALL:
-//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_in_map, parent, false);
-//                return new MainPageViewHolder(view);
-//        }
-//            return null;
+        if (viewType == TYPE_WATERFALL) {
+            Log.d(TAG,"Waterfall");
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_waterfall, parent, false);
+            return new MainPageViewHolder(view);
+        }
+        if (viewType == TYPE_LINEAR) {
+            Log.d(TAG,"Linear");
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_linear, parent, false);
+            return new MainPageViewHolder(view);
+        }
 
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_in_mainpage, parent, false);
-        return new MainPageViewHolder(view);
+        return null;
     }
 
-    @Override
-    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-        super.onViewRecycled(holder);
-    }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -249,13 +250,15 @@ public class MainPageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void setViewtype(int status) {
-        if (status == 0) {
-
+    public void changeLayout(int viewType) {
+        if (viewType == 0) {
+            VIEW_TYPE = TYPE_WATERFALL;
         } else {
-
+            VIEW_TYPE = TYPE_LINEAR;
         }
+        notifyDataSetChanged();
     }
+
 
     public void refreshUi(List<Diary> diaries) {
         mDiaryList = diaries;
@@ -276,6 +279,11 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
         }
         notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return VIEW_TYPE;
     }
 
     @Override

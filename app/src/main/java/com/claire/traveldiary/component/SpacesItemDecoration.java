@@ -6,23 +6,20 @@ import android.view.View;
 
 public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
-
-    private int space;
+    private final int mSpace;
 
     public SpacesItemDecoration(int space) {
-        this.space = space;
+        this.mSpace = space;
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        // Add top margin only for the no first item to avoid double space between items
-        if (parent.getChildPosition(view) != 0) {
-            outRect.left = space;
-            outRect.right = 0;
-            outRect.bottom = space;
-            outRect.top = 0;
-        }
+        outRect.left = mSpace/2;
+        outRect.right = mSpace/2;
+        outRect.bottom = mSpace;
+
+        //Add top margin only for the first item to avoid double space between items
+        if (parent.getChildAdapterPosition(view) == 0)
+            outRect.top = mSpace;
     }
-
-
 }

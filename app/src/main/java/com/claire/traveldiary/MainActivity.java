@@ -205,7 +205,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (item.getItemId()) {
             case R.id.navigation_main:
                 openMainPage();
-
                 if (!isDefaultLayout) {
                     item.setIcon(R.mipmap.ic_waterfall_layout);
                     isDefaultLayout = true;
