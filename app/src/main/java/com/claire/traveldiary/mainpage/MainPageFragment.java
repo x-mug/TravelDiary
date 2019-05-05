@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
@@ -46,6 +47,8 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
     private RecyclerView mRecyclerView;
     private ImageButton mAddDiary;
+    private ImageButton mDownload;
+    private TextView mExplain;
 
     private int mLayoutStatus;
 
@@ -92,6 +95,8 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         View root = inflater.inflate(R.layout.fragment_mainpage, container, false);
 
         mAddDiary = root.findViewById(R.id.btn_add_diary);
+        mDownload = root.findViewById(R.id.btn_cloud_download);
+        mExplain = root.findViewById(R.id.tv_mainpage_explain);
         mRecyclerView = root.findViewById(R.id.recycler_main_page);
         mRecyclerView.setAdapter(mMainPageAdapter);
         mRecyclerView.setPadding(40,0,40,0);
@@ -106,11 +111,17 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
         if (mRoomDb.getDiaryDAO().getAllDiaries().size() > 0) {
             mAddDiary.setVisibility(View.GONE);
+            mDownload.setVisibility(View.GONE);
+            mExplain.setVisibility(View.GONE);
         } else {
             mAddDiary.setVisibility(View.VISIBLE);
+            mDownload.setVisibility(View.VISIBLE);
+            mExplain.setVisibility(View.VISIBLE);
             mAddDiary.setOnClickListener(v -> {
                 ((MainActivity) getActivity()).openEdit(mNewDiary);
             });
+            mDownload.setOnClickListener(v ->
+                    ((MainActivity) getActivity()).openSettings());
         }
 
         return root;

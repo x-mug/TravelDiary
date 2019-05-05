@@ -1,17 +1,24 @@
 <resources>
     <string name="app_name">Travel Diary</string>
 
+
     //main activity
     <string name="dialog_leave">Yes I must leave</string>
     <string name="dialog_stay">Okay I will stay here</string>
     <string name="dialog_title">Do not leave me alone...</string>
     <string name="dialog_content">Are you sure you want to leave?</string>
 
-    //main page
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    //mainpage
     <string name="toolbar_title">Memories</string>
     <string name="search_hint">Search</string>
     <string name="toolbar_edit">Edit</string>
     <string name="toolbar_done">Done</string>
+
+    //fragment mainpage
+    <string name="mainpage_text">already have diaries? or create new?</string>
 
     //item_card_in_main
     <string name="diary_title">Travel</string>

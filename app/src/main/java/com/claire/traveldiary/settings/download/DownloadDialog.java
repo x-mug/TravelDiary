@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.DialogFragment.STYLE_NO_FRAME;
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
 
 public class DownloadDialog extends BottomSheetDialogFragment implements DownloadContract.View {
@@ -107,6 +108,9 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     }
 
     private void ReadDataFromFirebase() {
+        mDownload.setClickable(false);
+        mDownload.setTextColor(getActivity().getResources().getColor(R.color.white));
+
         DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
         mUser = diaryDAO.getUser();
         String userId = String.valueOf(mUser.getId());
@@ -130,13 +134,15 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                                     @Override
                                     public void onCompleted(ArrayList<String> image) {
                                         diaryDAO.updateImageFromFirebase(image, Integer.parseInt(document.getId()));
-                                        downloadPlace(userId,0, new DownloadPlaceCallback() {
-                                            @Override
-                                            public void onCompleted() {
-                                                Toast.makeText(getContext(), "Successfully Download!", Toast.LENGTH_SHORT).show();
-                                                dismiss();
-                                            }
-                                        });
+//                                        downloadPlace(userId,0, new DownloadPlaceCallback() {
+//                                            @Override
+//                                            public void onCompleted() {
+//                                                Toast.makeText(getContext(), "Successfully Download!", Toast.LENGTH_SHORT).show();
+//                                                mDownload.setClickable(true);
+//                                                mDownload.setTextColor(getActivity().getResources().getColor((R.color.quantum_black_100)));
+//                                                dismiss();
+//                                            }
+//                                        });
                                     }
                                 });
 
@@ -146,32 +152,6 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                         }
                     }
                 });
-
-//        //then query users all place and save to roomdb
-//        mFirebaseDb.collection("Users").document(userId).collection("Places")
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        if (task.getResult() != null) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
-//                                DiaryPlace diaryPlace = document.toObject(DiaryPlace.class);
-//                                diaryDAO.insertOrUpdatePlace(diaryPlace);
-//                                Log.d(TAG, "place size : " + diaryDAO.getAllPlaces().size());
-//                                dismiss();
-//                                Toast.makeText(getContext(), "Successfully Download!", Toast.LENGTH_SHORT).show();
-//                            }
-//                        } else {
-//                            Log.d(TAG, "Error getting documents: ", task.getException());
-//                        }
-//                    }
-//                });
-    }
-
-
-    private void downloadPlace(String userId, int i, DownloadPlaceCallback downloadPlaceCallback) {
-        DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
-        int j = i + 1;
 
         //then query users all place and save to roomdb
         mFirebaseDb.collection("Users").document(userId).collection("Places")
@@ -184,11 +164,8 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                                 DiaryPlace diaryPlace = document.toObject(DiaryPlace.class);
                                 diaryDAO.insertOrUpdatePlace(diaryPlace);
                                 Log.d(TAG, "place size : " + diaryDAO.getAllPlaces().size());
-                                if (j < task.getResult().size()) {
-                                    downloadPlace(userId, j, downloadPlaceCallback);
-                                } else {
-                                    downloadPlaceCallback.onCompleted();
-                                }
+                                Toast.makeText(getContext(), "Successfully Download!", Toast.LENGTH_SHORT).show();
+                                dismiss();
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -196,6 +173,35 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                     }
                 });
     }
+
+
+//    private void downloadPlace(String userId, int i, DownloadPlaceCallback downloadPlaceCallback) {
+//        DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
+//        int j = i + 1;
+//
+//        //then query users all place and save to roomdb
+//        mFirebaseDb.collection("Users").document(userId).collection("Places")
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        if (task.getResult() != null) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                                DiaryPlace diaryPlace = document.toObject(DiaryPlace.class);
+//                                diaryDAO.insertOrUpdatePlace(diaryPlace);
+//                                Log.d(TAG, "place size : " + diaryDAO.getAllPlaces().size());
+//                                if (j < task.getResult().size()) {
+//                                    downloadPlace(userId, j, downloadPlaceCallback);
+//                                } else {
+//                                    downloadPlaceCallback.onCompleted();
+//                                }
+//                            }
+//                        } else {
+//                            Log.d(TAG, "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                });
+//    }
 
 
     private void downloadImage(ArrayList<String> imageUrl, ArrayList<String> imageLocalPath, int i, DownloadImageCallback downloadImageCallback) {
@@ -240,7 +246,7 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
 
     @Override
     public void dismiss() {
-        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
+        //mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
         new Handler().postDelayed(super::dismiss, 200);
     }
 }

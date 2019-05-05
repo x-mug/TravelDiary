@@ -101,6 +101,7 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
         if (UserManager.getInstance().isLoggedIn()) {
             mSync.setOnClickListener(v ->
                     insertOrUpdateDataToFirebase());
+
         } else {
             mSync.setClickable(false);
             mSyncTextView.setText(R.string.dialog_tv_sync);
@@ -110,6 +111,9 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
 
 
     private void insertOrUpdateDataToFirebase() {
+        mSync.setClickable(false);
+        mSync.setTextColor(getActivity().getResources().getColor(R.color.white));
+
         DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
         mDiaries = diaryDAO.getAllDiaries();
         mDeletedDiaryList = diaryDAO.getAllDeletedDiariesId();
@@ -146,19 +150,12 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
             Log.d(TAG,"DeletedDiaryList is null ");
         }
 
-        uploadDiaries(mDiaries, 0, userId, new UpLoadDiaryCallback() {
-            @Override
-            public void onCompleted() {
-                uploadPlaces(mPlaceList, 0, userId, new UpLoadPlaceCallback() {
-                    @Override
-                    public void onCompleted() {
-                        Toast.makeText(getContext(), "Successfully Sync!", Toast.LENGTH_SHORT).show();
-                        dismiss();
-                    }
-                });
-            }
-        });
-
+        uploadDiaries(mDiaries, 0, userId, () -> uploadPlaces(mPlaceList, 0, userId, () -> {
+            Toast.makeText(getContext(), "Successfully Sync!", Toast.LENGTH_SHORT).show();
+            mSync.setClickable(true);
+            mSync.setTextColor(getActivity().getResources().getColor(R.color.quantum_black_100));
+            dismiss();
+        }));
     }
 
     private void uploadDiaries(List<Diary> diaryList, int i, String userId, UpLoadDiaryCallback upLoadDiaryCallback) {

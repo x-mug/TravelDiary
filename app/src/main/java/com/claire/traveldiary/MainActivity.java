@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -62,6 +64,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     //BottomNavigation
     private BottomNavigationView mBottomNavigation;
+
 
     //Toolbar
     private Toolbar mToolbar;
@@ -160,6 +163,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mBottomNavigation = findViewById(R.id.bottom_navigation_main);
         mBottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
+
 
     public int getStatusBarHeight() {
         int result = 0;
@@ -320,7 +324,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-    private void openSettings() {
+    public void openSettings() {
         SettingsFragment settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("Settings");
 
         if (settingsFragment == null) {
