@@ -115,4 +115,6 @@ public class Diary {
     public void setTags(List<String> tags) {
         mTags = tags;
     }
+
+
 }

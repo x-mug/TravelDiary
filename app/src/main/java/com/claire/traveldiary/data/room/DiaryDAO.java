@@ -36,7 +36,7 @@ public interface DiaryDAO {
     @Query("SELECT * FROM diary")
     Diary getDiary();
 
-    @Query("SELECT * FROM diary ORDER BY mDate ASC")
+    @Query("SELECT * FROM diary")
     List<Diary> getAllDiaries();
 
     @Query("DELETE FROM Diary WHERE mId = :id")

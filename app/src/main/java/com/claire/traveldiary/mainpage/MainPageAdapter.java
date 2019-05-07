@@ -24,7 +24,14 @@ import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainPageAdapter extends RecyclerView.Adapter {
 
@@ -171,9 +178,21 @@ public class MainPageAdapter extends RecyclerView.Adapter {
         if (holder instanceof MainPageViewHolder) {
 
             if (!isSearch) {
-                Log.d(TAG,"Main Page");
+                Log.d(TAG, "Main Page");
                 mRoomDb = DiaryDatabase.getIstance(mContext);
                 mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
+                Collections.sort(mDiaryList, new Comparator<Diary>() {
+                    DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ROOT);
+                    @Override
+                    public int compare(Diary o1, Diary o2) {
+                        try {
+                            return dateFormat.parse(o1.getDate()).compareTo(dateFormat.parse(o2.getDate()));
+                        } catch (ParseException e) {
+                            throw new IllegalArgumentException(e);
+                        }
+                    }
+                });
+                Collections.reverse(mDiaryList);
             } else {
                 Log.d(TAG,"Main Page Search Results");
             }

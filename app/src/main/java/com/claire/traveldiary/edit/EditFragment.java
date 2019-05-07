@@ -30,8 +30,11 @@ import com.claire.traveldiary.edit.weather.WeatherDialog;
 import com.claire.traveldiary.mainpage.MainPageAdapter;
 import com.claire.traveldiary.mainpage.MainPagePresenter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
 import static android.support.v4.util.Preconditions.checkNotNull;
@@ -282,7 +285,7 @@ public class EditFragment extends Fragment implements EditContract.View{
                 monthEng = "December";
             }
 
-            String date = dayOfMonth+"th" + " " + monthEng + " " + year;
+            String date = dayOfMonth + " " + monthEng + " " + year;
             mEditAdapter.updateDate(date);
         },yy, mm, dd);
 

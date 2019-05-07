@@ -29,8 +29,15 @@ import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -126,6 +133,7 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
         return root;
     }
+
 
     private void setGridLayout() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
