@@ -1,7 +1,8 @@
-package com.claire.traveldiary.settings.fontsize;
+package com.claire.traveldiary.settings.font;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.claire.traveldiary.R;
@@ -25,8 +27,11 @@ public class FontDialog extends DialogFragment implements FontContract.View {
     private FontContract.Presenter mPresenter;
 
     private NumberPicker mNumberPicker;
+    private TextView mTitle;
     private Button mOK;
     private Button mCancel;
+
+    private Typeface mTypeface;
 
     public FontDialog() {
     }
@@ -46,6 +51,15 @@ public class FontDialog extends DialogFragment implements FontContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_font, container, false);
 
+        mTitle = dialogView.findViewById(R.id.tv_choose_font);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mTypeface = getActivity().getResources().getFont(R.font.allura_regular);
+            mTitle.setTypeface(mTypeface);
+        }
+        mOK = dialogView.findViewById(R.id.btn_ok);
+        mCancel = dialogView.findViewById(R.id.btn_cancel);
+        mCancel.setOnClickListener(v -> dismiss());
+
         mNumberPicker = dialogView.findViewById(R.id.numberPicker);
         mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(8);
@@ -53,11 +67,50 @@ public class FontDialog extends DialogFragment implements FontContract.View {
         mNumberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         mNumberPicker.setDisplayedValues(new String[] {"Allura","Amatic","Blackjack","Brizel","Dancing",
                 "Farsan","Hand Writing","Kaushan","Default"});
+        mNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                switch (newVal) {
+                    case 0:
+                        mTypeface = getActivity().getResources().getFont(R.font.allura_regular);
+                        mTitle.setTypeface(mTypeface);
+                        break;
+                    case 1:
+                        mTypeface = getActivity().getResources().getFont(R.font.amatic_regular);
+                        mTitle.setTypeface(mTypeface);
+                        break;
+                    case 2:
+                        mTypeface = getActivity().getResources().getFont(R.font.blackjack);
+                        mTitle.setTypeface(mTypeface);
+                        break;
+                    case 3:
+                        mTypeface = getActivity().getResources().getFont(R.font.brizel);
+                        mTitle.setTypeface(mTypeface);
+                        break;
+                    case 4:
+                        mTypeface = getActivity().getResources().getFont(R.font.dancing_regular);
+                        mTitle.setTypeface(mTypeface);
+                        break;
+                    case 5:
+                        mTypeface = getActivity().getResources().getFont(R.font.farsan_regular);
+                        mTitle.setTypeface(mTypeface);
+                        break;
+                    case 6:
+                        mTypeface = getActivity().getResources().getFont(R.font.justan_regular);
+                        mTitle.setTypeface(mTypeface);
+                        break;
+                    case 7:
+                        mTypeface = getActivity().getResources().getFont(R.font.kaushan_regular);
+                        mTitle.setTypeface(mTypeface);
+                        break;
+                    case 8:
+                        mTitle.setTypeface(Typeface.SERIF);
+                        break;
+                }
+            } else {
+                Toast.makeText(getContext(), getActivity().getResources().getString(R.string.font_warning), Toast.LENGTH_SHORT).show();
+            }
 
-        mOK = dialogView.findViewById(R.id.btn_ok);
-        mCancel = dialogView.findViewById(R.id.btn_cancel);
-        mCancel.setOnClickListener(v -> dismiss());
-
+        });
         return dialogView;
     }
 
@@ -117,7 +170,7 @@ public class FontDialog extends DialogFragment implements FontContract.View {
             editor.putString("fontValue", font);
             editor.commit();
         } else {
-            Toast.makeText(getContext(), "Please update your Android SDK to 26", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getActivity().getResources().getString(R.string.font_warning), Toast.LENGTH_SHORT).show();
         }
     }
 

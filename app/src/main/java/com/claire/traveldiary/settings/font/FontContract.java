@@ -1,4 +1,4 @@
-package com.claire.traveldiary.settings.fontsize;
+package com.claire.traveldiary.settings.font;
 
 import com.claire.traveldiary.base.BasePresenter;
 import com.claire.traveldiary.base.BaseView;

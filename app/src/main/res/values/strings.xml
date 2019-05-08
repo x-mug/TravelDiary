@@ -76,6 +76,9 @@
     <string name="dialog_chi">Chinese</string>
     <string name="dialog_choose_language">Choose Language</string>
 
+    //dialog font
+    <string name="font_warning">Please update your Android SDK to 26</string>
+
     //facebook login
     <string name="facebook_app_id">483707082365149</string>
     <string name="fb_login_protocol_scheme">fb483707082365149</string>
