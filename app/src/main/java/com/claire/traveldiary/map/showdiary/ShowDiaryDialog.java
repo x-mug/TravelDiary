@@ -129,6 +129,7 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
         ((MainActivity) getActivity()).setFontType(title, date);
     }
 
+
     @Override
     public void dismiss() {
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));

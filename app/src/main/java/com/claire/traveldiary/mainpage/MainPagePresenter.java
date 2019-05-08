@@ -60,4 +60,9 @@ public class MainPagePresenter implements MainPageContract.Presenter {
         mView.setFontTypeUi(title, date);
     }
 
+    @Override
+    public void sortDiaryByDate(List<Diary> diaries) {
+        mView.sortDiaryByDateUi(diaries);
+    }
+
 }

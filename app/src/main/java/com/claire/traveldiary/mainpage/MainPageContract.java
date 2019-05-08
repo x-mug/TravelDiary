@@ -26,6 +26,8 @@ public interface MainPageContract {
 
         void setFontTypeUi(TextView title, TextView date);
 
+        void sortDiaryByDateUi(List<Diary> diaries);
+
     }
 
     interface Presenter extends BasePresenter {
@@ -45,6 +47,8 @@ public interface MainPageContract {
         void changeLayout(int status);
 
         void setFontType(TextView title, TextView date);
+
+        void sortDiaryByDate(List<Diary> diaries);
 
     }
 

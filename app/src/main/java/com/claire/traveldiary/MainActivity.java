@@ -44,7 +44,13 @@ import com.claire.traveldiary.util.UserManager;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.internal.CallbackManagerImpl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -444,6 +450,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mToolbarDone.setVisibility(View.GONE);
             mToolbarEdit.setVisibility(View.GONE);
         }
+    }
+
+    public void sortDiaryByDate(List<Diary> diaries) {
+        Collections.sort(diaries, new Comparator<Diary>() {
+            DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ROOT);
+            @Override
+            public int compare(Diary o1, Diary o2) {
+                try {
+                    return dateFormat.parse(o1.getDate()).compareTo(dateFormat.parse(o2.getDate()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+        Collections.reverse(diaries);
     }
 
     public void setFontType(TextView title, TextView date) {

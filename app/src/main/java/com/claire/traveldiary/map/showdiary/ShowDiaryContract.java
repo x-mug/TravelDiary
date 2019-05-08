@@ -6,6 +6,8 @@ import com.claire.traveldiary.base.BasePresenter;
 import com.claire.traveldiary.base.BaseView;
 import com.claire.traveldiary.data.Diary;
 
+import java.util.List;
+
 
 public interface ShowDiaryContract {
 
@@ -18,6 +20,7 @@ public interface ShowDiaryContract {
         void closePopupUi();
 
         void setFontTypeUi(TextView title, TextView date);
+
     }
 
     interface Presenter extends BasePresenter {
@@ -31,5 +34,6 @@ public interface ShowDiaryContract {
         void closePopup();
 
         void setFontType(TextView title, TextView date);
+
     }
 }

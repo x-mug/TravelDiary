@@ -212,4 +212,9 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
     public void setFontTypeUi(TextView title, TextView date) {
         ((MainActivity) getActivity()).setFontType(title, date);
     }
+
+    @Override
+    public void sortDiaryByDateUi(List<Diary> diaries) {
+        ((MainActivity) getActivity()).sortDiaryByDate(diaries);
+    }
 }

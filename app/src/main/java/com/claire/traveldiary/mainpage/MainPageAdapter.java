@@ -110,18 +110,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 Log.d(TAG, "Main Page");
                 mRoomDb = DiaryDatabase.getIstance(mContext);
                 mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
-                Collections.sort(mDiaryList, new Comparator<Diary>() {
-                    DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ROOT);
-                    @Override
-                    public int compare(Diary o1, Diary o2) {
-                        try {
-                            return dateFormat.parse(o1.getDate()).compareTo(dateFormat.parse(o2.getDate()));
-                        } catch (ParseException e) {
-                            throw new IllegalArgumentException(e);
-                        }
-                    }
-                });
-                Collections.reverse(mDiaryList);
+                mPresenter.sortDiaryByDate(mDiaryList);
             } else {
                 Log.d(TAG,"Main Page Search Results");
             }
