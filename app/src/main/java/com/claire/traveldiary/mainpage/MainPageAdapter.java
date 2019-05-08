@@ -241,7 +241,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     notifyItemRemoved(position);
                     notifyDataSetChanged();
 
-                    Toast.makeText(v.getContext(), "Delete Diary", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), mContext.getResources().getString(R.string.delete_diary), Toast.LENGTH_SHORT).show();
                     ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
                     ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                     ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);

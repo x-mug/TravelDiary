@@ -111,7 +111,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
                     Double latitude = marker.getPosition().latitude;
                     Double longitude = marker.getPosition().longitude;
 
-                    ((MainActivity) getActivity()).openShowDiaryDialog(latitude, longitude);
+                    ((MainActivity) getActivity()).openShowDiaryOnMap(latitude, longitude);
                 });
             }
         }

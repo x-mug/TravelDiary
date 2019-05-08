@@ -35,6 +35,7 @@ import com.claire.traveldiary.settings.language.LanguageDialog;
 import com.claire.traveldiary.settings.language.LanguagePresenter;
 import com.claire.traveldiary.settings.sync.SyncDialog;
 import com.claire.traveldiary.settings.sync.SyncPresenter;
+import com.claire.traveldiary.util.Constants;
 import com.claire.traveldiary.util.UserManager;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.internal.CallbackManagerImpl;
@@ -228,12 +229,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     private void openMainPage() {
-        MainPageFragment mainPageFragment = (MainPageFragment) getSupportFragmentManager().findFragmentByTag("MainPage");
+        MainPageFragment mainPageFragment = (MainPageFragment) getSupportFragmentManager().findFragmentByTag(Constants.MAINPAGE);
 
         if (mainPageFragment == null) {
             mainPageFragment = MainPageFragment.newInstance();
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mainPageFragment, "MainPage").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mainPageFragment, Constants.MAINPAGE).commit();
         mMainPagePresenter = new MainPagePresenter(mainPageFragment);
         mainPageFragment.setPresenter(mMainPagePresenter);
 
@@ -242,11 +243,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     public void openEdit(Diary diary) {
-        EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag("Edit");
+        EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag(Constants.EDIT);
 
         if (editFragment == null) {
             editFragment = EditFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, editFragment, "Edit").addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, editFragment, Constants.EDIT).addToBackStack(null).commit();
 
             mEditPresenter = new EditPresenter(editFragment);
             editFragment.setPresenter(mEditPresenter);
@@ -263,44 +264,43 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public void openWeatherDialog() {
         WeatherDialog dialog =
-                (WeatherDialog) (this.getSupportFragmentManager().findFragmentByTag("WeatherDialog"));
-        EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag("Edit");
+                (WeatherDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.WEATHER));
+        EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag(Constants.EDIT);
 
         if (dialog == null) {
             dialog = new WeatherDialog();
             mWeatherPresenter = new WeatherPresenter(dialog);
             dialog.setPresenter(mWeatherPresenter);
             dialog.setTargetFragment(editFragment, REQUEST);
-            dialog.show((this.getSupportFragmentManager()),"WeatherDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.WEATHER);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "WeatherDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.WEATHER);
         }
     }
 
-    public void openShowDiaryDialog(double lat, double lng) {
+    public void openShowDiaryOnMap(double lat, double lng) {
         ShowDiaryDialog dialog =
-                (ShowDiaryDialog) (this.getSupportFragmentManager().findFragmentByTag("ShowDiaryDialog"));
+                (ShowDiaryDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.SHOWDIARYONMAP));
 
         if (dialog == null) {
             dialog = new ShowDiaryDialog();
             mShowDiaryPresenter = new ShowDiaryPresenter(dialog);
             dialog.setPresenter(mShowDiaryPresenter);
             mShowDiaryPresenter.loadDiaryByPlace(lat, lng);
-            dialog.show((this.getSupportFragmentManager()),"ShowDiaryDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.SHOWDIARYONMAP);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "ShowDiaryDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.SHOWDIARYONMAP);
         }
     }
 
 
     private void openMap() {
-        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentByTag("Map");
+        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentByTag(Constants.MAP);
 
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance();
         }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mapFragment, "Map").addToBackStack("Map").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mapFragment, Constants.MAP).addToBackStack(Constants.MAP).commit();
         mMapPresenter = new MapPresenter(mapFragment);
         mapFragment.setPresenter(mMapPresenter);
 
@@ -309,13 +309,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     public void openSettings() {
-        SettingsFragment settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("Settings");
+        SettingsFragment settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(Constants.SETTINGS);
 
         if (settingsFragment == null) {
             settingsFragment = SettingsFragment.newInstance();
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, settingsFragment, "Settings").addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, settingsFragment, Constants.SETTINGS).addToBackStack(null).commit();
         mSettingsPresenter = new SettingsPresenter(settingsFragment);
         settingsFragment.setPresenter(mSettingsPresenter);
 
@@ -324,57 +324,57 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public void openSyncDialog() {
         SyncDialog dialog =
-                (SyncDialog) (this.getSupportFragmentManager().findFragmentByTag("SyncDialog"));
+                (SyncDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.SYNC));
 
         if (dialog == null) {
             dialog = new SyncDialog();
             mSyncPresenter = new SyncPresenter(dialog);
             dialog.setPresenter(mSyncPresenter);
-            dialog.show((this.getSupportFragmentManager()),"SyncDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.SYNC);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "SyncDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.SYNC);
         }
     }
 
     public void openDownloadDialog() {
         DownloadDialog dialog =
-                (DownloadDialog) (this.getSupportFragmentManager().findFragmentByTag("DownloadDialog"));
+                (DownloadDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.DOWNLOAD));
 
         if (dialog == null) {
             dialog = new DownloadDialog();
             mDownloadPresenter = new DownloadPresenter(dialog);
             dialog.setPresenter(mDownloadPresenter);
-            dialog.show((this.getSupportFragmentManager()),"DownloadDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.DOWNLOAD);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "DownloadDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.DOWNLOAD);
         }
     }
 
     public void openFontDialog() {
         FontDialog dialog =
-                (FontDialog) (this.getSupportFragmentManager().findFragmentByTag("FontDialog"));
+                (FontDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.FONT));
 
         if (dialog == null) {
             dialog = new FontDialog();
             mFontPresenter = new FontPresenter(dialog);
             dialog.setPresenter(mFontPresenter);
-            dialog.show((this.getSupportFragmentManager()),"FontDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.FONT);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "FontDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.FONT);
         }
     }
 
     public void openLanguageDialog() {
         LanguageDialog dialog =
-                (LanguageDialog) (this.getSupportFragmentManager().findFragmentByTag("LanguageDialog"));
+                (LanguageDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.LANGUAGE));
 
         if (dialog == null) {
             dialog = new LanguageDialog();
             mLanguagePresenter = new LanguagePresenter(dialog);
             dialog.setPresenter(mLanguagePresenter);
-            dialog.show((this.getSupportFragmentManager()),"LanguageDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.LANGUAGE);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "LanguageDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.LANGUAGE);
         }
     }
 

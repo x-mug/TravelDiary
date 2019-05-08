@@ -51,6 +51,7 @@ public class EditAdapter extends RecyclerView.Adapter {
 
     private EditContract.Presenter mPresenter;
     private GalleryAdapter mGalleryAdapter;
+    private CircleAdapter mCircleAdapter;
 
     private Context mContext;
     private DiaryDatabase mDatabase;
@@ -84,6 +85,7 @@ public class EditAdapter extends RecyclerView.Adapter {
     public class EditViewHolder extends RecyclerView.ViewHolder {
 
         private RecyclerView mRecyclerGallery;
+        private RecyclerView mRecyclerCircles;
         private EditText mTitle;
         private TextView mDate;
         private ImageButton mWeather;
@@ -94,6 +96,7 @@ public class EditAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             mRecyclerGallery = itemView.findViewById(R.id.recycler_gallery);
+            mRecyclerCircles = itemView.findViewById(R.id.recycler_circles);
             mLocation = itemView.findViewById(R.id.tv_my_location);
             mCardView = itemView.findViewById(R.id.autocomplete_card);
             mTitle = itemView.findViewById(R.id.edit_diary_title);

@@ -1,31 +1,51 @@
 <resources>
     <string name="app_name">Travel Diary</string>
 
-
-    //main activity
-    <string name="dialog_leave">Yes I must leave</string>
-    <string name="dialog_stay">Okay I will stay here</string>
-    <string name="dialog_title">Do not leave me alone...</string>
-    <string name="dialog_content">Are you sure you want to leave?</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    //mainpage
+    <!-- Layout Series -->
+    //activity_main
     <string name="toolbar_title">Memories</string>
     <string name="search_hint">Search</string>
     <string name="toolbar_edit">Edit</string>
     <string name="toolbar_done">Done</string>
 
-    //fragment mainpage
+    //dialog_choose_weather
+    <string name="dialog_choose_weather">Choose Weather</string>
+
+    //dialog font
+    <string name="dialog_choose_font">Choose Diary Font</string>
+    <string name="dialog_font_ok">OK</string>
+    <string name="dialog_font_cancel">Cancel</string>
+
+    //dialog language
+    <string name="dialog_choose_language">Choose Language</string>
+    <string name="dialog_eng">English</string>
+    <string name="dialog_chi">Chinese</string>
+
+    //dialog sync
+    <string name="dialog_sync">Synchronize my diary to Firebase</string>
+    <string name="dialog_btn_sync">Sync</string>
+    <string name="dialog_btn_login">Login Facebook</string>
+    <string name="dialog_tv_sync">Please Login Your Facebook Before Synchronize Your Diary</string>
+
+    //dialog download
+    <string name="dialog_btn_download">Download</string>
+    <string name="dialog_download">Download my Diary from Firebase</string>
+    <string name="dialog_download_notice">* This step will replace your exist diaries *</string>
+    <string name="dialog_tv_download">Please Login Your Facebook Before Download Your Diary</string>
+
+    //fragment_mainpage
     <string name="mainpage_text">already have diaries? or create new?</string>
 
-    //item_card_in_main
+    //item_card
     <string name="diary_title">Travel</string>
-    <string name="diary_date">16th January 2019</string>
+    <string name="diary_date">11th January 2019</string>
 
-    //item_card_in_main
-    <string name="diary_place">My Diaries</string>
+    //item_edit
+    <string name="edit_diary_title_hint">Title</string>
+    <string name="edit_diary_date_hint">Date</string>
+    <string name="edit_diary_location_hint">Where am I ?</string>
+    <string name="edit_diary_content_hint">Write Down Your Day ....</string>
+    <string name="edit_diary_tags_hint">Add tags</string>
 
     //item_settings
     <string name="settings_user">User</string>
@@ -41,44 +61,22 @@
     <string name="settings_login">LogIn</string>
     <string name="settings_logout">LogOut</string>
 
-    //item edit
-    <string name="edit_diary_title_hint">Title</string>
-    <string name="edit_diary_date_hint">Date</string>
-    <string name="edit_diary_location_hint">Where am I ?</string>
-    <string name="edit_diary_content_hint">Write Down Your Day ....</string>
-    <string name="edit_diary_tags_hint">Add tags</string>
 
-    //dialog choose weather
-    <string name="dialog_choose_weather">Choose Weather</string>
+    <!-- Class Series -->
+    //MainActivity
+    <string name="dialog_leave">Yes I must leave</string>
+    <string name="dialog_stay">Okay I will stay here</string>
+    <string name="dialog_title">Do not leave me alone...</string>
+    <string name="dialog_content">Are you sure you want to leave?</string>
 
-    //launch activity
-    <string name="launch_activity">Travel Diary</string>
+    //MainPageAdapter
+    <string name="delete_diary">Delete Diary</string>
 
-    //dialog sync
-    <string name="dialog_sync">Synchronize my diary to Firebase</string>
-    <string name="dialog_btn_sync">Sync</string>
-    <string name="dialog_btn_login">Login Facebook</string>
-    <string name="dialog_tv_sync">Please Login Your Facebook Before Synchronize Your Diary</string>
-
-    //dialog download
-    <string name="dialog_btn_download">Download</string>
-    <string name="dialog_download">Download my Diary from Firebase</string>
-    <string name="dialog_download_notice">* This step will replace your exist diaries *</string>
-    <string name="dialog_tv_download">Please Login Your Facebook Before Download Your Diary</string>
-
-    //dialog fontsize
-    <string name="dialog_choose_font">Choose Diary Font</string>
-    <string name="dialog_fontsize_ok">OK</string>
-    <string name="dialog_fontsize_cancel">Cancel</string>
-
-    //dialog language
-    <string name="dialog_eng">English</string>
-    <string name="dialog_chi">Chinese</string>
-    <string name="dialog_choose_language">Choose Language</string>
-
-    //dialog font
+    //FontDialog
     <string name="font_warning">Please update your Android SDK to 26</string>
 
+
+    <!-- Others Series -->
     //facebook login
     <string name="facebook_app_id">483707082365149</string>
     <string name="fb_login_protocol_scheme">fb483707082365149</string>
