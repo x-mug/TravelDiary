@@ -202,13 +202,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.navigation_main:
                 openMainPage();
                 if (isDefaultLayout) {
-                    item.setIcon(R.mipmap.ic_dashboard);
-                    isDefaultLayout = false;
-                    mMainPagePresenter.changeLayout(0);
-                } else {
                     item.setIcon(R.mipmap.ic_linear_layout);
-                    isDefaultLayout = true;
+                    isDefaultLayout = false;
                     mMainPagePresenter.changeLayout(1);
+                } else {
+                    item.setIcon(R.mipmap.ic_dashboard);
+                    isDefaultLayout = true;
+                    mMainPagePresenter.changeLayout(0);
                 }
                 updateMapToolbar(getResources().getString(R.string.toolbar_title));
                 return true;
