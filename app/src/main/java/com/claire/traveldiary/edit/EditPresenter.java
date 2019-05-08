@@ -14,14 +14,11 @@ public class EditPresenter implements EditContract.Presenter {
 
     private EditContract.View mView;
 
-
-
     @SuppressLint("RestrictedApi")
     public EditPresenter(EditContract.View view) {
         mView = checkNotNull(view, "view cannot be null!");
         mView.setPresenter(this);
     }
-
 
     @Override
     public void start() {
@@ -64,6 +61,5 @@ public class EditPresenter implements EditContract.Presenter {
     public void clickEditDiary() {
         mView.clickEditDiaryUi();
     }
-
 
 }

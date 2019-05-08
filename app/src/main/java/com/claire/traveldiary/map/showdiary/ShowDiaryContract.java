@@ -4,7 +4,6 @@ import com.claire.traveldiary.base.BasePresenter;
 import com.claire.traveldiary.base.BaseView;
 import com.claire.traveldiary.data.Diary;
 
-import java.util.List;
 
 public interface ShowDiaryContract {
 
@@ -26,6 +25,5 @@ public interface ShowDiaryContract {
         void openEdit(Diary diary);
 
         void closePopup();
-
     }
 }

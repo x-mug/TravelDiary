@@ -116,5 +116,4 @@ public class Diary {
         mTags = tags;
     }
 
-
 }

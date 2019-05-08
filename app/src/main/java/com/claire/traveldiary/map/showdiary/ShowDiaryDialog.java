@@ -14,8 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
@@ -41,11 +39,8 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     private List<DiaryPlace> mPlaceList;
     private List<Diary> mDiaryList;
 
-    private ImageView mBackground;
 
-
-    public ShowDiaryDialog() {
-    }
+    public ShowDiaryDialog() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,7 +95,6 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
         mDiaryList = new ArrayList<>();
 
         for (int i = 0; i < mPlaceList.size(); i++) {
-
             Diary diary = new Diary();
             diary  = diaryDatabase.getDiaryDAO().getDiarybyId(mPlaceList.get(i).getDiaryId());
             mDiaryList.add(diary);
@@ -108,19 +102,15 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
             Log.d(TAG, "diary size: " + mDiaryList.size());
         }
 
-
         Log.d(TAG,"how many diaries in that place " + mPlaceList.size());
         Log.d(TAG, "diary place: " + mPlaceList.get(0).getPlaceName());
-
 
         if(mShowDiaryAdapter == null) {
             mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext(),mDiaryList);
             mShowDiaryAdapter.showDiary(mDiaryList);
-            Log.d(TAG,"ShowDiaryAdapter is null");
         } else {
             mShowDiaryAdapter.showDiary(mDiaryList);
         }
-
     }
 
     @Override

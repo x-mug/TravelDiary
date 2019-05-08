@@ -105,7 +105,6 @@ public class FontDialog extends DialogFragment implements FontContract.View {
                     setFont("default");
                     dismiss();
                     break;
-
             }
         });
     }

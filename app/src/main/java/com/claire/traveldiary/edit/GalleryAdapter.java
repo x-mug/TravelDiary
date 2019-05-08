@@ -25,7 +25,6 @@ public class GalleryAdapter extends RecyclerView.Adapter {
 
     private boolean canOpenGallery = true;
 
-
     public GalleryAdapter(EditContract.Presenter presenter, ArrayList<String> images) {
        mPresenter = presenter;
        mImages = images;
@@ -42,7 +41,6 @@ public class GalleryAdapter extends RecyclerView.Adapter {
             mImageGallery = itemView.findViewById(R.id.edit_gallery);
             mButtonAdd = itemView.findViewById(R.id.add_image);
         }
-
     }
 
     @NonNull
@@ -100,5 +98,4 @@ public class GalleryAdapter extends RecyclerView.Adapter {
         }
         return mImages.size();
     }
-
 }

@@ -95,9 +95,11 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         mAddDiary = root.findViewById(R.id.btn_add_diary);
         mDownload = root.findViewById(R.id.btn_cloud_download);
         mExplain = root.findViewById(R.id.tv_mainpage_explain);
+
         mRecyclerView = root.findViewById(R.id.recycler_main_page);
         mRecyclerView.setAdapter(mMainPageAdapter);
         mRecyclerView.setPadding(40,0,40,0);
+        mRecyclerView.setHasFixedSize(true);
 
 
         if (mLayoutStatus == 0) {
@@ -131,7 +133,6 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
             mRecyclerView.removeItemDecorationAt(0);
         }
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(40));
-        mRecyclerView.setHasFixedSize(true);
         mMainPageAdapter.getItemViewType(0);
         mMainPageAdapter.notifyDataSetChanged();
     }
@@ -142,7 +143,6 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
             mRecyclerView.removeItemDecorationAt(0);
         }
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(40));
-        mRecyclerView.setHasFixedSize(true);
         mMainPageAdapter.getItemViewType(1);
         mMainPageAdapter.notifyDataSetChanged();
     }
@@ -198,12 +198,10 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
     @Override
     public void changeLayoutUi(int status) {
         if (status == 0) {
-            Log.d(TAG,"status 0");
             mLayoutStatus = status;
             mMainPageAdapter.changeLayout(0);
             setWaterfallLayout();
         } else {
-            Log.d(TAG,"status 1");
             mLayoutStatus = status;
             mMainPageAdapter.changeLayout(1);
             setLinearLayout();

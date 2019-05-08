@@ -38,7 +38,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
     private static final int TYPE_WATERFALL = 0;
     private static final int TYPE_LINEAR = 1;
-    private static final int TYPE_GRID = 2;
 
     private MainPageContract.Presenter mPresenter;
 
@@ -215,7 +214,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 }
             }
 
-
             //click card
             ((MainPageViewHolder) holder).mCard.setOnClickListener(v -> {
                 if (isLongclick) {
@@ -258,9 +256,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                     ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
                 });
-
                 isLongclick = true;
-
                 return true;
             });
         }

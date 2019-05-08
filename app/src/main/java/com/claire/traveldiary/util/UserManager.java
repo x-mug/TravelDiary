@@ -3,13 +3,8 @@ package com.claire.traveldiary.util;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.claire.traveldiary.TravelDiaryApplication;
-import com.claire.traveldiary.data.DeletedDiary;
-import com.claire.traveldiary.data.Diary;
-import com.claire.traveldiary.data.DiaryPlace;
 import com.claire.traveldiary.data.User;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
@@ -20,22 +15,16 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class UserManager {
@@ -51,15 +40,13 @@ public class UserManager {
 
     private CallbackManager mFbCallbackManager;
     private AccessTokenTracker mAccessTokenTracker;
-    private ProfileTracker mProfileTracker;
 
 
     private static class UserManagerHolder {
         private static final UserManager INSTANCE = new UserManager();
     }
 
-    public UserManager() {
-    }
+    public UserManager() {}
 
     public static UserManager getInstance() {
         return UserManagerHolder.INSTANCE;
@@ -108,7 +95,6 @@ public class UserManager {
 
         logoutFacebook();
         //cleanDatabase();
-
     }
 
     private void loginFacebook(Context context) {
@@ -122,60 +108,54 @@ public class UserManager {
 
     private void getUserInfo(AccessToken accessToken,LoadCallback loadCallback) {
 
-        GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
-            //OnCompleted is invoked once the GraphRequest is successful
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                try {
+        //OnCompleted is invoked once the GraphRequest is successful
+        GraphRequest request = GraphRequest.newMeRequest(accessToken, (object, response) -> {
+            try {
+                if (object == null) {
+                    loadCallback.onSuccess();
+                    clearUserLogin();
 
-                    if (object == null) {
-                        loadCallback.onSuccess();
-                        clearUserLogin();
+                } else {
+                    Long id = object.getLong("id");
+                    String name = object.getString("name");
+                    String email = object.getString("email");
+                    String picture = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                    Log.d(TAG,"user information " + id + name + email + picture);
 
-                    } else {
-                        Long id = object.getLong("id");
-                        String name = object.getString("name");
-                        String email = object.getString("email");
-                        String picture = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                        Log.d(TAG,"user information " + id + name + email + picture);
+                    //save user to room
+                    mRoomDb = DiaryDatabase.getIstance(mContext);
+                    DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
 
-                        //save user to room
-                        mRoomDb = DiaryDatabase.getIstance(mContext);
-                        DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
+                    User user = new User();
+                    user.setId(id);
+                    user.setName(name);
+                    user.setEmail(email);
+                    user.setPicture(picture);
 
-                        User user = new User();
-                        user.setId(id);
-                        user.setName(name);
-                        user.setEmail(email);
-                        user.setPicture(picture);
+                    diaryDAO.insertOrUpdateUser(user);
+                    Log.d(TAG,"User" + diaryDAO.getUser().getName());
 
-                        diaryDAO.insertOrUpdateUser(user);
-                        Log.d(TAG,"User" + diaryDAO.getUser().getName());
+                    //save data to firebase
+                    mFirebaseDb = FirebaseFirestore.getInstance();
 
-                        //save data to firebase
-                        mFirebaseDb = FirebaseFirestore.getInstance();
+                    Map<String, Object> users = new HashMap<>();
+                    users.put("id", id);
+                    users.put("name", name);
+                    users.put("email", email);
+                    users.put("picture", picture);
 
-                        Map<String, Object> users = new HashMap<>();
-                        users.put("id", id);
-                        users.put("name", name);
-                        users.put("email", email);
-                        users.put("picture", picture);
+                    // Add a new document with a user ID
+                    mFirebaseDb.collection("Users").document(id.toString())
+                            .set(users)
+                            .addOnSuccessListener(documentReference ->
+                                    Log.d(TAG, "DocumentSnapshot successful written! "))
+                            .addOnFailureListener(e ->
+                                    Log.w(TAG, "Error adding document", e));
 
-                        // Add a new document with a user ID
-                        mFirebaseDb.collection("Users").document(id.toString())
-                                .set(users)
-                                .addOnSuccessListener(documentReference ->
-                                        Log.d(TAG, "DocumentSnapshot successful written! "))
-                                .addOnFailureListener(e ->
-                                        Log.w(TAG, "Error adding document", e));
-
-
-                        loadCallback.onSuccess();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    loadCallback.onSuccess();
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
         // We set parameters to the GraphRequest using a Bundle.

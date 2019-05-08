@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.claire.traveldiary.data.Diary;
 
-import java.util.List;
-
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
 
 public class ShowDiaryPresenter implements ShowDiaryContract.Presenter {
@@ -41,7 +39,5 @@ public class ShowDiaryPresenter implements ShowDiaryContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 }

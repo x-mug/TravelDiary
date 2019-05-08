@@ -75,8 +75,6 @@ public class EditAdapter extends RecyclerView.Adapter {
 
     private boolean isEdit = false;
 
-
-
     public EditAdapter(EditContract.Presenter presenter, Context context, Diary diary) {
         mPresenter = presenter;
         mContext = context;
@@ -336,10 +334,7 @@ public class EditAdapter extends RecyclerView.Adapter {
 
 
     private void chooseLocation() {
-        // Initialize Places.
         Places.initialize(mContext, mContext.getResources().getString(R.string.google_map_api_key));
-
-        // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(mContext);
 
         if (!Places.isInitialized()) {
@@ -402,7 +397,6 @@ public class EditAdapter extends RecyclerView.Adapter {
 
         notifyDataSetChanged();
 
-        //database
         mDatabase = DiaryDatabase.getIstance(mContext);
         DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
 
@@ -483,7 +477,6 @@ public class EditAdapter extends RecyclerView.Adapter {
         Log.i(TAG, "Show! ");
         mDiary = diary;
         notifyDataSetChanged();
-
         isEdit = false;
     }
 
@@ -492,7 +485,6 @@ public class EditAdapter extends RecyclerView.Adapter {
         Log.i(TAG, "Edit! ");
         mEditDiary = diary;
         notifyDataSetChanged();
-
         showDiary(mEditDiary);
         isEdit = true;
     }
@@ -501,15 +493,12 @@ public class EditAdapter extends RecyclerView.Adapter {
         Log.i(TAG, "new Edit! ");
         mEditDiary = mDiary;
         notifyDataSetChanged();
-
         isEdit = true;
     }
-
 
     @Override
     public int getItemCount() {
             return 1;
     }
-
 
 }

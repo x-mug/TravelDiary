@@ -22,10 +22,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -34,17 +32,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     private static final String TAG = "MapFragment";
 
     private GoogleMap mMap;
-    private Marker mMarker;
 
     private MapContract.Presenter mPresenter;
 
     private DiaryDatabase mDatabase;
 
-    private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
 
-    public MapFragment() {
-
-    }
+    public MapFragment() {}
 
     public static MapFragment newInstance() {
         return new MapFragment();
@@ -67,8 +61,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         super.onCreate(savedInstanceState);
 
         mDatabase = DiaryDatabase.getIstance(getContext());
-
-
     }
 
     @Nullable
@@ -83,10 +75,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         return root;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -95,11 +83,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         //map style
         try {
             // Customise the styling of the base map using a JSON object defined
-            // in a raw resource file.
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             getActivity(), R.raw.mapstyle_retro));
-
             if (!success) {
                 Log.e(TAG, "Style parsing failed.");
             }
@@ -110,19 +96,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         //database
         DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
 
-        //find all my places
+        //find all my diaries in this place
         for (int i = 0; i < diaryDAO.getAllPlaces().size(); i++ ) {
-
             LatLng location = new LatLng(diaryDAO.getAllPlaces().get(i).getLat(), diaryDAO.getAllPlaces().get(i).getLng());
 
             if (diaryDAO.getAllPlaces().get(i).getLat() != 0.0 && diaryDAO.getAllPlaces().get(i).getLng() != 0.0) {
                 mMap.addMarker(new MarkerOptions()
                         .position(location)
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.pin))
-                        .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
+                        .anchor(0.0f, 1.0f)
                         .title(diaryDAO.getAllPlaces().get(i).getPlaceName()));
-
-                //mMarkerArray.add(marker);
 
                 mMap.setOnInfoWindowClickListener(marker -> {
                     Double latitude = marker.getPosition().latitude;

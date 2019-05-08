@@ -11,7 +11,6 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(foreignKeys = @ForeignKey(entity = Diary.class, parentColumns = "mId", childColumns = "mDiaryId", onDelete = CASCADE))
 public class DiaryPlace {
 
-
     @PrimaryKey
     @NonNull
     private int mDiaryId;

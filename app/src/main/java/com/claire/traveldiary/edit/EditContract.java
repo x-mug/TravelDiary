@@ -20,8 +20,6 @@ public interface EditContract {
 
         void clickEditDiaryUi();
 
-
-
     }
 
     interface Presenter extends BasePresenter {
@@ -39,7 +37,6 @@ public interface EditContract {
         void loadDiaryData(Diary diary);
 
         void clickEditDiary();
-
 
     }
 }

@@ -43,7 +43,6 @@ public class LanguageDialog extends DialogFragment implements LanguageContract.V
         getDialog().setCancelable(true);
         getDialog().setCanceledOnTouchOutside(true);
 
-
         return dialogView;
     }
 

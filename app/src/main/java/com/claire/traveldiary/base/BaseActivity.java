@@ -19,7 +19,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mContext = this;
-
         setStatusBar();
     }
 
@@ -45,7 +44,7 @@ public class BaseActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT); // calculateStatusColor(Color.WHITE, (int) alphaValue)
+            window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
 }

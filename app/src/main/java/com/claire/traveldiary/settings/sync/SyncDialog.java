@@ -58,8 +58,7 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
     private User mUser;
 
 
-    public SyncDialog() {
-    }
+    public SyncDialog() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,8 +66,7 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
         mFirebaseDb = FirebaseFirestore.getInstance();
         mRoomDb = DiaryDatabase.getIstance(getContext());
         mStorage = FirebaseStorage.getInstance();
-        mReference = mStorage.getReferenceFromUrl("gs://traveldiary-236516.appspot.com/");
-
+        mReference = mStorage.getReferenceFromUrl(getActivity().getResources().getString(R.string.firebase_storage));
     }
 
     @Override
@@ -150,7 +148,8 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
             Log.d(TAG,"DeletedDiaryList is null ");
         }
 
-        uploadDiaries(mDiaries, 0, userId, () -> uploadPlaces(mPlaceList, 0, userId, () -> {
+        uploadDiaries(mDiaries, 0, userId, () ->
+                uploadPlaces(mPlaceList, 0, userId, () -> {
             Toast.makeText(getContext(), "Successfully Sync!", Toast.LENGTH_SHORT).show();
             mSync.setClickable(true);
             mSync.setTextColor(getActivity().getResources().getColor(R.color.quantum_black_100));
@@ -266,7 +265,6 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
 
         void onCompleted();
     }
-
 
     @Override
     public void dismiss() {

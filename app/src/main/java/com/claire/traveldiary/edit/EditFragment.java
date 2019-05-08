@@ -108,7 +108,6 @@ public class EditFragment extends Fragment implements EditContract.View{
             Log.d(TAG, "You haven't choose weather" );
         }
 
-
         //receive image data
         try {
              //When an Image is picked
@@ -152,7 +151,6 @@ public class EditFragment extends Fragment implements EditContract.View{
                         imageEncoded  = cursor.getString(columnIndex);
                         imagesEncodedList.add(imageEncoded);
                         cursor.close();
-
                     }
                     Log.d(TAG, "Selected Images" + mArrayPath.size());
                     mEditAdapter.updateImage(mArrayPath);
@@ -161,7 +159,6 @@ public class EditFragment extends Fragment implements EditContract.View{
             } else {
                 Log.d(TAG, "You haven't picked Image" );
             }
-
         } catch (Exception e) {
             Toast.makeText(getActivity(), "Something went wrong.....", Toast.LENGTH_LONG).show();
         }
@@ -183,11 +180,9 @@ public class EditFragment extends Fragment implements EditContract.View{
         return path;
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.autocomplete_fragment);
 

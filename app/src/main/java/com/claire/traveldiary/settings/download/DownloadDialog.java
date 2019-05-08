@@ -67,7 +67,7 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
         super.onCreate(savedInstanceState);
         mFirebaseDb = FirebaseFirestore.getInstance();
         mStorage = FirebaseStorage.getInstance();
-        mReference = mStorage.getReferenceFromUrl("gs://traveldiary-236516.appspot.com/");
+        mReference = mStorage.getReferenceFromUrl(getActivity().getResources().getString(R.string.firebase_storage));
         mRoomDb = DiaryDatabase.getIstance(getContext());
     }
 
@@ -113,7 +113,7 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
         mUser = diaryDAO.getUser();
         String userId = String.valueOf(mUser.getId());
 
-        //query users all diary and save to roomdb
+        //query users all diaries and save to roomdb
         mFirebaseDb.collection("Users").document(userId).collection("Diaries")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -128,13 +128,8 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                                 //update image to local
                                 ArrayList<String> imageUrl = (ArrayList<String>) document.get("image");
                                 ArrayList<String> imageLocalPath = new ArrayList<>();
-                                downloadImage(imageUrl, imageLocalPath, 0, new DownloadImageCallback() {
-                                    @Override
-                                    public void onCompleted(ArrayList<String> image) {
-                                        diaryDAO.updateImageFromFirebase(image, Integer.parseInt(document.getId()));
-                                    }
-                                });
-
+                                downloadImage(imageUrl, imageLocalPath, 0, image ->
+                                        diaryDAO.updateImageFromFirebase(image, Integer.parseInt(document.getId())));
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -142,7 +137,7 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                     }
                 });
 
-        //then query users all place and save to roomdb
+        //query users all places and save to roomdb
         mFirebaseDb.collection("Users").document(userId).collection("Places")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -164,7 +159,6 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     }
 
     private void downloadImage(ArrayList<String> imageUrl, ArrayList<String> imageLocalPath, int i, DownloadImageCallback downloadImageCallback) {
-        Log.d(TAG, "imageurl" + imageUrl);
         int j = i + 1;
 
         if (imageUrl.size() == 0) {
@@ -183,7 +177,7 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
                         downloadImageCallback.onCompleted(imageLocalPath);
                     }
                 }).addOnFailureListener(exception -> {
-                    // Handle any errors
+                    Log.d(TAG, "image download fail ");
                 });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -192,7 +186,6 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     }
 
     interface DownloadImageCallback {
-
         void onCompleted(ArrayList<String> image);
     }
 

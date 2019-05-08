@@ -6,8 +6,6 @@ import static android.support.v4.util.Preconditions.checkNotNull;
 
 public class SettingsPresenter implements SettingsContract.Presenter {
 
-    private static final String TAG = "SettingsPresenter";
-
     private SettingsContract.View mView;
 
     @SuppressLint("RestrictedApi")

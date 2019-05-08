@@ -1,10 +1,7 @@
 package com.claire.traveldiary;
 
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.claire.traveldiary.base.BaseActivity;
 
@@ -29,5 +26,4 @@ public class LaunchActivity extends BaseActivity {
         }, mTotalDuration);
 
     }
-
 }

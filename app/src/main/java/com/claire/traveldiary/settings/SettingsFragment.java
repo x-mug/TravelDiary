@@ -16,8 +16,6 @@ import android.view.ViewGroup;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
-import com.claire.traveldiary.mainpage.MainPageAdapter;
-import com.claire.traveldiary.mainpage.MainPagePresenter;
 import com.claire.traveldiary.util.UserManager;
 
 import static com.google.common.base.Preconditions.checkNotNull;

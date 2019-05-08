@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -48,7 +46,6 @@ import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private static final String TAG = "MainActivity";
     public static final int REQUEST = 100;
 
     private MainPagePresenter mMainPagePresenter;
@@ -65,7 +62,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     //BottomNavigation
     private BottomNavigationView mBottomNavigation;
 
-
     //Toolbar
     private Toolbar mToolbar;
     private TextView mToolbarTitle;
@@ -81,7 +77,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Diary mDiary;
 
     private boolean isDefaultLayout = true;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +131,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.toolbar_back:
                 getSupportFragmentManager().popBackStack();
@@ -156,14 +150,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mToolbarDone.setVisibility(View.GONE);
                 break;
         }
-
     }
 
     private void setBottomNavigation() {
         mBottomNavigation = findViewById(R.id.bottom_navigation_main);
         mBottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
-
 
     public int getStatusBarHeight() {
         int result = 0;
@@ -203,7 +195,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }
     };
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
         switch (item.getItemId()) {
@@ -251,7 +242,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     public void openEdit(Diary diary) {
-
         EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag("Edit");
 
         if (editFragment == null) {
@@ -269,7 +259,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }
         hideBottomNavigation();
-
     }
 
     public void openWeatherDialog() {
@@ -278,16 +267,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag("Edit");
 
         if (dialog == null) {
-
             dialog = new WeatherDialog();
             mWeatherPresenter = new WeatherPresenter(dialog);
             dialog.setPresenter(mWeatherPresenter);
-
             dialog.setTargetFragment(editFragment, REQUEST);
             dialog.show((this.getSupportFragmentManager()),"WeatherDialog");
-
         } else if (!dialog.isAdded()) {
-
             dialog.show(this.getSupportFragmentManager(), "WeatherDialog");
         }
     }
@@ -302,7 +287,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             dialog.setPresenter(mShowDiaryPresenter);
             mShowDiaryPresenter.loadDiaryByPlace(lat, lng);
             dialog.show((this.getSupportFragmentManager()),"ShowDiaryDialog");
-
         } else if (!dialog.isAdded()) {
             dialog.show(this.getSupportFragmentManager(), "ShowDiaryDialog");
         }
@@ -347,7 +331,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mSyncPresenter = new SyncPresenter(dialog);
             dialog.setPresenter(mSyncPresenter);
             dialog.show((this.getSupportFragmentManager()),"SyncDialog");
-
         } else if (!dialog.isAdded()) {
             dialog.show(this.getSupportFragmentManager(), "SyncDialog");
         }
@@ -362,7 +345,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mDownloadPresenter = new DownloadPresenter(dialog);
             dialog.setPresenter(mDownloadPresenter);
             dialog.show((this.getSupportFragmentManager()),"DownloadDialog");
-
         } else if (!dialog.isAdded()) {
             dialog.show(this.getSupportFragmentManager(), "DownloadDialog");
         }
@@ -387,15 +369,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 (LanguageDialog) (this.getSupportFragmentManager().findFragmentByTag("LanguageDialog"));
 
         if (dialog == null) {
-
             dialog = new LanguageDialog();
             mLanguagePresenter = new LanguagePresenter(dialog);
             dialog.setPresenter(mLanguagePresenter);
-
             dialog.show((this.getSupportFragmentManager()),"LanguageDialog");
-
         } else if (!dialog.isAdded()) {
-
             dialog.show(this.getSupportFragmentManager(), "LanguageDialog");
         }
     }
@@ -481,10 +459,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0 ){
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0 ) {
             getSupportFragmentManager().popBackStack();
         } else {
             new AlertDialog.Builder(this)
