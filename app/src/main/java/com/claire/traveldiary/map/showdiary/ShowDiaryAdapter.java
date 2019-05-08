@@ -17,7 +17,13 @@ import android.widget.TextView;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class ShowDiaryAdapter extends RecyclerView.Adapter {
 
@@ -153,6 +159,18 @@ public class ShowDiaryAdapter extends RecyclerView.Adapter {
     }
 
     public void showDiary(List<Diary> diaries) {
+        Collections.sort(diaries, new Comparator<Diary>() {
+            DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ROOT);
+            @Override
+            public int compare(Diary o1, Diary o2) {
+                try {
+                    return dateFormat.parse(o1.getDate()).compareTo(dateFormat.parse(o2.getDate()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+        Collections.reverse(diaries);
         mDiaryList = diaries;
         notifyDataSetChanged();
     }
