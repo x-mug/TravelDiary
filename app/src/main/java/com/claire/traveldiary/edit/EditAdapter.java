@@ -2,7 +2,6 @@ package com.claire.traveldiary.edit;
 
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -10,12 +9,10 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -36,9 +33,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import mabbas007.tagsedittext.TagsEditText;
@@ -296,10 +291,6 @@ public class EditAdapter extends RecyclerView.Adapter {
                 }
 
 
-                //Choose Location
-//                if (mLocation == null) {
-//
-//                }
                 if (mEditDiary.getPlace() != null) {
                     if (mEditDiary.getPlace().getPlaceName().equals("")) {
                         mLocation.setText(R.string.edit_diary_location_hint);
@@ -346,13 +337,13 @@ public class EditAdapter extends RecyclerView.Adapter {
 
     private void chooseLocation() {
         // Initialize Places.
-        Places.initialize(mContext, "AIzaSyBJPVkA_f-Tp2PvzTWQ2p-_IOetu6g-9Q0");
+        Places.initialize(mContext, mContext.getResources().getString(R.string.google_map_api_key));
 
         // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(mContext);
 
         if (!Places.isInitialized()) {
-            Places.initialize(TravelDiaryApplication.getAppContext(), "AIzaSyBJPVkA_f-Tp2PvzTWQ2p-_IOetu6g-9Q0");
+            Places.initialize(TravelDiaryApplication.getAppContext(), mContext.getResources().getString(R.string.google_map_api_key));
         }
 
         AutocompleteSupportFragment supportFragment = (AutocompleteSupportFragment)

@@ -79,4 +79,7 @@
     //facebook login
     <string name="facebook_app_id">483707082365149</string> <string name="fb_login_protocol_scheme">fb483707082365149</string>
 
+    //api key
+    <string name="google_map_api_key">AIzaSyBJPVkA_f-Tp2PvzTWQ2p-_IOetu6g-9Q0</string>
+
 </resources>

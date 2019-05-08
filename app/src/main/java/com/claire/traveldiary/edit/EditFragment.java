@@ -25,16 +25,10 @@ import android.widget.Toast;
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
-import com.claire.traveldiary.edit.weather.WeatherContract;
 import com.claire.traveldiary.edit.weather.WeatherDialog;
-import com.claire.traveldiary.mainpage.MainPageAdapter;
-import com.claire.traveldiary.mainpage.MainPagePresenter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
 import static android.support.v4.util.Preconditions.checkNotNull;
@@ -48,12 +42,9 @@ public class EditFragment extends Fragment implements EditContract.View{
     private static final int PICK_IMAGE_MULTIPLE = 5;
 
     private EditContract.Presenter mPresenter;
-    private WeatherContract.Presenter mWeatherPresenter;
 
     private RecyclerView mRecyclerEdit;
     private EditAdapter mEditAdapter;
-    private MainPagePresenter mMainPagePresenter;
-    private MainPageAdapter mMainPageAdapter;
 
     //gallery
     private ArrayList<String> mImagesList;
@@ -319,7 +310,6 @@ public class EditFragment extends Fragment implements EditContract.View{
             mEditAdapter.editNewDiary(mNewDiary);
         }
     }
-
 
     @Override
     public void onDestroy() {
