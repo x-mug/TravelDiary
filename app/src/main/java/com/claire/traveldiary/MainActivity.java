@@ -1,6 +1,10 @@
 package com.claire.traveldiary;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
@@ -78,6 +82,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Diary mDiary;
 
     private boolean isDefaultLayout = true;
+    private Typeface mTypeface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -441,6 +446,71 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    public void setFontType(TextView title, TextView date) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            SharedPreferences sharedPreferences = getSharedPreferences("FONT", Context.MODE_PRIVATE);
+            String fontType = sharedPreferences.getString("fontValue", "");
+            switch (fontType) {
+                case "allura":
+                    mTypeface = getResources().getFont(R.font.allura_regular);
+                    setTypefaceMid(mTypeface, title, date);
+                    break;
+                case "amatic":
+                    mTypeface = getResources().getFont(R.font.amatic_regular);
+                    setTypefaceBig(mTypeface, title, date);
+                    break;
+                case "blackjack":
+                    mTypeface = getResources().getFont(R.font.blackjack);
+                    setTypefaceMid(mTypeface, title, date);
+                    break;
+                case "brizel":
+                    mTypeface = getResources().getFont(R.font.brizel);
+                    setTypefaceMid(mTypeface, title, date);
+                    break;
+                case "dancing":
+                    mTypeface = getResources().getFont(R.font.dancing_regular);
+                    setTypeface(mTypeface, title, date);
+                    break;
+                case "farsan":
+                    mTypeface = getResources().getFont(R.font.farsan_regular);
+                    setTypefaceMid(mTypeface, title, date);
+                    break;
+                case "handwriting":
+                    mTypeface = getResources().getFont(R.font.justan_regular);
+                    setTypefaceBig(mTypeface, title, date);
+                    break;
+                case "kaushan":
+                    mTypeface = getResources().getFont(R.font.kaushan_regular);
+                    setTypeface(mTypeface, title, date);
+                    break;
+                case"default":
+                    title.setTypeface(Typeface.SERIF);
+                    date.setTypeface(Typeface.SERIF);
+                    break;
+            }
+        }
+    }
+
+    private void setTypeface(Typeface mTypeface, TextView title, TextView date) {
+        title.setTypeface(mTypeface);
+        date.setTypeface(mTypeface);
+        title.setTextSize(24);
+        date.setTextSize(18);
+    }
+
+    private void setTypefaceMid(Typeface mTypeface, TextView title, TextView date) {
+        title.setTypeface(mTypeface);
+        date.setTypeface(mTypeface);
+        title.setTextSize(26);
+        date.setTextSize(20);
+    }
+
+    private void setTypefaceBig(Typeface mTypeface, TextView title, TextView date) {
+        title.setTypeface(mTypeface);
+        date.setTypeface(mTypeface);
+        title.setTextSize(32);
+        date.setTextSize(26);
+    }
 
     public void hideBottomNavigation() {
         mBottomNavigation.setVisibility(View.GONE);

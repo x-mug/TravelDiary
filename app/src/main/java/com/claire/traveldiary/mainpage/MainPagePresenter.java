@@ -1,6 +1,7 @@
 package com.claire.traveldiary.mainpage;
 
 import android.annotation.SuppressLint;
+import android.widget.TextView;
 
 import com.claire.traveldiary.data.Diary;
 
@@ -52,6 +53,11 @@ public class MainPagePresenter implements MainPageContract.Presenter {
     @Override
     public void changeLayout(int status) {
         mView.changeLayoutUi(status);
+    }
+
+    @Override
+    public void setFontType(TextView title, TextView date) {
+        mView.setFontTypeUi(title, date);
     }
 
 }

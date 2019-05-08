@@ -207,4 +207,9 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
             setLinearLayout();
         }
     }
+
+    @Override
+    public void setFontTypeUi(TextView title, TextView date) {
+        ((MainActivity) getActivity()).setFontType(title, date);
+    }
 }

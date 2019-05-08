@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
@@ -121,6 +122,11 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     @Override
     public void closePopupUi() {
         dismiss();
+    }
+
+    @Override
+    public void setFontTypeUi(TextView title, TextView date) {
+        ((MainActivity) getActivity()).setFontType(title, date);
     }
 
     @Override

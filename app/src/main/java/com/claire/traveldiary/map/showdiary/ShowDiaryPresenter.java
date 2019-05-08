@@ -1,6 +1,7 @@
 package com.claire.traveldiary.map.showdiary;
 
 import android.support.annotation.NonNull;
+import android.widget.TextView;
 
 
 import com.claire.traveldiary.data.Diary;
@@ -36,6 +37,11 @@ public class ShowDiaryPresenter implements ShowDiaryContract.Presenter {
     @Override
     public void closePopup() {
         mShowDiaryView.closePopupUi();
+    }
+
+    @Override
+    public void setFontType(TextView title, TextView date) {
+        mShowDiaryView.setFontTypeUi(title, date);
     }
 
     @Override

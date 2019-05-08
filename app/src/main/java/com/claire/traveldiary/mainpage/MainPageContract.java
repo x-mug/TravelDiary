@@ -1,5 +1,7 @@
 package com.claire.traveldiary.mainpage;
 
+import android.widget.TextView;
+
 import com.claire.traveldiary.base.BasePresenter;
 import com.claire.traveldiary.base.BaseView;
 import com.claire.traveldiary.data.Diary;
@@ -22,6 +24,8 @@ public interface MainPageContract {
 
         void changeLayoutUi(int status);
 
+        void setFontTypeUi(TextView title, TextView date);
+
     }
 
     interface Presenter extends BasePresenter {
@@ -39,6 +43,8 @@ public interface MainPageContract {
         void refreshSearchStatus();
 
         void changeLayout(int status);
+
+        void setFontType(TextView title, TextView date);
 
     }
 

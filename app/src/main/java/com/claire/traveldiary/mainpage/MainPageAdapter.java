@@ -1,10 +1,8 @@
 package com.claire.traveldiary.mainpage;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
@@ -50,8 +48,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     private boolean isLongclick = false;
     private boolean isSearch = false;
 
-    private Typeface mTypeface;
-
 
     public MainPageAdapter(MainPageContract.Presenter presenter, Context context) {
         mPresenter = presenter;
@@ -81,70 +77,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             mDelete = itemView.findViewById(R.id.btn_delete_diary);
             mShare = itemView.findViewById(R.id.btn_share_diary);
 
-
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("FONT", Context.MODE_PRIVATE);
-                String fontType = sharedPreferences.getString("fontValue", "");
-                switch (fontType) {
-                    case "allura":
-                        mTypeface = mContext.getResources().getFont(R.font.allura_regular);
-                        setTypeface(mTypeface);
-                        break;
-                    case "amatic":
-                        mTypeface = mContext.getResources().getFont(R.font.amatic_regular);
-                        setTypefaceBig(mTypeface);
-                        break;
-                    case "blackjack":
-                        mTypeface = mContext.getResources().getFont(R.font.blackjack);
-                        setTypefaceMid(mTypeface);
-                        break;
-                    case "brizel":
-                        mTypeface = mContext.getResources().getFont(R.font.brizel);
-                        setTypefaceMid(mTypeface);
-                        break;
-                    case "dancing":
-                        mTypeface = mContext.getResources().getFont(R.font.dancing_regular);
-                        setTypeface(mTypeface);
-                        break;
-                    case "farsan":
-                        mTypeface = mContext.getResources().getFont(R.font.farsan_regular);
-                        setTypefaceMid(mTypeface);
-                        break;
-                    case "handwriting":
-                        mTypeface = mContext.getResources().getFont(R.font.justan_regular);
-                        setTypefaceBig(mTypeface);
-                        break;
-                    case "kaushan":
-                        mTypeface = mContext.getResources().getFont(R.font.kaushan_regular);
-                        setTypeface(mTypeface);
-                        break;
-                    case"default":
-                        mDiaryTitle.setTypeface(Typeface.SERIF);
-                        mDiaryDate.setTypeface(Typeface.SERIF);
-                        break;
-                }
-            }
-        }
-
-        public void setTypeface(Typeface mTypeface) {
-            mDiaryTitle.setTypeface(mTypeface);
-            mDiaryDate.setTypeface(mTypeface);
-            mDiaryTitle.setTextSize(24);
-            mDiaryDate.setTextSize(18);
-        }
-
-        public void setTypefaceMid(Typeface mTypeface) {
-            mDiaryTitle.setTypeface(mTypeface);
-            mDiaryDate.setTypeface(mTypeface);
-            mDiaryTitle.setTextSize(26);
-            mDiaryDate.setTextSize(20);
-        }
-
-        public void setTypefaceBig(Typeface mTypeface) {
-            mDiaryTitle.setTypeface(mTypeface);
-            mDiaryDate.setTypeface(mTypeface);
-            mDiaryTitle.setTextSize(30);
-            mDiaryDate.setTextSize(24);
+            mPresenter.setFontType(mDiaryTitle, mDiaryDate);
         }
     }
 
