@@ -3,6 +3,7 @@ package com.claire.traveldiary.edit;
 import com.claire.traveldiary.base.BasePresenter;
 import com.claire.traveldiary.base.BaseView;
 import com.claire.traveldiary.data.Diary;
+import com.claire.traveldiary.data.DiaryPlace;
 
 public interface EditContract {
 
@@ -33,6 +34,10 @@ public interface EditContract {
         void openDatePicker();
 
         void clickSaveDiary();
+
+        void insertOrUpdateDiary(Diary diary);
+
+        void insertOrUpdatePlace(DiaryPlace diaryPlace);
 
         void loadDiaryData(Diary diary);
 

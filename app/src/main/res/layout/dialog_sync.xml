@@ -23,7 +23,7 @@
             android:layout_marginEnd="24dp"
             android:gravity="center_horizontal"
             android:text="@string/dialog_sync"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,12 +36,11 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/dialog_btn_sync"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
 
 
     </android.support.constraint.ConstraintLayout>

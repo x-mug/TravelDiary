@@ -1,10 +1,7 @@
 package com.claire.traveldiary.mainpage;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
@@ -20,15 +17,8 @@ import android.widget.Toast;
 
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
-import com.claire.traveldiary.data.room.DiaryDatabase;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 public class MainPageAdapter extends RecyclerView.Adapter {
 
@@ -43,14 +33,10 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
 
-    private DiaryDatabase mRoomDb;
-
     private List<Diary> mDiaryList;
 
     private boolean isLongclick = false;
     private boolean isSearch = false;
-
-    private Typeface mTypeface;
 
 
     public MainPageAdapter(MainPageContract.Presenter presenter, Context context) {
@@ -81,70 +67,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             mDelete = itemView.findViewById(R.id.btn_delete_diary);
             mShare = itemView.findViewById(R.id.btn_share_diary);
 
-
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("FONT", Context.MODE_PRIVATE);
-                String fontType = sharedPreferences.getString("fontValue", "");
-                switch (fontType) {
-                    case "allura":
-                        mTypeface = mContext.getResources().getFont(R.font.allura_regular);
-                        setTypeface(mTypeface);
-                        break;
-                    case "amatic":
-                        mTypeface = mContext.getResources().getFont(R.font.amatic_regular);
-                        setTypefaceBig(mTypeface);
-                        break;
-                    case "blackjack":
-                        mTypeface = mContext.getResources().getFont(R.font.blackjack);
-                        setTypefaceMid(mTypeface);
-                        break;
-                    case "brizel":
-                        mTypeface = mContext.getResources().getFont(R.font.brizel);
-                        setTypefaceMid(mTypeface);
-                        break;
-                    case "dancing":
-                        mTypeface = mContext.getResources().getFont(R.font.dancing_regular);
-                        setTypeface(mTypeface);
-                        break;
-                    case "farsan":
-                        mTypeface = mContext.getResources().getFont(R.font.farsan_regular);
-                        setTypefaceMid(mTypeface);
-                        break;
-                    case "handwriting":
-                        mTypeface = mContext.getResources().getFont(R.font.justan_regular);
-                        setTypefaceBig(mTypeface);
-                        break;
-                    case "kaushan":
-                        mTypeface = mContext.getResources().getFont(R.font.kaushan_regular);
-                        setTypeface(mTypeface);
-                        break;
-                    case"default":
-                        mDiaryTitle.setTypeface(Typeface.SERIF);
-                        mDiaryDate.setTypeface(Typeface.SERIF);
-                        break;
-                }
-            }
-        }
-
-        public void setTypeface(Typeface mTypeface) {
-            mDiaryTitle.setTypeface(mTypeface);
-            mDiaryDate.setTypeface(mTypeface);
-            mDiaryTitle.setTextSize(24);
-            mDiaryDate.setTextSize(18);
-        }
-
-        public void setTypefaceMid(Typeface mTypeface) {
-            mDiaryTitle.setTypeface(mTypeface);
-            mDiaryDate.setTypeface(mTypeface);
-            mDiaryTitle.setTextSize(26);
-            mDiaryDate.setTextSize(20);
-        }
-
-        public void setTypefaceBig(Typeface mTypeface) {
-            mDiaryTitle.setTypeface(mTypeface);
-            mDiaryDate.setTypeface(mTypeface);
-            mDiaryTitle.setTextSize(30);
-            mDiaryDate.setTextSize(24);
+            mPresenter.setFontType(mDiaryTitle, mDiaryDate);
         }
     }
 
@@ -163,7 +86,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_linear, parent, false);
             return new MainPageViewHolder(view);
         }
-
         return null;
     }
 
@@ -172,26 +94,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof MainPageViewHolder) {
-
-            if (!isSearch) {
-                Log.d(TAG, "Main Page");
-                mRoomDb = DiaryDatabase.getIstance(mContext);
-                mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
-                Collections.sort(mDiaryList, new Comparator<Diary>() {
-                    DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ROOT);
-                    @Override
-                    public int compare(Diary o1, Diary o2) {
-                        try {
-                            return dateFormat.parse(o1.getDate()).compareTo(dateFormat.parse(o2.getDate()));
-                        } catch (ParseException e) {
-                            throw new IllegalArgumentException(e);
-                        }
-                    }
-                });
-                Collections.reverse(mDiaryList);
-            } else {
-                Log.d(TAG,"Main Page Search Results");
-            }
 
             //show card
             if (mDiaryList.size() > 0) {
@@ -241,7 +143,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     notifyItemRemoved(position);
                     notifyDataSetChanged();
 
-                    Toast.makeText(v.getContext(), "Delete Diary", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), mContext.getResources().getString(R.string.delete_diary), Toast.LENGTH_SHORT).show();
                     ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
                     ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                     ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
@@ -271,27 +173,25 @@ public class MainPageAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void updateData(List<Diary> diaries) {
+        if (!isSearch) {
+            mDiaryList = diaries;
+            notifyDataSetChanged();
+        }
+    }
 
-    public void refreshUi(List<Diary> diaries) {
+    public void updateSearchData(List<Diary> diaries) {
         mDiaryList = diaries;
         isSearch = true;
         notifyDataSetChanged();
     }
 
-    public void refreshSearchStatus() {
-        mRoomDb = DiaryDatabase.getIstance(mContext);
-        mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
+    public void updateSearchDataStatus(List<Diary> diaries) {
+        mDiaryList = diaries;
         isSearch = false;
         notifyDataSetChanged();
     }
 
-    public void refreshAfterDownload() {
-        if (!isSearch) {
-            mRoomDb = DiaryDatabase.getIstance(mContext);
-            mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
-        }
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemViewType(int position) {

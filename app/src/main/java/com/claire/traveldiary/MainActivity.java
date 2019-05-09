@@ -1,6 +1,10 @@
 package com.claire.traveldiary;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
@@ -29,17 +33,26 @@ import com.claire.traveldiary.settings.SettingsFragment;
 import com.claire.traveldiary.settings.SettingsPresenter;
 import com.claire.traveldiary.settings.download.DownloadDialog;
 import com.claire.traveldiary.settings.download.DownloadPresenter;
-import com.claire.traveldiary.settings.fontsize.FontDialog;
-import com.claire.traveldiary.settings.fontsize.FontPresenter;
+import com.claire.traveldiary.settings.font.FontDialog;
+import com.claire.traveldiary.settings.font.FontPresenter;
 import com.claire.traveldiary.settings.language.LanguageDialog;
 import com.claire.traveldiary.settings.language.LanguagePresenter;
 import com.claire.traveldiary.settings.sync.SyncDialog;
 import com.claire.traveldiary.settings.sync.SyncPresenter;
+import com.claire.traveldiary.util.Constants;
 import com.claire.traveldiary.util.UserManager;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.internal.CallbackManagerImpl;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -71,12 +84,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button mToolbarEdit;
     private Button mToolbarDone;
 
-    private DiaryDatabase mDatabase;
-
     //empty diary
     private Diary mDiary;
 
     private boolean isDefaultLayout = true;
+    private Typeface mTypeface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +100,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void init() {
         setContentView(R.layout.activity_main);
-        mDatabase = DiaryDatabase.getIstance(this);
         setToolbar();
         setBottomNavigation();
         openMainPage();
@@ -108,7 +119,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mToolbarSearch = findViewById(R.id.toolbar_search);
         mToolbarSearch.setOnQueryTextListener(onQueryTextListener);
         mToolbarSearch.setOnCloseListener(() -> {
-            mMainPagePresenter.refreshSearchStatus();
+            mMainPagePresenter.loadDiaryData();
             return false;
         });
 
@@ -170,7 +181,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public boolean onQueryTextSubmit(String query) {
             if (query.equals("")) {
-                mMainPagePresenter.refreshSearchStatus();
+                mMainPagePresenter.updateSearchStatus();
             } else {
                 getTagsFromDb(query);
             }
@@ -180,7 +191,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public boolean onQueryTextChange(String newText) {
             if (newText.equals("")) {
-                mMainPagePresenter.refreshSearchStatus();
+                mMainPagePresenter.updateSearchStatus();
             } else {
                 getTagsFromDb(newText);
             }
@@ -189,10 +200,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         private void getTagsFromDb(String searchText) {
             searchText = "%" + searchText + "%";
-            List<Diary> diaries = mDatabase.getDiaryDAO().getDiariesBySearch(searchText, searchText);
-            if (diaries != null) {
-                mMainPagePresenter.loadSearchData(diaries);
-            }
+            mMainPagePresenter.loadSearchData(searchText, searchText);
         }
     };
 
@@ -200,13 +208,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (item.getItemId()) {
             case R.id.navigation_main:
                 openMainPage();
-                if (!isDefaultLayout) {
-                    item.setIcon(R.mipmap.ic_waterfall_layout);
-                    isDefaultLayout = true;
+                if (isDefaultLayout) {
+                    item.setIcon(R.mipmap.ic_linear_layout);
+                    isDefaultLayout = false;
                     mMainPagePresenter.changeLayout(1);
                 } else {
                     item.setIcon(R.mipmap.ic_dashboard);
-                    isDefaultLayout = false;
+                    isDefaultLayout = true;
                     mMainPagePresenter.changeLayout(0);
                 }
                 updateMapToolbar(getResources().getString(R.string.toolbar_title));
@@ -228,13 +236,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     private void openMainPage() {
-        MainPageFragment mainPageFragment = (MainPageFragment) getSupportFragmentManager().findFragmentByTag("MainPage");
+        MainPageFragment mainPageFragment = (MainPageFragment) getSupportFragmentManager().findFragmentByTag(Constants.MAINPAGE);
 
         if (mainPageFragment == null) {
             mainPageFragment = MainPageFragment.newInstance();
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mainPageFragment, "MainPage").commit();
-        mMainPagePresenter = new MainPagePresenter(mainPageFragment);
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mainPageFragment, Constants.MAINPAGE).commit();
+        mMainPagePresenter = new MainPagePresenter(mainPageFragment, DiaryDatabase.getIstance(this));
         mainPageFragment.setPresenter(mMainPagePresenter);
 
         showBottomNavigation();
@@ -242,13 +250,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     public void openEdit(Diary diary) {
-        EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag("Edit");
+        EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag(Constants.EDIT);
 
         if (editFragment == null) {
             editFragment = EditFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, editFragment, "Edit").addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, editFragment, Constants.EDIT).addToBackStack(null).commit();
 
-            mEditPresenter = new EditPresenter(editFragment);
+            mEditPresenter = new EditPresenter(editFragment, DiaryDatabase.getIstance(this));
             editFragment.setPresenter(mEditPresenter);
 
             if (diary == null) {
@@ -263,45 +271,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public void openWeatherDialog() {
         WeatherDialog dialog =
-                (WeatherDialog) (this.getSupportFragmentManager().findFragmentByTag("WeatherDialog"));
-        EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag("Edit");
+                (WeatherDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.WEATHER));
+        EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag(Constants.EDIT);
 
         if (dialog == null) {
             dialog = new WeatherDialog();
             mWeatherPresenter = new WeatherPresenter(dialog);
             dialog.setPresenter(mWeatherPresenter);
             dialog.setTargetFragment(editFragment, REQUEST);
-            dialog.show((this.getSupportFragmentManager()),"WeatherDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.WEATHER);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "WeatherDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.WEATHER);
         }
     }
 
-    public void openShowDiaryDialog(double lat, double lng) {
+    public void openShowDiaryOnMap(double lat, double lng) {
         ShowDiaryDialog dialog =
-                (ShowDiaryDialog) (this.getSupportFragmentManager().findFragmentByTag("ShowDiaryDialog"));
+                (ShowDiaryDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.SHOWDIARYONMAP));
 
         if (dialog == null) {
             dialog = new ShowDiaryDialog();
-            mShowDiaryPresenter = new ShowDiaryPresenter(dialog);
-            dialog.setPresenter(mShowDiaryPresenter);
+            mShowDiaryPresenter = new ShowDiaryPresenter(dialog, DiaryDatabase.getIstance(this));
             mShowDiaryPresenter.loadDiaryByPlace(lat, lng);
-            dialog.show((this.getSupportFragmentManager()),"ShowDiaryDialog");
+            dialog.setPresenter(mShowDiaryPresenter);
+            dialog.show((this.getSupportFragmentManager()), Constants.SHOWDIARYONMAP);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "ShowDiaryDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.SHOWDIARYONMAP);
         }
     }
 
 
     private void openMap() {
-        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentByTag("Map");
+        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentByTag(Constants.MAP);
 
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance();
         }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mapFragment, "Map").addToBackStack("Map").commit();
-        mMapPresenter = new MapPresenter(mapFragment);
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mapFragment, Constants.MAP).addToBackStack(Constants.MAP).commit();
+        mMapPresenter = new MapPresenter(mapFragment, DiaryDatabase.getIstance(this));
         mapFragment.setPresenter(mMapPresenter);
 
         hideBottomNavigation();
@@ -309,13 +316,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     public void openSettings() {
-        SettingsFragment settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("Settings");
+        SettingsFragment settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag(Constants.SETTINGS);
 
         if (settingsFragment == null) {
             settingsFragment = SettingsFragment.newInstance();
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, settingsFragment, "Settings").addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, settingsFragment, Constants.SETTINGS).addToBackStack(null).commit();
         mSettingsPresenter = new SettingsPresenter(settingsFragment);
         settingsFragment.setPresenter(mSettingsPresenter);
 
@@ -324,57 +331,59 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public void openSyncDialog() {
         SyncDialog dialog =
-                (SyncDialog) (this.getSupportFragmentManager().findFragmentByTag("SyncDialog"));
+                (SyncDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.SYNC));
 
         if (dialog == null) {
             dialog = new SyncDialog();
-            mSyncPresenter = new SyncPresenter(dialog);
+            mSyncPresenter = new SyncPresenter(dialog, DiaryDatabase.getIstance(this), FirebaseFirestore.getInstance(), FirebaseStorage.getInstance(),
+                    FirebaseStorage.getInstance().getReferenceFromUrl(this.getResources().getString(R.string.firebase_storage)));
             dialog.setPresenter(mSyncPresenter);
-            dialog.show((this.getSupportFragmentManager()),"SyncDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.SYNC);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "SyncDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.SYNC);
         }
     }
 
     public void openDownloadDialog() {
         DownloadDialog dialog =
-                (DownloadDialog) (this.getSupportFragmentManager().findFragmentByTag("DownloadDialog"));
+                (DownloadDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.DOWNLOAD));
 
         if (dialog == null) {
             dialog = new DownloadDialog();
-            mDownloadPresenter = new DownloadPresenter(dialog);
+            mDownloadPresenter = new DownloadPresenter(dialog, DiaryDatabase.getIstance(this), FirebaseFirestore.getInstance(), FirebaseStorage.getInstance(),
+                    FirebaseStorage.getInstance().getReferenceFromUrl(this.getResources().getString(R.string.firebase_storage)));
             dialog.setPresenter(mDownloadPresenter);
-            dialog.show((this.getSupportFragmentManager()),"DownloadDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.DOWNLOAD);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "DownloadDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.DOWNLOAD);
         }
     }
 
     public void openFontDialog() {
         FontDialog dialog =
-                (FontDialog) (this.getSupportFragmentManager().findFragmentByTag("FontDialog"));
+                (FontDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.FONT));
 
         if (dialog == null) {
             dialog = new FontDialog();
             mFontPresenter = new FontPresenter(dialog);
             dialog.setPresenter(mFontPresenter);
-            dialog.show((this.getSupportFragmentManager()),"FontDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.FONT);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "FontDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.FONT);
         }
     }
 
     public void openLanguageDialog() {
         LanguageDialog dialog =
-                (LanguageDialog) (this.getSupportFragmentManager().findFragmentByTag("LanguageDialog"));
+                (LanguageDialog) (this.getSupportFragmentManager().findFragmentByTag(Constants.LANGUAGE));
 
         if (dialog == null) {
             dialog = new LanguageDialog();
             mLanguagePresenter = new LanguagePresenter(dialog);
             dialog.setPresenter(mLanguagePresenter);
-            dialog.show((this.getSupportFragmentManager()),"LanguageDialog");
+            dialog.show((this.getSupportFragmentManager()), Constants.LANGUAGE);
         } else if (!dialog.isAdded()) {
-            dialog.show(this.getSupportFragmentManager(), "LanguageDialog");
+            dialog.show(this.getSupportFragmentManager(), Constants.LANGUAGE);
         }
     }
 
@@ -441,6 +450,87 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    public void sortDiaryByDate(List<Diary> diaries) {
+        Collections.sort(diaries, new Comparator<Diary>() {
+            DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ROOT);
+            @Override
+            public int compare(Diary o1, Diary o2) {
+                try {
+                    return dateFormat.parse(o1.getDate()).compareTo(dateFormat.parse(o2.getDate()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+        Collections.reverse(diaries);
+    }
+
+
+    public void setFontType(TextView title, TextView date) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            SharedPreferences sharedPreferences = getSharedPreferences("FONT", Context.MODE_PRIVATE);
+            String fontType = sharedPreferences.getString("fontValue", "");
+            switch (fontType) {
+                case "allura":
+                    mTypeface = getResources().getFont(R.font.allura_regular);
+                    setTypefaceMid(mTypeface, title, date);
+                    break;
+                case "amatic":
+                    mTypeface = getResources().getFont(R.font.amatic_regular);
+                    setTypefaceBig(mTypeface, title, date);
+                    break;
+                case "blackjack":
+                    mTypeface = getResources().getFont(R.font.blackjack);
+                    setTypefaceMid(mTypeface, title, date);
+                    break;
+                case "brizel":
+                    mTypeface = getResources().getFont(R.font.brizel);
+                    setTypefaceMid(mTypeface, title, date);
+                    break;
+                case "dancing":
+                    mTypeface = getResources().getFont(R.font.dancing_regular);
+                    setTypeface(mTypeface, title, date);
+                    break;
+                case "farsan":
+                    mTypeface = getResources().getFont(R.font.farsan_regular);
+                    setTypefaceMid(mTypeface, title, date);
+                    break;
+                case "handwriting":
+                    mTypeface = getResources().getFont(R.font.justan_regular);
+                    setTypefaceBig(mTypeface, title, date);
+                    break;
+                case "kaushan":
+                    mTypeface = getResources().getFont(R.font.kaushan_regular);
+                    setTypeface(mTypeface, title, date);
+                    break;
+                case"default":
+                    title.setTypeface(Typeface.SERIF);
+                    date.setTypeface(Typeface.SERIF);
+                    break;
+            }
+        }
+    }
+
+    private void setTypeface(Typeface mTypeface, TextView title, TextView date) {
+        title.setTypeface(mTypeface);
+        date.setTypeface(mTypeface);
+        title.setTextSize(24);
+        date.setTextSize(18);
+    }
+
+    private void setTypefaceMid(Typeface mTypeface, TextView title, TextView date) {
+        title.setTypeface(mTypeface);
+        date.setTypeface(mTypeface);
+        title.setTextSize(26);
+        date.setTextSize(20);
+    }
+
+    private void setTypefaceBig(Typeface mTypeface, TextView title, TextView date) {
+        title.setTypeface(mTypeface);
+        date.setTypeface(mTypeface);
+        title.setTextSize(32);
+        date.setTextSize(26);
+    }
 
     public void hideBottomNavigation() {
         mBottomNavigation.setVisibility(View.GONE);

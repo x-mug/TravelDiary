@@ -22,8 +22,6 @@ import com.claire.traveldiary.R;
 import com.claire.traveldiary.TravelDiaryApplication;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
-import com.claire.traveldiary.data.room.DiaryDAO;
-import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -51,9 +49,9 @@ public class EditAdapter extends RecyclerView.Adapter {
 
     private EditContract.Presenter mPresenter;
     private GalleryAdapter mGalleryAdapter;
+    private CircleAdapter mCircleAdapter;
 
     private Context mContext;
-    private DiaryDatabase mDatabase;
 
     //view holder
     private TextView mLocation;
@@ -84,6 +82,7 @@ public class EditAdapter extends RecyclerView.Adapter {
     public class EditViewHolder extends RecyclerView.ViewHolder {
 
         private RecyclerView mRecyclerGallery;
+        private RecyclerView mRecyclerCircles;
         private EditText mTitle;
         private TextView mDate;
         private ImageButton mWeather;
@@ -94,6 +93,7 @@ public class EditAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             mRecyclerGallery = itemView.findViewById(R.id.recycler_gallery);
+            mRecyclerCircles = itemView.findViewById(R.id.recycler_circles);
             mLocation = itemView.findViewById(R.id.tv_my_location);
             mCardView = itemView.findViewById(R.id.autocomplete_card);
             mTitle = itemView.findViewById(R.id.edit_diary_title);
@@ -397,9 +397,6 @@ public class EditAdapter extends RecyclerView.Adapter {
 
         notifyDataSetChanged();
 
-        mDatabase = DiaryDatabase.getIstance(mContext);
-        DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
-
         //random diary id
         Random random = new Random();
         int id = random.nextInt(10000000);
@@ -463,13 +460,11 @@ public class EditAdapter extends RecyclerView.Adapter {
             newOrUpdateDiary.setTags(mTagsList);
         }
 
-        diaryDAO.insertOrUpdateDiary(newOrUpdateDiary);
-        diaryDAO.insertOrUpdatePlace(diaryPlace);
+        mPresenter.insertOrUpdateDiary(newOrUpdateDiary);
+        mPresenter.insertOrUpdatePlace(diaryPlace);
+
         Toast.makeText(mContext, "Save!", Toast.LENGTH_SHORT).show();
         showDiary(newOrUpdateDiary);
-
-        Log.d(TAG, "Diary size" + diaryDAO.getAllDiaries().size());
-        Log.d(TAG, "Place size" + diaryDAO.getAllPlaces().size());
     }
 
 

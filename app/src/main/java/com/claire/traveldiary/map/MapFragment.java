@@ -14,8 +14,7 @@ import android.view.ViewGroup;
 
 import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
-import com.claire.traveldiary.data.room.DiaryDAO;
-import com.claire.traveldiary.data.room.DiaryDatabase;
+import com.claire.traveldiary.data.DiaryPlace;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,6 +23,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
+import java.util.List;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -34,8 +35,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     private GoogleMap mMap;
 
     private MapContract.Presenter mPresenter;
-
-    private DiaryDatabase mDatabase;
 
 
     public MapFragment() {}
@@ -59,8 +58,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mDatabase = DiaryDatabase.getIstance(getContext());
     }
 
     @Nullable
@@ -93,28 +90,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
             Log.e(TAG, "Can't find style. Error: ", e);
         }
 
-        //database
-        DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
+        mPresenter.loadDiaryOnMap();
 
-        //find all my diaries in this place
-        for (int i = 0; i < diaryDAO.getAllPlaces().size(); i++ ) {
-            LatLng location = new LatLng(diaryDAO.getAllPlaces().get(i).getLat(), diaryDAO.getAllPlaces().get(i).getLng());
-
-            if (diaryDAO.getAllPlaces().get(i).getLat() != 0.0 && diaryDAO.getAllPlaces().get(i).getLng() != 0.0) {
-                mMap.addMarker(new MarkerOptions()
-                        .position(location)
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.pin))
-                        .anchor(0.0f, 1.0f)
-                        .title(diaryDAO.getAllPlaces().get(i).getPlaceName()));
-
-                mMap.setOnInfoWindowClickListener(marker -> {
-                    Double latitude = marker.getPosition().latitude;
-                    Double longitude = marker.getPosition().longitude;
-
-                    ((MainActivity) getActivity()).openShowDiaryDialog(latitude, longitude);
-                });
-            }
-        }
     }
 
     @Override
@@ -122,5 +99,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapCont
         super.onDestroy();
         ((MainActivity) getActivity()).showBottomNavigation();
         ((MainActivity) getActivity()).updateMapToolbar(getResources().getString(R.string.toolbar_title));
+    }
+
+
+    @Override
+    public void loadDiaryOnMapUi(List<DiaryPlace> places) {
+        for (int i = 0; i < places.size(); i++ ) {
+            LatLng location = new LatLng(places.get(i).getLat(), places.get(i).getLng());
+
+            if (places.get(i).getLat() != 0.0 && places.get(i).getLng() != 0.0) {
+                mMap.addMarker(new MarkerOptions()
+                        .position(location)
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.pin))
+                        .anchor(0.0f, 1.0f)
+                        .title(places.get(i).getPlaceName()));
+
+                mMap.setOnInfoWindowClickListener(marker -> {
+                    Double latitude = marker.getPosition().latitude;
+                    Double longitude = marker.getPosition().longitude;
+
+                    ((MainActivity) getActivity()).openShowDiaryOnMap(latitude, longitude);
+                });
+            }
+        }
     }
 }

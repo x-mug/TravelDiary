@@ -1,4 +1,4 @@
-package com.claire.traveldiary.settings.fontsize;
+package com.claire.traveldiary.settings.font;
 
 import android.support.annotation.NonNull;
 
