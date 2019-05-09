@@ -82,8 +82,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button mToolbarEdit;
     private Button mToolbarDone;
 
-    private DiaryDatabase mDatabase;
-
     //empty diary
     private Diary mDiary;
 
@@ -100,7 +98,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void init() {
         setContentView(R.layout.activity_main);
-        mDatabase = DiaryDatabase.getIstance(this);
         setToolbar();
         setBottomNavigation();
         openMainPage();
@@ -120,7 +117,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mToolbarSearch = findViewById(R.id.toolbar_search);
         mToolbarSearch.setOnQueryTextListener(onQueryTextListener);
         mToolbarSearch.setOnCloseListener(() -> {
-            mMainPagePresenter.refreshSearchStatus();
+            mMainPagePresenter.loadDiaryData();
             return false;
         });
 
@@ -182,7 +179,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public boolean onQueryTextSubmit(String query) {
             if (query.equals("")) {
-                mMainPagePresenter.refreshSearchStatus();
+                mMainPagePresenter.updateSearchStatus();
             } else {
                 getTagsFromDb(query);
             }
@@ -192,7 +189,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public boolean onQueryTextChange(String newText) {
             if (newText.equals("")) {
-                mMainPagePresenter.refreshSearchStatus();
+                mMainPagePresenter.updateSearchStatus();
             } else {
                 getTagsFromDb(newText);
             }
@@ -201,10 +198,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         private void getTagsFromDb(String searchText) {
             searchText = "%" + searchText + "%";
-            List<Diary> diaries = mDatabase.getDiaryDAO().getDiariesBySearch(searchText, searchText);
-            if (diaries != null) {
-                mMainPagePresenter.loadSearchData(diaries);
-            }
+            mMainPagePresenter.loadSearchData(searchText, searchText);
         }
     };
 
@@ -312,7 +306,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mapFragment = MapFragment.newInstance();
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mapFragment, Constants.MAP).addToBackStack(Constants.MAP).commit();
-        mMapPresenter = new MapPresenter(mapFragment);
+        mMapPresenter = new MapPresenter(mapFragment, DiaryDatabase.getIstance(this));
         mapFragment.setPresenter(mMapPresenter);
 
         hideBottomNavigation();
@@ -466,6 +460,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
         Collections.reverse(diaries);
     }
+
 
     public void setFontType(TextView title, TextView date) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

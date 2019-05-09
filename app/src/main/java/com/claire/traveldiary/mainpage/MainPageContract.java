@@ -12,6 +12,8 @@ public interface MainPageContract {
 
     interface View extends BaseView<Presenter> {
 
+        void loadDiaryDataUi(List<Diary> diaries);
+
         void openEditPage(Diary diary);
 
         void deleteDiaryUi();
@@ -20,7 +22,7 @@ public interface MainPageContract {
 
         void loadSearchDataUi(List<Diary> diaries);
 
-        void refreshSearchStatusUi();
+        void updateSearchStatusUi(List<Diary> diaries);
 
         void changeLayoutUi(int status);
 
@@ -34,21 +36,22 @@ public interface MainPageContract {
 
         void result(int requestCode, int resultCode);
 
+        void loadDiaryData();
+
         void openEdit(Diary diary);
 
         void deleteDiary(int id);
 
         void shareDiary(Diary diary);
 
-        void loadSearchData(List<Diary> diaries);
+        void loadSearchData(String searchText1, String searchText2);
 
-        void refreshSearchStatus();
+        void updateSearchStatus();
 
         void changeLayout(int status);
 
         void setFontType(TextView title, TextView date);
 
-        void sortDiaryByDate(List<Diary> diaries);
 
     }
 

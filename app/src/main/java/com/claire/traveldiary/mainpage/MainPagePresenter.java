@@ -18,6 +18,8 @@ public class MainPagePresenter implements MainPageContract.Presenter {
 
     private MainPageContract.View mView;
 
+    private List<Diary> mDiaryList;
+
     private DiaryDatabase mRoomDb;
     private DiaryDAO mDiaryDAO;
 
@@ -33,6 +35,13 @@ public class MainPagePresenter implements MainPageContract.Presenter {
 
     @Override
     public void result(int requestCode, int resultCode) {}
+
+    @Override
+    public void loadDiaryData() {
+        mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
+        mView.loadDiaryDataUi(mDiaryList);
+        mView.sortDiaryByDateUi(mDiaryList);
+    }
 
     @Override
     public void openEdit(Diary diary) {
@@ -60,13 +69,18 @@ public class MainPagePresenter implements MainPageContract.Presenter {
     }
 
     @Override
-    public void loadSearchData(List<Diary> diaries) {
-        mView.loadSearchDataUi(diaries);
+    public void loadSearchData(String searchText1, String searchText2) {
+        List<Diary> diaries = mRoomDb.getDiaryDAO().getDiariesBySearch(searchText1, searchText2);
+            if (diaries != null) {
+                mView.loadSearchDataUi(diaries);
+            }
     }
 
     @Override
-    public void refreshSearchStatus() {
-        mView.refreshSearchStatusUi();
+    public void updateSearchStatus() {
+        mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
+        mView.updateSearchStatusUi(mDiaryList);
+        mView.sortDiaryByDateUi(mDiaryList);
     }
 
     @Override
@@ -77,11 +91,6 @@ public class MainPagePresenter implements MainPageContract.Presenter {
     @Override
     public void setFontType(TextView title, TextView date) {
         mView.setFontTypeUi(title, date);
-    }
-
-    @Override
-    public void sortDiaryByDate(List<Diary> diaries) {
-        mView.sortDiaryByDateUi(diaries);
     }
 
 }

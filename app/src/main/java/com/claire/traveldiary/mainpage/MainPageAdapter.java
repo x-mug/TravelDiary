@@ -1,7 +1,6 @@
 package com.claire.traveldiary.mainpage;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -18,15 +17,8 @@ import android.widget.Toast;
 
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.data.Diary;
-import com.claire.traveldiary.data.room.DiaryDatabase;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 public class MainPageAdapter extends RecyclerView.Adapter {
 
@@ -40,8 +32,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     private MainPageContract.Presenter mPresenter;
 
     private Context mContext;
-
-    private DiaryDatabase mRoomDb;
 
     private List<Diary> mDiaryList;
 
@@ -96,7 +86,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_linear, parent, false);
             return new MainPageViewHolder(view);
         }
-
         return null;
     }
 
@@ -105,16 +94,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof MainPageViewHolder) {
-
-            if (!isSearch) {
-                Log.d(TAG, "Main Page");
-                mRoomDb = DiaryDatabase.getIstance(mContext);
-                mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
-
-                mPresenter.sortDiaryByDate(mDiaryList);
-            } else {
-                Log.d(TAG,"Main Page Search Results");
-            }
 
             //show card
             if (mDiaryList.size() > 0) {
@@ -194,27 +173,25 @@ public class MainPageAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void updateData(List<Diary> diaries) {
+        if (!isSearch) {
+            mDiaryList = diaries;
+            notifyDataSetChanged();
+        }
+    }
 
-    public void refreshUi(List<Diary> diaries) {
+    public void updateSearchData(List<Diary> diaries) {
         mDiaryList = diaries;
         isSearch = true;
         notifyDataSetChanged();
     }
 
-    public void refreshSearchStatus() {
-        mRoomDb = DiaryDatabase.getIstance(mContext);
-        mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
+    public void updateSearchDataStatus(List<Diary> diaries) {
+        mDiaryList = diaries;
         isSearch = false;
         notifyDataSetChanged();
     }
 
-    public void refreshAfterDownload() {
-        if (!isSearch) {
-            mRoomDb = DiaryDatabase.getIstance(mContext);
-            mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
-        }
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemViewType(int position) {

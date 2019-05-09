@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,7 @@ import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.component.GridSpacingItemDecoration;
 import com.claire.traveldiary.component.SpacesItemDecoration;
-import com.claire.traveldiary.data.DeletedDiary;
 import com.claire.traveldiary.data.Diary;
-import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 
 import java.util.ArrayList;
@@ -82,10 +79,11 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mMainPageAdapter.refreshAfterDownload();
+    public void onStart() {
+        super.onStart();
+        mPresenter.loadDiaryData();
     }
+
 
     @Nullable
     @Override
@@ -148,6 +146,11 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
     }
 
     @Override
+    public void loadDiaryDataUi(List<Diary> diaries) {
+        mMainPageAdapter.updateData(diaries);
+    }
+
+    @Override
     public void openEditPage(Diary diary) {
         ((MainActivity) getActivity()).openEdit(diary);
     }
@@ -178,13 +181,14 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
 
     @Override
     public void loadSearchDataUi(List<Diary> diaries) {
-        mMainPageAdapter.refreshUi(diaries);
+        mMainPageAdapter.updateSearchData(diaries);
     }
 
     @Override
-    public void refreshSearchStatusUi() {
-        mMainPageAdapter.refreshSearchStatus();
+    public void updateSearchStatusUi(List<Diary> diaries) {
+        mMainPageAdapter.updateSearchDataStatus(diaries);
     }
+
 
     @Override
     public void changeLayoutUi(int status) {
