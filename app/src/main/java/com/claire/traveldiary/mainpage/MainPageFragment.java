@@ -153,17 +153,8 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
     }
 
     @Override
-    public void deleteDiaryUi(int id) {
-        DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
-
-        //insert deleted diary
-        DeletedDiary deletedDiary = new DeletedDiary();
-        deletedDiary.setId(id);
-        diaryDAO.insertDeletedDiary(deletedDiary);
-        Log.d(TAG,"Deleted diary " + diaryDAO.getAllDeletedDiariesId().size());
-
-        //delete diary from room
-        diaryDAO.deleteDiarybyId(id);
+    public void deleteDiaryUi() {
+        mMainPageAdapter.notifyDataSetChanged();
     }
 
     @Override

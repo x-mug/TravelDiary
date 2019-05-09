@@ -246,7 +246,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mainPageFragment = MainPageFragment.newInstance();
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, mainPageFragment, Constants.MAINPAGE).commit();
-        mMainPagePresenter = new MainPagePresenter(mainPageFragment);
+        mMainPagePresenter = new MainPagePresenter(mainPageFragment, DiaryDatabase.getIstance(this));
         mainPageFragment.setPresenter(mMainPagePresenter);
 
         showBottomNavigation();

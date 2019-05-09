@@ -14,7 +14,7 @@ public interface MainPageContract {
 
         void openEditPage(Diary diary);
 
-        void deleteDiaryUi(int id);
+        void deleteDiaryUi();
 
         void shareDiaryUi(Diary diary);
 

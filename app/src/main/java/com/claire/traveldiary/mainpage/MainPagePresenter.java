@@ -1,9 +1,14 @@
 package com.claire.traveldiary.mainpage;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.TextView;
 
+import com.claire.traveldiary.data.DeletedDiary;
 import com.claire.traveldiary.data.Diary;
+import com.claire.traveldiary.data.room.DiaryDAO;
+import com.claire.traveldiary.data.room.DiaryDatabase;
 
 import java.util.List;
 
@@ -13,9 +18,13 @@ public class MainPagePresenter implements MainPageContract.Presenter {
 
     private MainPageContract.View mView;
 
+    private DiaryDatabase mRoomDb;
+    private DiaryDAO mDiaryDAO;
+
     @SuppressLint("RestrictedApi")
-    public MainPagePresenter(MainPageContract.View view) {
+    public MainPagePresenter(@NonNull MainPageContract.View view, @NonNull DiaryDatabase roomDb) {
         mView = checkNotNull(view, "view cannot be null!");
+        mRoomDb = checkNotNull(roomDb, "roomDb cannot be null!");
         mView.setPresenter(this);
     }
 
@@ -32,7 +41,17 @@ public class MainPagePresenter implements MainPageContract.Presenter {
 
     @Override
     public void deleteDiary(int id) {
-        mView.deleteDiaryUi(id);
+        mDiaryDAO = mRoomDb.getDiaryDAO();
+
+        //insert deleted diary
+        DeletedDiary deletedDiary = new DeletedDiary();
+        deletedDiary.setId(id);
+        mDiaryDAO.insertDeletedDiary(deletedDiary);
+        Log.d("TAG","Deleted diary " + mDiaryDAO.getAllDeletedDiariesId().size());
+
+        //delete diary from room
+        mDiaryDAO.deleteDiarybyId(id);
+        mView.deleteDiaryUi();
     }
 
     @Override

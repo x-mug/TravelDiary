@@ -110,6 +110,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 Log.d(TAG, "Main Page");
                 mRoomDb = DiaryDatabase.getIstance(mContext);
                 mDiaryList = mRoomDb.getDiaryDAO().getAllDiaries();
+
                 mPresenter.sortDiaryByDate(mDiaryList);
             } else {
                 Log.d(TAG,"Main Page Search Results");
