@@ -43,6 +43,8 @@ import com.claire.traveldiary.util.Constants;
 import com.claire.traveldiary.util.UserManager;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.internal.CallbackManagerImpl;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -333,7 +335,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         if (dialog == null) {
             dialog = new SyncDialog();
-            mSyncPresenter = new SyncPresenter(dialog);
+            mSyncPresenter = new SyncPresenter(dialog, DiaryDatabase.getIstance(this), FirebaseFirestore.getInstance(), FirebaseStorage.getInstance(),
+                    FirebaseStorage.getInstance().getReferenceFromUrl(this.getResources().getString(R.string.firebase_storage)));
             dialog.setPresenter(mSyncPresenter);
             dialog.show((this.getSupportFragmentManager()), Constants.SYNC);
         } else if (!dialog.isAdded()) {
