@@ -55,7 +55,6 @@ public class EditAdapter extends RecyclerView.Adapter {
     private CircleAdapter mCircleAdapter;
 
     private Context mContext;
-    private DiaryDatabase mDatabase;
 
     //view holder
     private TextView mLocation;
@@ -401,9 +400,6 @@ public class EditAdapter extends RecyclerView.Adapter {
 
         notifyDataSetChanged();
 
-        mDatabase = DiaryDatabase.getIstance(mContext);
-        DiaryDAO diaryDAO = mDatabase.getDiaryDAO();
-
         //random diary id
         Random random = new Random();
         int id = random.nextInt(10000000);
@@ -467,13 +463,12 @@ public class EditAdapter extends RecyclerView.Adapter {
             newOrUpdateDiary.setTags(mTagsList);
         }
 
-        diaryDAO.insertOrUpdateDiary(newOrUpdateDiary);
-        diaryDAO.insertOrUpdatePlace(diaryPlace);
+        mPresenter.insertOrUpdateDiary(newOrUpdateDiary);
+        mPresenter.insertOrUpdatePlace(diaryPlace);
+
         Toast.makeText(mContext, "Save!", Toast.LENGTH_SHORT).show();
         showDiary(newOrUpdateDiary);
 
-        Log.d(TAG, "Diary size" + diaryDAO.getAllDiaries().size());
-        Log.d(TAG, "Place size" + diaryDAO.getAllPlaces().size());
     }
 
 

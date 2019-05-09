@@ -254,7 +254,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             editFragment = EditFragment.newInstance();
             getSupportFragmentManager().beginTransaction().replace(R.id.layout_container, editFragment, Constants.EDIT).addToBackStack(null).commit();
 
-            mEditPresenter = new EditPresenter(editFragment);
+            mEditPresenter = new EditPresenter(editFragment, DiaryDatabase.getIstance(this));
             editFragment.setPresenter(mEditPresenter);
 
             if (diary == null) {

@@ -1,10 +1,14 @@
 package com.claire.traveldiary.edit;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 
 import com.claire.traveldiary.data.Diary;
+import com.claire.traveldiary.data.DiaryPlace;
+import com.claire.traveldiary.data.room.DiaryDAO;
+import com.claire.traveldiary.data.room.DiaryDatabase;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -14,9 +18,13 @@ public class EditPresenter implements EditContract.Presenter {
 
     private EditContract.View mView;
 
+    private DiaryDatabase mRoomDb;
+    private DiaryDAO mDiaryDAO;
+
     @SuppressLint("RestrictedApi")
-    public EditPresenter(EditContract.View view) {
+    public EditPresenter(@NonNull EditContract.View view, @NonNull DiaryDatabase roomDb) {
         mView = checkNotNull(view, "view cannot be null!");
+        mRoomDb = checkNotNull(roomDb, "roomDb cannot be null!");
         mView.setPresenter(this);
     }
 
@@ -50,6 +58,20 @@ public class EditPresenter implements EditContract.Presenter {
     public void clickSaveDiary() {
         Log.d(TAG,"Successful save diary to room!");
         mView.clickSaveDiaryUi();
+    }
+
+    @Override
+    public void insertOrUpdateDiary(Diary diary) {
+        mDiaryDAO = mRoomDb.getDiaryDAO();
+        mDiaryDAO.insertOrUpdateDiary(diary);
+        Log.d(TAG, "Diary size" + mDiaryDAO.getAllDiaries().size());
+    }
+
+    @Override
+    public void insertOrUpdatePlace(DiaryPlace diaryPlace) {
+        mDiaryDAO = mRoomDb.getDiaryDAO();
+        mDiaryDAO.insertOrUpdatePlace(diaryPlace);
+        Log.d(TAG, "Place size" + mDiaryDAO.getAllPlaces().size());
     }
 
     @Override

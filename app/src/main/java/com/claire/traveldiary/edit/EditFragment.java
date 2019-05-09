@@ -71,7 +71,6 @@ public class EditFragment extends Fragment implements EditContract.View{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEditAdapter = new EditAdapter(mPresenter,getContext(),mDiary);
-
     }
 
     @Nullable
@@ -289,10 +288,8 @@ public class EditFragment extends Fragment implements EditContract.View{
         if(mEditAdapter == null) {
             mEditAdapter = new EditAdapter(mPresenter,getContext(),diary);
             mEditAdapter.showDiary(diary);
-            Log.d(TAG,"edit adapter is null" + diary.getTitle());
         } else {
             mEditAdapter.showDiary(diary);
-            Log.d(TAG,"edit adapter not null" + diary.getTitle());
         }
     }
 
@@ -309,7 +306,6 @@ public class EditFragment extends Fragment implements EditContract.View{
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
             ((MainActivity) getActivity()).updateMapToolbar("");
         } else {
