@@ -9,7 +9,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,24 +19,18 @@ import com.claire.traveldiary.MainActivity;
 import com.claire.traveldiary.R;
 import com.claire.traveldiary.component.SpacesItemDecoration;
 import com.claire.traveldiary.data.Diary;
-import com.claire.traveldiary.data.DiaryPlace;
-import com.claire.traveldiary.data.room.DiaryDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
 
 public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDiaryContract.View {
 
-    private static final String TAG = "ShowDiaryDialog";
-
     private ShowDiaryContract.Presenter mPresenter;
 
     private ConstraintLayout mLayout;
     private ShowDiaryAdapter mShowDiaryAdapter;
 
-    private List<DiaryPlace> mPlaceList;
     private List<Diary> mDiaryList;
 
 
@@ -68,10 +61,9 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
         mLayout = dialogView.findViewById(R.id.layout_popup);
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
 
-
         RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_popup);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext(),mDiaryList);
+        mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext(), mDiaryList);
         recyclerView.setAdapter(mShowDiaryAdapter);
         recyclerView.setPadding(0,0,0,40);
         recyclerView.addItemDecoration(new SpacesItemDecoration(6));
@@ -86,31 +78,13 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
     }
 
     @Override
-    public void openDiaryDialogByPlace(double lat, double lng) {
-
-        DiaryDatabase diaryDatabase = DiaryDatabase.getIstance(getContext());
-
-        //find all diaries by placeName in placeObject
-        mPlaceList = diaryDatabase.getDiaryDAO().getPlacebyLatlng(lat, lng);
-
-        mDiaryList = new ArrayList<>();
-
-        for (int i = 0; i < mPlaceList.size(); i++) {
-            Diary diary = new Diary();
-            diary  = diaryDatabase.getDiaryDAO().getDiarybyId(mPlaceList.get(i).getDiaryId());
-            mDiaryList.add(diary);
-
-            Log.d(TAG, "diary size: " + mDiaryList.size());
-        }
-
-        Log.d(TAG,"how many diaries in that place " + mPlaceList.size());
-        Log.d(TAG, "diary place: " + mPlaceList.get(0).getPlaceName());
-
+    public void loadDiaryByPlaceUi(List<Diary> diaries) {
+        mDiaryList = diaries;
         if(mShowDiaryAdapter == null) {
-            mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext(),mDiaryList);
-            mShowDiaryAdapter.showDiary(mDiaryList);
+            mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext(),diaries);
+            mShowDiaryAdapter.showDiary(diaries);
         } else {
-            mShowDiaryAdapter.showDiary(mDiaryList);
+            mShowDiaryAdapter.showDiary(diaries);
         }
     }
 
@@ -135,6 +109,4 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
         new Handler().postDelayed(super::dismiss, 100);
     }
-
-
 }

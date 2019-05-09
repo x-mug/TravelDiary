@@ -1,23 +1,33 @@
 package com.claire.traveldiary.map.showdiary;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.TextView;
 
 
 import com.claire.traveldiary.data.Diary;
+import com.claire.traveldiary.data.DiaryPlace;
+import com.claire.traveldiary.data.room.DiaryDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
 
 public class ShowDiaryPresenter implements ShowDiaryContract.Presenter {
 
-    private ShowDiaryContract.View mShowDiaryView;
+    private static final String TAG = "ShowDiaryPresenter";
 
-    public ShowDiaryPresenter(@NonNull ShowDiaryContract.View showDiaryViewiew) {
+    private ShowDiaryContract.View mView;
 
-        mShowDiaryView = checkNotNull(showDiaryViewiew, "showdiaryview cannot be null!");
-        mShowDiaryView.setPresenter(this);
+    private DiaryDatabase mRoomDb;
+
+    private List<DiaryPlace> mPlaceList;
+
+    public ShowDiaryPresenter(@NonNull ShowDiaryContract.View showDiaryViewiew, @NonNull DiaryDatabase roomDb) {
+        mView = checkNotNull(showDiaryViewiew, "showdiaryview cannot be null!");
+        mRoomDb = checkNotNull(roomDb, "roomDb cannot be null!");
+        mView.setPresenter(this);
     }
 
 
@@ -28,24 +38,35 @@ public class ShowDiaryPresenter implements ShowDiaryContract.Presenter {
 
     @Override
     public void loadDiaryByPlace(double lat, double lng) {
-        mShowDiaryView.openDiaryDialogByPlace(lat, lng);
+        mPlaceList = mRoomDb.getDiaryDAO().getPlacebyLatlng(lat, lng);
+        List<Diary> diaryList = new ArrayList<>();
+
+        for (int i = 0; i < mPlaceList.size(); i++) {
+            Diary diary = new Diary();
+            diary  = mRoomDb.getDiaryDAO().getDiarybyId(mPlaceList.get(i).getDiaryId());
+            diaryList.add(diary);
+
+            Log.d(TAG, "diary size: " + diaryList.size());
+        }
+        mView.loadDiaryByPlaceUi(diaryList);
+        Log.d(TAG,"how many diaries in that place " + mPlaceList.size());
+        Log.d(TAG, "diary place: " + mPlaceList.get(0).getPlaceName());
     }
 
     @Override
     public void openEdit(Diary diary) {
-        mShowDiaryView.openEditUi(diary);
+        mView.openEditUi(diary);
     }
 
     @Override
     public void closePopup() {
-        mShowDiaryView.closePopupUi();
+        mView.closePopupUi();
     }
 
     @Override
     public void setFontType(TextView title, TextView date) {
-        mShowDiaryView.setFontTypeUi(title, date);
+        mView.setFontTypeUi(title, date);
     }
-
 
     @Override
     public void start() {}

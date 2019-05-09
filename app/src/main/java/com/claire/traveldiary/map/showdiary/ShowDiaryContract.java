@@ -13,7 +13,7 @@ public interface ShowDiaryContract {
 
     interface View extends BaseView<Presenter> {
 
-        void openDiaryDialogByPlace(double lat, double lng);
+        void loadDiaryByPlaceUi(List<Diary> diaries);
 
         void openEditUi(Diary diary);
 

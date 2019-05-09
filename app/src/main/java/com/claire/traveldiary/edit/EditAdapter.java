@@ -22,8 +22,6 @@ import com.claire.traveldiary.R;
 import com.claire.traveldiary.TravelDiaryApplication;
 import com.claire.traveldiary.data.Diary;
 import com.claire.traveldiary.data.DiaryPlace;
-import com.claire.traveldiary.data.room.DiaryDAO;
-import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -33,7 +31,6 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -468,7 +465,6 @@ public class EditAdapter extends RecyclerView.Adapter {
 
         Toast.makeText(mContext, "Save!", Toast.LENGTH_SHORT).show();
         showDiary(newOrUpdateDiary);
-
     }
 
 

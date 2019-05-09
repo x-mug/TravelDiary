@@ -289,9 +289,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         if (dialog == null) {
             dialog = new ShowDiaryDialog();
-            mShowDiaryPresenter = new ShowDiaryPresenter(dialog);
-            dialog.setPresenter(mShowDiaryPresenter);
+            mShowDiaryPresenter = new ShowDiaryPresenter(dialog, DiaryDatabase.getIstance(this));
             mShowDiaryPresenter.loadDiaryByPlace(lat, lng);
+            dialog.setPresenter(mShowDiaryPresenter);
             dialog.show((this.getSupportFragmentManager()), Constants.SHOWDIARYONMAP);
         } else if (!dialog.isAdded()) {
             dialog.show(this.getSupportFragmentManager(), Constants.SHOWDIARYONMAP);
