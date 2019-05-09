@@ -350,7 +350,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         if (dialog == null) {
             dialog = new DownloadDialog();
-            mDownloadPresenter = new DownloadPresenter(dialog);
+            mDownloadPresenter = new DownloadPresenter(dialog, DiaryDatabase.getIstance(this), FirebaseFirestore.getInstance(), FirebaseStorage.getInstance(),
+                    FirebaseStorage.getInstance().getReferenceFromUrl(this.getResources().getString(R.string.firebase_storage)));
             dialog.setPresenter(mDownloadPresenter);
             dialog.show((this.getSupportFragmentManager()), Constants.DOWNLOAD);
         } else if (!dialog.isAdded()) {

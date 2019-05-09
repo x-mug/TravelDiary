@@ -23,8 +23,6 @@ import static com.bumptech.glide.util.Preconditions.checkNotNull;
 
 public class SyncDialog extends BottomSheetDialogFragment implements SyncContract.View {
 
-    private static final String TAG = "SyncDialog";
-
     private SyncContract.Presenter mPresenter;
 
     private ConstraintLayout mLayout;
@@ -80,9 +78,9 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
     @Override
     public void successfullySyncUi() {
         Toast.makeText(getContext(), "Successfully Sync!", Toast.LENGTH_SHORT).show();
-            mSync.setClickable(true);
-            mSync.setTextColor(getActivity().getResources().getColor(R.color.quantum_black_100));
-            dismiss();
+        mSync.setClickable(true);
+        mSync.setTextColor(getActivity().getResources().getColor(R.color.quantum_black_100));
+        dismiss();
     }
 
     @Override
