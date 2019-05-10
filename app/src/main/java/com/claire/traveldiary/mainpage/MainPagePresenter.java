@@ -59,7 +59,7 @@ public class MainPagePresenter implements MainPageContract.Presenter {
         Log.d("TAG","Deleted diary " + mDiaryDAO.getAllDeletedDiariesId().size());
 
         //delete diary from room
-        mDiaryDAO.deleteDiarybyId(id);
+        mDiaryDAO.removeDiarybyId(id);
         mView.removeDiaryUi();
     }
 

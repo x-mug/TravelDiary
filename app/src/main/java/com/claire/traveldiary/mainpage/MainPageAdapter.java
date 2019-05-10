@@ -35,7 +35,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
     private List<Diary> mDiaryList;
 
-    private boolean isLongclick = false;
+    private boolean isLongClick = false;
     private boolean isSearch = false;
 
 
@@ -118,11 +118,11 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
             //click card
             ((MainPageViewHolder) holder).mCard.setOnClickListener(v -> {
-                if (isLongclick) {
+                if (isLongClick) {
                     ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
                     ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                     ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
-                    isLongclick = false;
+                    isLongClick = false;
                 } else {
                     //click card
                     mPresenter.openEdit(mDiaryList.get(position));
@@ -158,7 +158,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                     ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
                 });
-                isLongclick = true;
+                isLongClick = true;
                 return true;
             });
         }

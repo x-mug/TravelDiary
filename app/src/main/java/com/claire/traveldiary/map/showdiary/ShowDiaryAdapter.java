@@ -24,8 +24,6 @@ import java.util.Locale;
 
 public class ShowDiaryAdapter extends RecyclerView.Adapter {
 
-    private static final String TAG = "ShowDiaryAdapter";
-
     private ShowDiaryContract.Presenter mPresenter;
     private Context mContext;
 

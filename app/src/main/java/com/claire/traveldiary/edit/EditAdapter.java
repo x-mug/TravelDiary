@@ -107,8 +107,7 @@ public class EditAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new EditViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_edit, parent, false));
+        return new EditViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit, parent, false));
     }
 
     @Override
@@ -495,5 +494,4 @@ public class EditAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
             return 1;
     }
-
 }

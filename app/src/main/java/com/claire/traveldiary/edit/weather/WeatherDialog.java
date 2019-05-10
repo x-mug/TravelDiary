@@ -81,12 +81,6 @@ public class WeatherDialog extends DialogFragment implements WeatherContract.Vie
     }
 
     @Override
-    public void dismiss() {
-        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
-        new Handler().postDelayed(super::dismiss, 200);
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_sunny:
@@ -135,5 +129,11 @@ public class WeatherDialog extends DialogFragment implements WeatherContract.Vie
             intent.putExtra(IMAGE, imageUri);
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
         }
+    }
+
+    @Override
+    public void dismiss() {
+        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
+        new Handler().postDelayed(super::dismiss, 200);
     }
 }
