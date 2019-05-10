@@ -7,7 +7,7 @@
     android:layout_height="@dimen/size_gallery_circle">
 
     <ImageView
-        android:id="@+id/image_detail_circle"
+        android:id="@+id/img_circle"
         android:layout_width="@dimen/size_gallery_circle"
         android:layout_height="@dimen/size_gallery_circle"
         android:background="@color/gallery_background"

@@ -94,7 +94,7 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
         mDownload = root.findViewById(R.id.btn_cloud_download);
         mExplain = root.findViewById(R.id.tv_mainpage_explain);
 
-        mRecyclerView = root.findViewById(R.id.recycler_main_page);
+        mRecyclerView = root.findViewById(R.id.recycler_mainPage);
         mRecyclerView.setAdapter(mMainPageAdapter);
         mRecyclerView.setPadding(40,0,40,0);
         mRecyclerView.setHasFixedSize(true);
@@ -156,7 +156,7 @@ public class MainPageFragment extends Fragment implements MainPageContract.View 
     }
 
     @Override
-    public void deleteDiaryUi() {
+    public void removeDiaryUi() {
         mMainPageAdapter.notifyDataSetChanged();
     }
 

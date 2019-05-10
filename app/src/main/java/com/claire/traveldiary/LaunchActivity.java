@@ -17,13 +17,8 @@ public class LaunchActivity extends BaseActivity {
 
         new Handler().postDelayed(() -> {
 
-            new Handler().postDelayed(() -> {
-
-                finish();
-
-            }, mTotalDuration / 3 * 2);
+            new Handler().postDelayed(this::finish, mTotalDuration / 3 * 2);
 
         }, mTotalDuration);
-
     }
 }

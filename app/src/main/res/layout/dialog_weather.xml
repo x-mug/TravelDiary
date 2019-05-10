@@ -2,13 +2,12 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/weather_doalog"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/layout_choose_weather"
+        android:id="@+id/layout_weather"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -42,14 +41,14 @@
             android:layout_marginBottom="16dp"
             android:background="@mipmap/ic_sunny"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/img_cloud_sun"
+            app:layout_constraintEnd_toStartOf="@+id/img_sun_cloud"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_choose_weather" />
 
         <ImageButton
-            android:id="@+id/img_cloud_sun"
+            android:id="@+id/img_sun_cloud"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -59,6 +58,18 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/img_sunny"
             app:layout_constraintTop_toTopOf="@+id/img_sunny" />
+
+        <ImageButton
+            android:id="@+id/img_cloudy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:background="@mipmap/ic_cloudy"
+            app:layout_constraintBottom_toBottomOf="@+id/img_sun_cloud"
+            app:layout_constraintEnd_toStartOf="@+id/img_windy"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/img_sun_cloud"
+            app:layout_constraintTop_toTopOf="@+id/img_sun_cloud" />
 
         <ImageButton
             android:id="@+id/img_windy"
@@ -84,17 +95,6 @@
             app:layout_constraintStart_toEndOf="@+id/img_windy"
             app:layout_constraintTop_toTopOf="@+id/img_windy" />
 
-        <ImageButton
-            android:id="@+id/img_cloudy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:background="@mipmap/ic_cloudy"
-            app:layout_constraintBottom_toBottomOf="@+id/img_cloud_sun"
-            app:layout_constraintEnd_toStartOf="@+id/img_windy"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/img_cloud_sun"
-            app:layout_constraintTop_toTopOf="@+id/img_cloud_sun" />
 
         <ImageButton
             android:id="@+id/img_snow"

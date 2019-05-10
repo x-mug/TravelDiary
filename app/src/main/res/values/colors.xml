@@ -19,6 +19,7 @@
 
     <!-- Edit Page -->
     <color name="diary_title">#696969</color>
+    <color name="tags_text">#888888</color>
 
     <!-- Main Page -->
     <color name="toolbar_text">#808080</color>

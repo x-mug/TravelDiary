@@ -6,10 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cardview_mainpage"
+        android:id="@+id/card_diary_mainpage"
         android:layout_width="0dp"
-        android:layout_height="140dp"
-        android:clickable="true"
+        android:layout_height="@dimen/card_height"
+        android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="4dp"
         app:cardElevation="3dp"
@@ -24,7 +24,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/main_img_card"
+                android:id="@+id/img_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/edit_diary_title"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -49,15 +49,15 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:typeface="serif"
-                app:layout_constraintBottom_toTopOf="@+id/tv_diary_date"
-                app:layout_constraintEnd_toEndOf="@+id/main_img_card"
+                app:layout_constraintBottom_toTopOf="@+id/tv_date"
+                app:layout_constraintEnd_toEndOf="@+id/img_background"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/main_img_card"
-                app:layout_constraintTop_toBottomOf="@+id/main_img_card"
+                app:layout_constraintStart_toStartOf="@+id/img_background"
+                app:layout_constraintTop_toBottomOf="@+id/img_background"
                 app:layout_constraintVertical_chainStyle="spread" />
 
             <TextView
-                android:id="@+id/tv_diary_date"
+                android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -69,11 +69,11 @@
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 android:typeface="serif"
-                app:layout_constraintBottom_toTopOf="@+id/main_img_card"
+                app:layout_constraintBottom_toTopOf="@+id/img_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_diary_title" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
 
         </android.support.constraint.ConstraintLayout>
@@ -87,8 +87,8 @@
 
             <ImageButton
                 android:id="@+id/btn_delete_diary"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/long_click_button"
+                android:layout_height="@dimen/long_click_button"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
@@ -102,8 +102,8 @@
 
             <ImageButton
                 android:id="@+id/btn_share_diary"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/long_click_button"
+                android:layout_height="@dimen/long_click_button"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 android:background="@mipmap/ic_share_diary"

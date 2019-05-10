@@ -115,24 +115,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void setToolbar() {
         mToolbar = findViewById(R.id.toolbar);
-        mToolbarTitle = findViewById(R.id.toolbar_title);
-        mToolbarSearch = findViewById(R.id.toolbar_search);
+        mToolbarTitle = findViewById(R.id.tv_toolbar_title);
+        mToolbarSearch = findViewById(R.id.searchView);
         mToolbarSearch.setOnQueryTextListener(onQueryTextListener);
         mToolbarSearch.setOnCloseListener(() -> {
             mMainPagePresenter.loadDiaryData();
             return false;
         });
 
-        mToolbarBack = findViewById(R.id.toolbar_back);
+        mToolbarBack = findViewById(R.id.imgBtn_back);
         mToolbarBack.setOnClickListener(this);
 
-        mToolbarMenu = findViewById(R.id.toolbar_menu);
+        mToolbarMenu = findViewById(R.id.imgBtn_menu);
         mToolbarMenu.setOnClickListener(this);
 
-        mToolbarEdit = findViewById(R.id.toolbar_edit);
+        mToolbarEdit = findViewById(R.id.btn_edit);
         mToolbarEdit.setOnClickListener(this);
 
-        mToolbarDone = findViewById(R.id.toolbar_done);
+        mToolbarDone = findViewById(R.id.btn_done);
         mToolbarDone.setOnClickListener(this);
 
         setSupportActionBar(mToolbar);
@@ -143,19 +143,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.toolbar_back:
+            case R.id.imgBtn_back:
                 getSupportFragmentManager().popBackStack();
                 break;
-            case R.id.toolbar_menu:
+            case R.id.imgBtn_menu:
                 openSettings();
                 updateMapToolbar("");
                 break;
-            case R.id.toolbar_edit:
+            case R.id.btn_edit:
                 clickEditDiary();
                 mToolbarEdit.setVisibility(View.GONE);
                 mToolbarDone.setVisibility(View.VISIBLE);
                 break;
-            case R.id.toolbar_done:
+            case R.id.btn_done:
                 clickSaveDiary();
                 mToolbarEdit.setVisibility(View.VISIBLE);
                 mToolbarDone.setVisibility(View.GONE);

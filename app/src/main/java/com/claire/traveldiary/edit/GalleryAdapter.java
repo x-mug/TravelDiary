@@ -38,8 +38,8 @@ public class GalleryAdapter extends RecyclerView.Adapter {
         GalleryViewHolder(View itemView) {
             super(itemView);
 
-            mImageGallery = itemView.findViewById(R.id.edit_gallery);
-            mButtonAdd = itemView.findViewById(R.id.add_image);
+            mImageGallery = itemView.findViewById(R.id.img_gallery);
+            mButtonAdd = itemView.findViewById(R.id.imgBtn_addImage);
         }
     }
 

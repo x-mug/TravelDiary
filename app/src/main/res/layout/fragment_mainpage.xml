@@ -6,7 +6,7 @@
     android:background="@color/white">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_main_page"
+        android:id="@+id/recycler_mainPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +27,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recycler_main_page"
+        app:layout_constraintTop_toTopOf="@+id/recycler_mainPage"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <ImageButton

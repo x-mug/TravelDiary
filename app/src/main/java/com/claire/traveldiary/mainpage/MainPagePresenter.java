@@ -49,7 +49,7 @@ public class MainPagePresenter implements MainPageContract.Presenter {
     }
 
     @Override
-    public void deleteDiary(int id) {
+    public void removeDiary(int id) {
         mDiaryDAO = mRoomDb.getDiaryDAO();
 
         //insert deleted diary
@@ -60,7 +60,7 @@ public class MainPagePresenter implements MainPageContract.Presenter {
 
         //delete diary from room
         mDiaryDAO.deleteDiarybyId(id);
-        mView.deleteDiaryUi();
+        mView.removeDiaryUi();
     }
 
     @Override

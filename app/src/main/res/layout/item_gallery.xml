@@ -6,9 +6,9 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/edit_gallery"
+        android:id="@+id/img_gallery"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="@dimen/height_gallery"
         android:background="@color/gallery_background2"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,14 +17,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/add_image"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:id="@+id/imgBtn_addImage"
+        android:layout_width="@dimen/add_gallery_button"
+        android:layout_height="@dimen/add_gallery_button"
         android:background="@mipmap/ic_add_image"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/edit_gallery"
-        app:layout_constraintStart_toStartOf="@+id/edit_gallery"
-        app:layout_constraintTop_toTopOf="@+id/edit_gallery" />
-
+        app:layout_constraintEnd_toEndOf="@+id/img_gallery"
+        app:layout_constraintStart_toStartOf="@+id/img_gallery"
+        app:layout_constraintTop_toTopOf="@+id/img_gallery" />
 
 </android.support.constraint.ConstraintLayout>

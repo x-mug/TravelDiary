@@ -2,13 +2,14 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/img_profile"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="@dimen/img_user_picture"
+        android:layout_height="@dimen/img_user_picture"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_profile"
@@ -16,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_user_name"
+        android:id="@+id/tv_userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -28,14 +29,14 @@
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/login_button_width"
+        android:layout_height="@dimen/login_button_height"
         android:layout_marginEnd="24dp"
         android:background="@drawable/diary_content_border"
         android:text="@string/settings_login"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_user_name"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_userName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_user_name" />
+        app:layout_constraintTop_toTopOf="@+id/tv_userName" />
 
     <View
         android:id="@+id/view_top"
@@ -62,11 +63,11 @@
 
     <ImageView
         android:id="@+id/img_sync"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="@dimen/settings_icon"
+        android:layout_height="@dimen/settings_icon"
+        android:layout_marginTop="10dp"
         android:background="@mipmap/ic_backup"
-        app:layout_constraintStart_toStartOf="@+id/img_profile"
+        app:layout_constraintStart_toStartOf="@+id/tv_data"
         app:layout_constraintTop_toBottomOf="@+id/tv_data" />
 
 
@@ -87,8 +88,8 @@
 
     <ImageView
         android:id="@+id/img_download"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/settings_icon"
+        android:layout_height="@dimen/settings_icon"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_download"
         app:layout_constraintEnd_toEndOf="@+id/img_sync"
@@ -132,16 +133,16 @@
         app:layout_constraintTop_toBottomOf="@+id/view_down" />
 
     <ImageView
-        android:id="@+id/img_textsize"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:id="@+id/img_font"
+        android:layout_width="@dimen/settings_icon"
+        android:layout_height="@dimen/settings_icon"
         android:layout_marginTop="10dp"
         android:background="@mipmap/ic_textsize"
         app:layout_constraintStart_toStartOf="@+id/img_sync"
         app:layout_constraintTop_toBottomOf="@+id/tv_system" />
 
     <TextView
-        android:id="@+id/tv_textsize"
+        android:id="@+id/tv_font"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -150,19 +151,19 @@
         android:text="@string/settings_textsize"
         android:textSize="16sp"
         android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/img_textsize"
+        app:layout_constraintBottom_toBottomOf="@+id/img_font"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/img_textsize"
-        app:layout_constraintTop_toTopOf="@+id/img_textsize" />
+        app:layout_constraintStart_toEndOf="@+id/img_font"
+        app:layout_constraintTop_toTopOf="@+id/img_font" />
 
     <ImageView
         android:id="@+id/img_language"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/settings_icon"
+        android:layout_height="@dimen/settings_icon"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_translate"
-        app:layout_constraintStart_toStartOf="@+id/img_textsize"
-        app:layout_constraintTop_toBottomOf="@+id/img_textsize" />
+        app:layout_constraintStart_toStartOf="@+id/img_font"
+        app:layout_constraintTop_toBottomOf="@+id/img_font" />
 
     <TextView
         android:id="@+id/tv_language"
@@ -180,34 +181,34 @@
         app:layout_constraintTop_toTopOf="@+id/img_language" />
 
     <ImageView
-        android:id="@+id/img_key"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:id="@+id/img_lock"
+        android:layout_width="@dimen/settings_icon"
+        android:layout_height="@dimen/settings_icon"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_lock"
         app:layout_constraintStart_toStartOf="@+id/img_language"
         app:layout_constraintTop_toBottomOf="@+id/img_language" />
 
     <TextView
-        android:id="@+id/tv_key"
+        android:id="@+id/tv_lock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:gravity="center_vertical"
         android:text="@string/settings_lock"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/img_key"
-        app:layout_constraintStart_toEndOf="@+id/img_key"
-        app:layout_constraintTop_toTopOf="@+id/img_key" />
+        app:layout_constraintBottom_toBottomOf="@+id/img_lock"
+        app:layout_constraintStart_toEndOf="@+id/img_lock"
+        app:layout_constraintTop_toTopOf="@+id/img_lock" />
 
     <ImageView
         android:id="@+id/img_notification"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/settings_icon"
+        android:layout_height="@dimen/settings_icon"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_notification"
-        app:layout_constraintStart_toStartOf="@+id/img_key"
-        app:layout_constraintTop_toBottomOf="@+id/img_key" />
+        app:layout_constraintStart_toStartOf="@+id/img_lock"
+        app:layout_constraintTop_toBottomOf="@+id/img_lock" />
 
     <TextView
         android:id="@+id/tv_notification"
@@ -222,16 +223,16 @@
         app:layout_constraintTop_toTopOf="@+id/img_notification" />
 
     <ImageView
-        android:id="@+id/img_mail"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:id="@+id/img_feedBack"
+        android:layout_width="@dimen/settings_icon"
+        android:layout_height="@dimen/settings_icon"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_email"
         app:layout_constraintStart_toStartOf="@+id/img_notification"
         app:layout_constraintTop_toBottomOf="@+id/img_notification" />
 
     <TextView
-        android:id="@+id/tv_mail"
+        android:id="@+id/tv_feedBack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -240,21 +241,21 @@
         android:text="@string/settings_feedback"
         android:textSize="16sp"
         android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/img_mail"
+        app:layout_constraintBottom_toBottomOf="@+id/img_feedBack"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/img_mail"
-        app:layout_constraintTop_toTopOf="@+id/img_mail" />
+        app:layout_constraintStart_toEndOf="@+id/img_feedBack"
+        app:layout_constraintTop_toTopOf="@+id/img_feedBack" />
 
     <Switch
-        android:id="@+id/switch_password"
+        android:id="@+id/switch_lock"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_key"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_lock"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_key"
-        app:layout_constraintTop_toTopOf="@+id/tv_key" />
+        app:layout_constraintStart_toEndOf="@+id/tv_lock"
+        app:layout_constraintTop_toTopOf="@+id/tv_lock" />
 
     <Switch
         android:id="@+id/switch_notification"
