@@ -94,21 +94,20 @@ public class EditAdapter extends RecyclerView.Adapter {
 
             mRecyclerGallery = itemView.findViewById(R.id.recycler_gallery);
             mRecyclerCircles = itemView.findViewById(R.id.recycler_circles);
-            mLocation = itemView.findViewById(R.id.tv_my_location);
-            mCardView = itemView.findViewById(R.id.autocomplete_card);
-            mTitle = itemView.findViewById(R.id.edit_diary_title);
-            mDate = itemView.findViewById(R.id.edit_diary_date);
-            mContent = itemView.findViewById(R.id.edit_diary_content);
-            mWeather = itemView.findViewById(R.id.choose_weather);
-            mTags = itemView.findViewById(R.id.edit_tags);
+            mLocation = itemView.findViewById(R.id.tv_place);
+            mCardView = itemView.findViewById(R.id.card_place);
+            mTitle = itemView.findViewById(R.id.edt_title);
+            mDate = itemView.findViewById(R.id.edt_date);
+            mContent = itemView.findViewById(R.id.edt_content);
+            mWeather = itemView.findViewById(R.id.imgBtn_weather);
+            mTags = itemView.findViewById(R.id.edt_tags);
         }
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new EditViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_edit, parent, false));
+        return new EditViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit, parent, false));
     }
 
     @Override
@@ -291,7 +290,7 @@ public class EditAdapter extends RecyclerView.Adapter {
 
                 if (mEditDiary.getPlace() != null) {
                     if (mEditDiary.getPlace().getPlaceName().equals("")) {
-                        mLocation.setText(R.string.edit_diary_location_hint);
+                        mLocation.setText(R.string.edit_diary_place_hint);
                     } else {
                         mLocation.setText(mEditDiary.getPlace().getPlaceName());
                     }
@@ -495,5 +494,4 @@ public class EditAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
             return 1;
     }
-
 }

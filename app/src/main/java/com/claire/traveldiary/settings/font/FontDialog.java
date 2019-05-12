@@ -60,7 +60,7 @@ public class FontDialog extends DialogFragment implements FontContract.View {
         mCancel = dialogView.findViewById(R.id.btn_cancel);
         mCancel.setOnClickListener(v -> dismiss());
 
-        mNumberPicker = dialogView.findViewById(R.id.numberPicker);
+        mNumberPicker = dialogView.findViewById(R.id.font_picker);
         mNumberPicker.setMinValue(0);
         mNumberPicker.setMaxValue(8);
         mNumberPicker.setValue(0);

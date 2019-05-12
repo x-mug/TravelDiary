@@ -61,12 +61,11 @@ public class ShowDiaryDialog extends BottomSheetDialogFragment implements ShowDi
         mLayout = dialogView.findViewById(R.id.layout_popup);
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
 
-        RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_popup);
+        RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_showDiaryInMap);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mShowDiaryAdapter = new ShowDiaryAdapter(mPresenter,getContext(), mDiaryList);
         recyclerView.setAdapter(mShowDiaryAdapter);
-        recyclerView.setPadding(0,0,0,40);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(6));
+        recyclerView.addItemDecoration(new SpacesItemDecoration(40));
 
         return dialogView;
     }

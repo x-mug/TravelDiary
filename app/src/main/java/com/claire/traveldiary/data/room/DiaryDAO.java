@@ -1,8 +1,6 @@
 package com.claire.traveldiary.data.room;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.TypeConverters;
@@ -40,7 +38,7 @@ public interface DiaryDAO {
     List<Diary> getAllDiaries();
 
     @Query("DELETE FROM Diary WHERE mId = :id")
-    void deleteDiarybyId(int id);
+    void removeDiarybyId(int id);
 
     @Query("SELECT * FROM diary WHERE mId = :id")
     Diary getDiarybyId(int id);
@@ -92,8 +90,6 @@ public interface DiaryDAO {
     @Query("SELECT * FROM diaryplace WHERE mDiaryId = :id")
     DiaryPlace getPlacebyDiaryId(int id);
 
-    @Query("DELETE FROM DiaryPlace WHERE mDiaryId = :id")
-    void deletePlacebyId(int id);
 
     //get diary by place by placeName
     @Query("SELECT * FROM diaryplace WHERE " + " mLat = :lat AND mLng = :lng")

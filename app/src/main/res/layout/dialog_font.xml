@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/dialog_constraint"
+        android:id="@+id/layout_font"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -21,17 +21,20 @@
 
         <TextView
             android:id="@+id/tv_choose_font"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_width="@dimen/choose_font_width"
+            android:layout_height="@dimen/choose_font_height"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
             android:text="@string/dialog_choose_font"
-            android:textSize="16sp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/dialog_view"
+            android:id="@+id/view_top"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
@@ -41,7 +44,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_choose_font" />
 
         <NumberPicker
-            android:id="@+id/numberPicker"
+            android:id="@+id/font_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -50,28 +53,29 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_view">
+            app:layout_constraintTop_toBottomOf="@+id/view_top">
 
         </NumberPicker>
 
         <View
-            android:id="@+id/dialog_view_bottom"
+            android:id="@+id/view_down"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
             android:background="@color/settings_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/numberPicker" />
+            app:layout_constraintTop_toBottomOf="@+id/font_picker" />
 
         <View
+            android:id="@+id/view_straight"
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:background="@color/settings_view"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_view_bottom" />
+            app:layout_constraintTop_toBottomOf="@+id/view_down" />
 
         <Button
             android:id="@+id/btn_ok"
@@ -94,7 +98,7 @@
             android:text="@string/dialog_font_cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/numberPicker" />
+            app:layout_constraintTop_toBottomOf="@+id/font_picker" />
 
     </android.support.constraint.ConstraintLayout>
 

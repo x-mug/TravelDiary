@@ -4,7 +4,7 @@
     <!-- Layout Series -->
     //activity_main
     <string name="toolbar_title">Memories</string>
-    <string name="search_hint">Search</string>
+    <string name="search_hint">Search by title or tags</string>
     <string name="toolbar_edit">Edit</string>
     <string name="toolbar_done">Done</string>
 
@@ -12,7 +12,7 @@
     <string name="dialog_choose_weather">Choose Weather</string>
 
     //dialog font
-    <string name="dialog_choose_font">Choose Diary Font</string>
+    <string name="dialog_choose_font">Font Preview</string>
     <string name="dialog_font_ok">OK</string>
     <string name="dialog_font_cancel">Cancel</string>
 
@@ -43,7 +43,7 @@
     //item_edit
     <string name="edit_diary_title_hint">Title</string>
     <string name="edit_diary_date_hint">Date</string>
-    <string name="edit_diary_location_hint">Where am I ?</string>
+    <string name="edit_diary_place_hint">Where am I ?</string>
     <string name="edit_diary_content_hint">Write Down Your Day ....</string>
     <string name="edit_diary_tags_hint">Add tags</string>
 

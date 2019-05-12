@@ -18,10 +18,10 @@
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <Button
-            android:id="@+id/toolbar_edit"
+            android:id="@+id/btn_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:background="@null"
             android:text="@string/toolbar_edit"
             android:textColor="@color/toolbar_text"
@@ -31,10 +31,10 @@
             tools:layout_editor_absoluteY="11dp" />
 
         <Button
-            android:id="@+id/toolbar_done"
+            android:id="@+id/btn_done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:background="@null"
             android:text="@string/toolbar_done"
             android:textColor="@color/toolbar_text"
@@ -44,27 +44,27 @@
             tools:layout_editor_absoluteY="11dp" />
 
         <ImageButton
-            android:id="@+id/toolbar_menu"
+            android:id="@+id/imgBtn_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@mipmap/ic_menu"
-            android:layout_gravity="left"
-            />
+            android:layout_gravity="start" />
 
 
         <android.support.v7.widget.SearchView
-            android:id="@+id/toolbar_search"
+            android:id="@+id/searchView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:searchIcon="@mipmap/ic_search"
             app:queryHint="@string/search_hint"
-            android:layout_gravity="right"
-            android:paddingRight="5dp">
+            android:layout_gravity="end"
+            android:paddingStart="0dp"
+            android:paddingEnd="5dp">
 
         </android.support.v7.widget.SearchView>
 
         <ImageButton
-            android:id="@+id/toolbar_back"
+            android:id="@+id/imgBtn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@mipmap/ic_back_arrow"
@@ -73,7 +73,7 @@
             tools:layout_editor_absoluteY="15dp" />
 
         <TextView
-            android:id="@+id/toolbar_title"
+            android:id="@+id/tv_toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

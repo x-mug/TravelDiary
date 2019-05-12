@@ -18,5 +18,4 @@ public class TravelDiaryApplication extends Application {
     public static Context getAppContext() {
         return mContext;
     }
-
 }

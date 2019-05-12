@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <EditText
-        android:id="@+id/edit_diary_title"
+        android:id="@+id/edt_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -15,19 +15,19 @@
         android:layout_marginEnd="16dp"
         android:background="@null"
         android:cursorVisible="false"
-        android:gravity="left"
+        android:gravity="start"
         android:hint="@string/edit_diary_title_hint"
         android:singleLine="true"
         android:textColor="@color/diary_title"
         android:textSize="24sp"
         android:typeface="serif"
         android:freezesText="true"
-        app:layout_constraintEnd_toStartOf="@+id/edit_diary_date"
+        app:layout_constraintEnd_toStartOf="@+id/edt_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recycler_gallery" />
 
     <TextView
-        android:id="@+id/edit_diary_date"
+        android:id="@+id/edt_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -39,20 +39,20 @@
         android:textSize="16sp"
         android:typeface="serif"
         android:freezesText="true"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_diary_title"
+        app:layout_constraintBottom_toBottomOf="@+id/edt_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/edit_diary_title" />
+        app:layout_constraintTop_toTopOf="@+id/edt_title" />
 
     <ImageButton
-        android:id="@+id/choose_weather"
+        android:id="@+id/imgBtn_weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@null"
         android:src="@mipmap/ic_sunny"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_my_location"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_place"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_my_location" />
+        app:layout_constraintTop_toTopOf="@+id/tv_place" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_gallery"
@@ -66,7 +66,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_circles"
         android:layout_width="0dp"
-        android:layout_height="6dp"
+        android:layout_height="@dimen/size_gallery_circle"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
@@ -75,15 +75,15 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.v7.widget.CardView
-        android:id="@+id/autocomplete_card"
+        android:id="@+id/card_place"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:visibility="gone"
         app:cardCornerRadius="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/choose_weather"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/tv_my_location">
+        app:layout_constraintEnd_toEndOf="@+id/imgBtn_weather"
+        app:layout_constraintStart_toStartOf="@+id/img_place"
+        app:layout_constraintTop_toBottomOf="@+id/tv_place">
 
         <fragment
             android:id="@+id/autocomplete_fragment"
@@ -95,30 +95,30 @@
 
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/img_place"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_map"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_diary_date" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_date" />
 
 
     <TextView
-        android:id="@+id/tv_my_location"
+        android:id="@+id/tv_place"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         android:layout_marginTop="16dp"
-        android:text="@string/edit_diary_location_hint"
+        android:text="@string/edit_diary_place_hint"
         android:textSize="16sp"
         android:freezesText="true"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/edit_diary_date" />
+        app:layout_constraintStart_toEndOf="@+id/img_place"
+        app:layout_constraintTop_toBottomOf="@+id/edt_date" />
 
     <EditText
-        android:id="@+id/edit_diary_content"
+        android:id="@+id/edt_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -140,23 +140,23 @@
         android:textColor="@color/diary_title"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/choose_weather"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintEnd_toEndOf="@+id/imgBtn_weather"
+        app:layout_constraintStart_toStartOf="@+id/img_tags"
+        app:layout_constraintTop_toBottomOf="@+id/img_tags" />
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/img_tags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@mipmap/ic_tags"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/autocomplete_card" />
+        app:layout_constraintStart_toStartOf="@+id/img_place"
+        app:layout_constraintTop_toBottomOf="@+id/card_place" />
 
 
     <mabbas007.tagsedittext.TagsEditText
-        android:id="@+id/edit_tags"
+        android:id="@+id/edt_tags"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -168,10 +168,10 @@
         android:textColorHint="@color/diary_title"
         android:textSize="16sp"
         app:allowSpaceInTag="true"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/choose_weather"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/img_tags"
+        app:layout_constraintEnd_toEndOf="@+id/imgBtn_weather"
+        app:layout_constraintStart_toEndOf="@+id/img_tags"
+        app:layout_constraintTop_toTopOf="@+id/img_tags"
         app:tagsBackground="@drawable/tags_border"
         app:tagsCloseImagePadding="1dp"
         app:tagsCloseImageRight="@mipmap/ic_close"
@@ -179,7 +179,7 @@
         app:tagsPaddingLeft="7dp"
         app:tagsPaddingRight="4dp"
         app:tagsPaddingTop="3dp"
-        app:tagsTextColor="#888888" />
+        app:tagsTextColor="@color/tags_text" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -35,7 +35,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
     private List<Diary> mDiaryList;
 
-    private boolean isLongclick = false;
+    private boolean isLongClick = false;
     private boolean isSearch = false;
 
 
@@ -59,11 +59,11 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             mLongClickView = itemView.findViewById(R.id.constraint_background);
-            mCard = itemView.findViewById(R.id.cardview_mainpage);
-            mMainImage = itemView.findViewById(R.id.main_img_card);
+            mCard = itemView.findViewById(R.id.card_diary_mainpage);
+            mMainImage = itemView.findViewById(R.id.img_background);
             mMainImage.setAlpha(0.9f);
-            mDiaryTitle = itemView.findViewById(R.id.edit_diary_title);
-            mDiaryDate = itemView.findViewById(R.id.tv_diary_date);
+            mDiaryTitle = itemView.findViewById(R.id.tv_title);
+            mDiaryDate = itemView.findViewById(R.id.tv_date);
             mDelete = itemView.findViewById(R.id.btn_delete_diary);
             mShare = itemView.findViewById(R.id.btn_share_diary);
 
@@ -118,11 +118,11 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
             //click card
             ((MainPageViewHolder) holder).mCard.setOnClickListener(v -> {
-                if (isLongclick) {
+                if (isLongClick) {
                     ((MainPageViewHolder) holder).mLongClickView.setVisibility(View.GONE);
                     ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                     ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
-                    isLongclick = false;
+                    isLongClick = false;
                 } else {
                     //click card
                     mPresenter.openEdit(mDiaryList.get(position));
@@ -138,7 +138,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 //click delete
                 ((MainPageViewHolder) holder).mDelete.setOnClickListener(v1 -> {
                     //delete diary from room
-                    mPresenter.deleteDiary(mDiaryList.get(position).getId());
+                    mPresenter.removeDiary(mDiaryList.get(position).getId());
                     mDiaryList.remove(position);
                     notifyItemRemoved(position);
                     notifyDataSetChanged();
@@ -158,7 +158,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     ((MainPageViewHolder) holder).mDiaryTitle.setVisibility(View.VISIBLE);
                     ((MainPageViewHolder) holder).mDiaryDate.setVisibility(View.VISIBLE);
                 });
-                isLongclick = true;
+                isLongClick = true;
                 return true;
             });
         }

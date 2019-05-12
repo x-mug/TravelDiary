@@ -52,16 +52,16 @@ public class WeatherDialog extends DialogFragment implements WeatherContract.Vie
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View dialogView = inflater.inflate(R.layout.dialog_choose_weather, container, false);
+        View dialogView = inflater.inflate(R.layout.dialog_weather, container, false);
         getDialog().setCancelable(true);
         getDialog().setCanceledOnTouchOutside(true);
 
-        mLayout = dialogView.findViewById(R.id.layout_choose_weather);
+        mLayout = dialogView.findViewById(R.id.layout_weather);
         mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_up));
 
         mSunny = dialogView.findViewById(R.id.img_sunny);
         mSunny.setOnClickListener(this);
-        mSunCloud = dialogView.findViewById(R.id.img_cloud_sun);
+        mSunCloud = dialogView.findViewById(R.id.img_sun_cloud);
         mSunCloud.setOnClickListener(this);
         mCloudy = dialogView.findViewById(R.id.img_cloudy);
         mCloudy.setOnClickListener(this);
@@ -81,12 +81,6 @@ public class WeatherDialog extends DialogFragment implements WeatherContract.Vie
     }
 
     @Override
-    public void dismiss() {
-        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
-        new Handler().postDelayed(super::dismiss, 200);
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_sunny:
@@ -95,7 +89,7 @@ public class WeatherDialog extends DialogFragment implements WeatherContract.Vie
                 dismiss();
                 break;
 
-            case R.id.img_cloud_sun:
+            case R.id.img_sun_cloud:
                 Uri imageUri_cloud_sun = Uri.parse("android.resource://com.claire.traveldiary/mipmap/ic_cloud_sun");
                 setResult(imageUri_cloud_sun.toString());
                 dismiss();
@@ -135,5 +129,11 @@ public class WeatherDialog extends DialogFragment implements WeatherContract.Vie
             intent.putExtra(IMAGE, imageUri);
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
         }
+    }
+
+    @Override
+    public void dismiss() {
+        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
+        new Handler().postDelayed(super::dismiss, 200);
     }
 }

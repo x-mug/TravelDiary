@@ -9,18 +9,31 @@
     <dimen name="size_bottom_nav_icon">32dp</dimen>
 
     <!-- Gallery -->
-    <dimen name="height_gallery">250dp</dimen>
+    <dimen name="height_gallery">280dp</dimen>
     <dimen name="size_gallery_circle">6dp</dimen>
     <dimen name="radius_detail_circle">3dp</dimen>
     <dimen name="edge_detail_circle">1px</dimen>
 
     <dimen name="space_grid">16dp</dimen>
 
-    //dialog sync
-    <dimen name="height_sync">150dp</dimen>
+    //dialog sync and download
+    <dimen name="height_dialog_popup">150dp</dimen>
 
     <!-- Card -->
-    <dimen name="card_height_grid">150dp</dimen>
-    <dimen name="card_width_grid">200dp</dimen>
+    <dimen name="card_height">140dp</dimen>
+
+    <!-- Button -->
+    <dimen name="long_click_button">50dp</dimen>
+    <dimen name="add_gallery_button">64dp</dimen>
+
+    <dimen name="login_button_height">30dp</dimen>
+    <dimen name="login_button_width">80dp</dimen>
+
+    <dimen name="img_user_picture">42dp</dimen>
+    <dimen name="settings_icon">32dp</dimen>
+
+    <!-- TextView -->
+    <dimen name="choose_font_height">25dp</dimen>
+    <dimen name="choose_font_width">150dp</dimen>
 
 </resources>

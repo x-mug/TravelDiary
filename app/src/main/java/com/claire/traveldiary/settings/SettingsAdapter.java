@@ -58,14 +58,14 @@ public class SettingsAdapter extends RecyclerView.Adapter{
 
             mLogin = itemView.findViewById(R.id.btn_login);
             mUserImg = itemView.findViewById(R.id.img_profile);
-            mUserName = itemView.findViewById(R.id.tv_user_name);
+            mUserName = itemView.findViewById(R.id.tv_userName);
             mSync = itemView.findViewById(R.id.tv_sync);
             mDownload = itemView.findViewById(R.id.tv_download);
-            mTextSize = itemView.findViewById(R.id.tv_textsize);
+            mTextSize = itemView.findViewById(R.id.tv_font);
             mLanguage = itemView.findViewById(R.id.tv_language);
-            mLock = itemView.findViewById(R.id.switch_password);
+            mLock = itemView.findViewById(R.id.switch_lock);
             mNotification = itemView.findViewById(R.id.switch_notification);
-            mFeedback = itemView.findViewById(R.id.tv_mail);
+            mFeedback = itemView.findViewById(R.id.tv_feedBack);
         }
     }
 

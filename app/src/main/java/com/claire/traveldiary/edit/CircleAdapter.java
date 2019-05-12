@@ -70,7 +70,7 @@ public class CircleAdapter extends RecyclerView.Adapter {
         CircleViewHolder(View itemView) {
             super(itemView);
 
-            mImageCircle = itemView.findViewById(R.id.image_detail_circle);
+            mImageCircle = itemView.findViewById(R.id.img_circle);
         }
 
         public ImageView getImageCircle() {
