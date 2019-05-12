@@ -4,7 +4,7 @@
     <!-- Layout Series -->
     //activity_main
     <string name="toolbar_title">Memories</string>
-    <string name="search_hint">Search</string>
+    <string name="search_hint">Search by title or tags</string>
     <string name="toolbar_edit">Edit</string>
     <string name="toolbar_done">Done</string>
 
