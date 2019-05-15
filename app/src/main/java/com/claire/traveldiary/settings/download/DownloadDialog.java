@@ -93,6 +93,7 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     @Override
     public void noDataInFirebaseUi() {
         Toast.makeText(getContext(), "You don't have data in database!", Toast.LENGTH_SHORT).show();
+        dismiss();
     }
 
     @Override

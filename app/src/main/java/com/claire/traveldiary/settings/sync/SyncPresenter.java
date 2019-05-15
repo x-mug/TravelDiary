@@ -94,10 +94,14 @@ public class SyncPresenter implements SyncContract.Presenter {
             Log.d(TAG,"DeletedDiaryList is null ");
         }
 
-        uploadDiaries(mDiaries, 0, userId, () ->
-                uploadPlaces(mPlaceList, 0, userId, () -> {
-                    mSyncView.successfullySyncUi();
-                }));
+        if (mDiaries.size() > 0) {
+            uploadDiaries(mDiaries, 0, userId, () ->
+                    uploadPlaces(mPlaceList, 0, userId, () -> {
+                        mSyncView.successfullySyncUi();
+                    }));
+        } else {
+            mSyncView.noDataSyncUi();
+        }
 
     }
 

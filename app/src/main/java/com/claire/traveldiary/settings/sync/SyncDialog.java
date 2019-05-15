@@ -84,6 +84,12 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
     }
 
     @Override
+    public void noDataSyncUi() {
+        Toast.makeText(getContext(), "No diary can sync!", Toast.LENGTH_SHORT).show();
+        dismiss();
+    }
+
+    @Override
     public void dismiss() {
         //mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
         new Handler().postDelayed(super::dismiss, 200);

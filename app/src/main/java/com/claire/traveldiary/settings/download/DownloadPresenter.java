@@ -9,6 +9,7 @@ import com.claire.traveldiary.data.User;
 import com.claire.traveldiary.data.room.DiaryDAO;
 import com.claire.traveldiary.data.room.DiaryDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -60,22 +61,26 @@ public class DownloadPresenter implements DownloadContract.Presenter {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         if (task.getResult() != null) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                Diary diary = document.toObject(Diary.class);
-                                diaryDAO.insertOrUpdateDiary(diary);
-                                Log.d(TAG, "diary size : " + diaryDAO.getAllDiaries().size());
+                            if(task.getResult().isEmpty()) {
+                                mDownloadView.noDataInFirebaseUi();
+                            } else {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                    Diary diary = document.toObject(Diary.class);
+                                    diaryDAO.insertOrUpdateDiary(diary);
+                                    Log.d(TAG, "diary size : " + diaryDAO.getAllDiaries().size());
 
-                                //update image to local
-                                ArrayList<String> imageUrl = (ArrayList<String>) document.get("image");
-                                ArrayList<String> imageLocalPath = new ArrayList<>();
-                                downloadImage(imageUrl, imageLocalPath, 0, image ->
-                                        diaryDAO.updateImageFromFirebase(image, Integer.parseInt(document.getId())));
-                                        mDownloadView.successfullyDownloadUi();
+                                    //update image to local
+                                    ArrayList<String> imageUrl = (ArrayList<String>) document.get("image");
+                                    ArrayList<String> imageLocalPath = new ArrayList<>();
+                                    downloadImage(imageUrl, imageLocalPath, 0, image ->
+                                            diaryDAO.updateImageFromFirebase(image, Integer.parseInt(document.getId())));
+                                    mDownloadView.successfullyDownloadUi();
+                                }
                             }
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
-                            mDownloadView.noDataInFirebaseUi();
                         }
                     }
                 });
