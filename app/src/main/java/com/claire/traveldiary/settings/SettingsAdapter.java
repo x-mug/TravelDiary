@@ -105,9 +105,9 @@ public class SettingsAdapter extends RecyclerView.Adapter{
             //switch notification
             ((SettingsHolder) holder).mNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    Toast.makeText(mContext, "Notification on!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Notification Coming Soon!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(mContext, "Notification off!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Notification Coming Soon!", Toast.LENGTH_SHORT).show();
                 }
             });
 

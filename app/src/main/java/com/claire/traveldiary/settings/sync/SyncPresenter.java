@@ -102,7 +102,6 @@ public class SyncPresenter implements SyncContract.Presenter {
         } else {
             mSyncView.noDataSyncUi();
         }
-
     }
 
     private void uploadDiaries(List<Diary> diaryList, int i, String userId, UpLoadDiaryCallback upLoadDiaryCallback) {
