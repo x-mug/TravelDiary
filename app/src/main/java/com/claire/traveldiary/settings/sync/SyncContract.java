@@ -9,6 +9,8 @@ public interface SyncContract {
     interface View extends BaseView<Presenter> {
 
         void successfullySyncUi();
+
+        void noDataSyncUi();
     }
 
     interface Presenter extends BasePresenter {
@@ -16,6 +18,7 @@ public interface SyncContract {
         void result(int requestCode, int resultCode);
 
         void insertOrUpdateDataToFirebase();
+
     }
 
 }

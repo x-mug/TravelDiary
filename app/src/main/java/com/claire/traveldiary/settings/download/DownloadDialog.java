@@ -91,8 +91,14 @@ public class DownloadDialog extends BottomSheetDialogFragment implements Downloa
     }
 
     @Override
+    public void noDataInFirebaseUi() {
+        Toast.makeText(getContext(), "You don't have data in database!", Toast.LENGTH_SHORT).show();
+        dismiss();
+    }
+
+    @Override
     public void dismiss() {
-        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
+        //mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
         new Handler().postDelayed(super::dismiss, 200);
     }
 }
