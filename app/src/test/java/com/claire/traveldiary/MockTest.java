@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -45,11 +47,11 @@ public class MockTest {
 
     @Test
     public void testDeleteDiary() {
-        Diary diary = new Diary();
-        diary.setId(56789);
 
-        mockDiaryDAO.insertDiary(diary);
+        mockDiaryDAO.removeDiarybyId(12345);
 
-        mockDiaryDAO.removeDiarybyId(56789);
+        List<Diary> diaryList = mockDiaryDAO.getAllDiaries();
+
+        assertThat(diaryList.size(), equalTo(0));
     }
 }

@@ -29,9 +29,13 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import mabbas007.tagsedittext.TagsEditText;
@@ -451,7 +455,13 @@ public class EditAdapter extends RecyclerView.Adapter {
             //diary object
             newOrUpdateDiary.setId(id);
             newOrUpdateDiary.setTitle(mEditTitle);
-            newOrUpdateDiary.setDate(mStringDate);
+            if (mStringDate.equals("")) {
+                DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ROOT);
+                Date date = new Date();
+                newOrUpdateDiary.setDate(dateFormat.format(date));
+            } else {
+                newOrUpdateDiary.setDate(mStringDate);
+            }
             newOrUpdateDiary.setPlace(diaryPlace);
             newOrUpdateDiary.setWeather(mWeatherUri);
             newOrUpdateDiary.setImage(mImagesList);

@@ -53,6 +53,7 @@ public class DownloadPresenter implements DownloadContract.Presenter {
         mUser = diaryDAO.getUser();
         String userId = String.valueOf(mUser.getId());
 
+
         //query users all diaries and save to roomdb
         mFirestore.collection("Users").document(userId).collection("Diaries")
                 .get()
@@ -74,6 +75,7 @@ public class DownloadPresenter implements DownloadContract.Presenter {
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
+                            mDownloadView.noDataInFirebaseUi();
                         }
                     }
                 });

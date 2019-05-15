@@ -85,7 +85,7 @@ public class SyncDialog extends BottomSheetDialogFragment implements SyncContrac
 
     @Override
     public void dismiss() {
-        mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
+        //mLayout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_slide_down));
         new Handler().postDelayed(super::dismiss, 200);
     }
 }

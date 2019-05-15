@@ -9,6 +9,8 @@ public interface DownloadContract {
 
         void successfullyDownloadUi();
 
+        void noDataInFirebaseUi();
+
     }
 
     interface Presenter extends BasePresenter {
