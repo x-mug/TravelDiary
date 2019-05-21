@@ -28,10 +28,10 @@ Travel Diary is an Android application to allow users easily write down their di
 
 
 ## Screenshot
-Main Page                  |  Main Page                |   Map Page
+Waterfall layout           |  Linear layout            |Show diaries in each place
 :-------------------------:|:-------------------------:|:-------------------------:
 ![travel_diary_waterfall](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190516-191935_Travel_Diary.png) |  ![travel_diary_linear](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190510-170455_Travel_Diary.png) | ![travel_diary_map](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190510-171316_Travel_Diary.png)
-Edit Page                  |  Edit Page                |   Delete
+Add new diary              |  Browse or edit diaty     |   Remove or share diary
 ![travel_diary_edit](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190510-165535_Travel_Diary.png) |  ![travel_diary_show](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190516-192858_Travel_Diary.png) | ![travel_diary_delete](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190510-171524_Travel_Diary.png)
 
 
