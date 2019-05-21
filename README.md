@@ -1,5 +1,5 @@
 # TravelDiary
-Travel Diary is an Android application allows users to easily write down their diaries. 
+Travel Diary is an Android application to allow users easily write down their diaries and show personal travel world map.
 
 
 [<img src="https://github.com/wannnn/TravelDiary/blob/master/app/src/main/res/mipmap-xxhdpi/ic_traveldiary_launcher.png" >](https://play.google.com/store/apps/details?id=com.claire.traveldiary)
@@ -33,6 +33,49 @@ Main Page                  |  Main Page                |   Map Page
 ![travel_diary_waterfall](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190516-191935_Travel_Diary.png) |  ![travel_diary_linear](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190510-170455_Travel_Diary.png) | ![travel_diary_map](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190510-171316_Travel_Diary.png)
 Edit Page                  |  Edit Page                |   Delete
 ![travel_diary_edit](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190510-165535_Travel_Diary.png) |  ![travel_diary_show](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190516-192858_Travel_Diary.png) | ![travel_diary_delete](https://github.com/wannnn/TravelDiary/blob/master/Screenshot_20190510-171524_Travel_Diary.png)
+
+
+## Implemented
+* Design Patterns
+  - Objecr-Oreinted-Programming
+  - Model-View-Presenter (MVP)
+  - Singleton
+  - Adapter
+
+
+* Core Functions
+  - Google Map
+  - Facebook login
+
+
+* User Interface
+  - Fragment
+  - Dialog
+  - CardView
+  - ConstraintLayout
+  - RecyclerView
+  - EditText
+  - SearchView
+  - NumberPicker
+  
+  
+* Storage
+  - Firebase Cloud Database
+  - Firebase Storage
+  - Room
+  - SharedPreferences
+  
+  
+* Analysis
+  - Google Analytics
+  - Crashlytics
+
+
+* Unit Test
+  - JUnit
+  - Mockito
+  - Espresso
+
 
 
 ## Requirement
