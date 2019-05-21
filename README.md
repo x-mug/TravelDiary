@@ -1,8 +1,8 @@
 # TravelDiary
 Travel Diary is an Android application to allow users easily write down their diaries and show personal travel world map.
 
-
-[<img src="https://github.com/wannnn/TravelDiary/blob/master/app/src/main/res/mipmap-xxhdpi/ic_traveldiary_launcher.png" >](https://play.google.com/store/apps/details?id=com.claire.traveldiary)
+[<img src="https://github.com/wannnn/TravelDiary/blob/master/app/src/main/res/mipmap-xxhdpi/ic_traveldiary_launcher.png" >](https://play.google.com/store/apps/details?id=com.claire.traveldiary) <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Download](https://play.google.com/store/apps/details?id=com.claire.traveldiary)
 
 
 ## Features
