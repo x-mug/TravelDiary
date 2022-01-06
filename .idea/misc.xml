@@ -6,7 +6,23 @@
         <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/activity_launch.xml" value="0.2" />
         <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/dialog_download.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/dialog_font.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/dialog_language.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/dialog_showdiary.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/dialog_sync.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/dialog_weather.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/fragment_edit.xml" value="0.2" />
         <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/fragment_mainpage.xml" value="0.15307971014492755" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/fragment_map.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/fragment_settings.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/item_card_in_map.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/item_card_linear.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/item_card_waterfall.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/item_circle.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/item_edit.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/item_gallery.xml" value="0.2" />
+        <entry key="..\:/GitClone/TravelDiary/app/src/main/res/layout/item_settings.xml" value="0.2" />
       </map>
     </option>
   </component>
