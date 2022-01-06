@@ -1,7 +1,7 @@
 package com.xmug.traveldiary.mainpage;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -12,7 +12,7 @@ import com.xmug.traveldiary.data.room.DiaryDatabase;
 
 import java.util.List;
 
-import static android.support.v4.util.Preconditions.checkNotNull;
+import static androidx.core.util.Preconditions.checkNotNull;
 
 public class MainPagePresenter implements MainPageContract.Presenter {
 

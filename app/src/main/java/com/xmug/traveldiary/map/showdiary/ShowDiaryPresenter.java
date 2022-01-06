@@ -1,6 +1,6 @@
 package com.xmug.traveldiary.map.showdiary;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.widget.TextView;
 

@@ -49,6 +49,36 @@ public class UserManager {
         return UserManagerHolder.INSTANCE;
     }
 
+    public void loginDiary(Context context, final LoadCallback loadCallback) {
+
+        mFbCallbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(mFbCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "Login Success");
+                Log.i(TAG, "loginResult.getAccessToken().getToken() = " + loginResult.getAccessToken().getToken());
+                Log.i(TAG, "loginResult.getAccessToken().getUserId() = " + loginResult.getAccessToken().getUserId());
+                Log.i(TAG, "loginResult.getAccessToken().getApplicationId() = " + loginResult.getAccessToken().getApplicationId());
+
+                getUserInfo(loginResult.getAccessToken(),loadCallback);
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "FB Login Cancel");
+                loadCallback.onFail("Login Cancel");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Log.d(TAG, "Login Error");
+                loadCallback.onFail("Login Error: " + exception.getMessage());
+            }
+        });
+
+        loginFacebook(context);
+    }
+
     public void loginDiaryByFacebook(Context context, final LoadCallback loadCallback) {
 
         mFbCallbackManager = CallbackManager.Factory.create();
@@ -115,6 +145,7 @@ public class UserManager {
                 } else {
                     Long id = object.getLong("id");
                     String name = object.getString("name");
+                    String password = object.getString("password");
                     String email = object.getString("email");
                     String picture = object.getJSONObject("picture").getJSONObject("data").getString("url");
                     Log.d(TAG,"user information " + id + name + email + picture);
@@ -126,6 +157,7 @@ public class UserManager {
                     User user = new User();
                     user.setId(id);
                     user.setName(name);
+                    user.setPassword(password);
                     user.setEmail(email);
                     user.setPicture(picture);
 

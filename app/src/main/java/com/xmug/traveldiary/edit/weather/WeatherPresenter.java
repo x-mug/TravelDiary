@@ -1,6 +1,6 @@
 package com.xmug.traveldiary.edit.weather;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import static com.bumptech.glide.util.Preconditions.checkNotNull;
 

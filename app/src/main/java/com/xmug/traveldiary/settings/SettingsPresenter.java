@@ -2,7 +2,7 @@ package com.xmug.traveldiary.settings;
 
 import android.annotation.SuppressLint;
 
-import static android.support.v4.util.Preconditions.checkNotNull;
+import static androidx.core.util.Preconditions.checkNotNull;
 
 public class SettingsPresenter implements SettingsContract.Presenter {
 

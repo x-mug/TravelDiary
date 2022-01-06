@@ -1,7 +1,7 @@
 package com.xmug.traveldiary.edit;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 
@@ -10,7 +10,7 @@ import com.xmug.traveldiary.data.DiaryPlace;
 import com.xmug.traveldiary.data.room.DiaryDAO;
 import com.xmug.traveldiary.data.room.DiaryDatabase;
 
-import static android.support.v4.util.Preconditions.checkNotNull;
+import static androidx.core.util.Preconditions.checkNotNull;
 
 public class EditPresenter implements EditContract.Presenter {
 

@@ -1,6 +1,6 @@
 package com.xmug.traveldiary.settings.download;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.xmug.traveldiary.data.Diary;

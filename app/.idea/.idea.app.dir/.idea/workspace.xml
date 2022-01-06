@@ -2,10 +2,63 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="20da3e41-7b2c-444a-99e9-0c60b92b230f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/login/LoginActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/activity_login.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.app.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.app.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/androidTest/java/com/xmug/traveldiary/AddDiaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/androidTest/java/com/xmug/traveldiary/AddDiaryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/androidTest/java/com/xmug/traveldiary/ExampleInstrumentedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/androidTest/java/com/xmug/traveldiary/ExampleInstrumentedTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/base/BaseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/base/BaseActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/component/GridSpacingItemDecoration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/component/GridSpacingItemDecoration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/component/SpacesItemDecoration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/component/SpacesItemDecoration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/DeletedDiary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/DeletedDiary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/Diary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/Diary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/DiaryPlace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/DiaryPlace.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/room/DiaryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/room/DiaryDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/room/DiaryDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/room/DiaryDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/room/ImagesConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/room/ImagesConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/room/PlacesConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/room/PlacesConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/room/TagsConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/data/room/TagsConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/CircleAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/CircleAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/EditAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/EditAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/EditFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/EditFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/EditPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/EditPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/GalleryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/GalleryAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/weather/WeatherDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/weather/WeatherDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/weather/WeatherPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/edit/weather/WeatherPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/login/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/login/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/mainpage/MainPageAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/mainpage/MainPageAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/mainpage/MainPageFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/mainpage/MainPageFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/mainpage/MainPagePresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/mainpage/MainPagePresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/map/MapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/map/MapFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/map/MapPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/map/MapPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/map/showdiary/ShowDiaryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/map/showdiary/ShowDiaryAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/map/showdiary/ShowDiaryDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/map/showdiary/ShowDiaryDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/map/showdiary/ShowDiaryPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/map/showdiary/ShowDiaryPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/SettingsAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/SettingsAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/SettingsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/SettingsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/SettingsPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/SettingsPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/download/DownloadDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/download/DownloadDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/download/DownloadPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/download/DownloadPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/font/FontDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/font/FontDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/font/FontPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/font/FontPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/language/LanguageDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/language/LanguageDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/language/LanguagePresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/language/LanguagePresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/sync/SyncDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/sync/SyncDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/sync/SyncPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/settings/sync/SyncPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/util/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xmug/traveldiary/util/UserManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dialog_showdiary.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/dialog_showdiary.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_edit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_edit.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_mainpage.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_mainpage.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/item_card_in_map.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/item_card_in_map.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/item_card_linear.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/item_card_linear.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/item_card_waterfall.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/item_card_waterfall.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/item_edit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/item_edit.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/menu/menu_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/menu/menu_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +88,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1641476693391</updated>
-      <workItem from="1641476700272" duration="617000" />
+      <workItem from="1641476700272" duration="620000" />
     </task>
     <servers />
   </component>

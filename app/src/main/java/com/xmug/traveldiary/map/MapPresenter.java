@@ -1,7 +1,7 @@
 package com.xmug.traveldiary.map;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.xmug.traveldiary.data.DiaryPlace;
 import com.xmug.traveldiary.data.room.DiaryDAO;
@@ -9,7 +9,7 @@ import com.xmug.traveldiary.data.room.DiaryDatabase;
 
 import java.util.List;
 
-import static android.support.v4.util.Preconditions.checkNotNull;
+import static androidx.core.util.Preconditions.checkNotNull;
 
 public class MapPresenter implements MapContract.Presenter {
 

@@ -1,7 +1,7 @@
 package com.xmug.traveldiary.data.room;
 
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 import com.xmug.traveldiary.data.DiaryPlace;
 import com.google.gson.Gson;

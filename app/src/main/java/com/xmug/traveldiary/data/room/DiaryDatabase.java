@@ -1,8 +1,8 @@
 package com.xmug.traveldiary.data.room;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 import android.content.Context;
 
 import com.xmug.traveldiary.data.DeletedDiary;
@@ -10,7 +10,7 @@ import com.xmug.traveldiary.data.Diary;
 import com.xmug.traveldiary.data.DiaryPlace;
 import com.xmug.traveldiary.data.User;
 
-@Database(entities = {Diary.class, DiaryPlace.class, User.class, DeletedDiary.class}, version = 1, exportSchema = false)
+@Database(entities = {Diary.class, DiaryPlace.class, User.class, DeletedDiary.class}, version = 2, exportSchema = false)
 public abstract class DiaryDatabase extends RoomDatabase {
 
     private static DiaryDatabase INSTANCE;
