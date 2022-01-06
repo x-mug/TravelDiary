@@ -63,55 +63,63 @@ public class LoginActivity extends AppCompatActivity {
 
     private void InitListeners() {
         loginBtn.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("WrongConstant")
             @Override
             public void onClick(View view) {
-                if (!verifyFormat()) return;
-
-                User user = TryGetUserByEmailPassword();
-
-                int duration = 3;
-                if (user == null) {
-                    Toast.makeText(getApplicationContext(), "Email/Password is not correct", duration).show();
-                } else {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);   //Intent intent=new Intent(MainActivity.this,JumpToActivity.class);
-                    startActivity(intent);
-                }
+                Login();
             }
         });
 
         SignBtn.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("WrongConstant")
             @Override
             public void onClick(View view) {
-                if (!verifyFormat()) return;
-                //save user to room
-                mRoomDb = DiaryDatabase.getIstance(LoginActivity.this);
-                DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
-
-                User user = TryUpdateUserByEmail();
-                if (user == null) {
-                    // Insert
-                    Toast.makeText(getApplicationContext(), "Welcome!" + user.getId(), 3).show();
-                    user = new User();
-                    user.setName(email.getText().toString());
-                    user.setEmail(email.getText().toString());
-                    user.setPassword(SHA256(password.getText().toString()));
-                } else {
-                    // Update
-                    Toast.makeText(getApplicationContext(), "User Exists. Password Updated" + user.getId(), 3).show();
-                    user.setName(email.getText().toString());
-                    user.setEmail(email.getText().toString());
-                    user.setPassword(SHA256(password.getText().toString()));
-                }
-
-                diaryDAO.insertOrUpdateUser(user);
+                Sign();
             }
         });
     }
 
     private void InitObjects() {
         inputValidation = new InputValidation(LoginActivity.this);
+    }
+
+    @SuppressLint("WrongConstant")
+    private void Login() {
+        if (!verifyFormat()) return;
+
+        User user = TryGetUserByEmailPassword();
+
+        int duration = 3;
+        if (user == null) {
+            Toast.makeText(getApplicationContext(), "Email/Password is not correct", duration).show();
+        } else {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);   //Intent intent=new Intent(MainActivity.this,JumpToActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @SuppressLint("WrongConstant")
+    private void Sign() {
+        if (!verifyFormat()) return;
+        //save user to room
+        mRoomDb = DiaryDatabase.getIstance(LoginActivity.this);
+        DiaryDAO diaryDAO = mRoomDb.getDiaryDAO();
+
+        User user = TryUpdateUserByEmail();
+        if (user == null) {
+            // Insert
+            user = new User();
+            user.setName(email.getText().toString());
+            user.setEmail(email.getText().toString());
+            user.setPassword(SHA256(password.getText().toString()));
+            diaryDAO.insertOrUpdateUser(user);
+            Login();
+        } else {
+            // Update
+            Toast.makeText(getApplicationContext(), "User Exists. Password Updated" + user.getId(), 3).show();
+            user.setName(email.getText().toString());
+            user.setEmail(email.getText().toString());
+            user.setPassword(SHA256(password.getText().toString()));
+            diaryDAO.insertOrUpdateUser(user);
+        }
     }
 
     private User TryGetUserByEmailPassword() {
