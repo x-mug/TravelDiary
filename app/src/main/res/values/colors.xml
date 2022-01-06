@@ -30,4 +30,6 @@
 
     <color name="settings_view">#DCDCDC</color>
 
+    <color name="textInputLayout">#96ffffff</color>
+
 </resources>
