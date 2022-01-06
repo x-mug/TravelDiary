@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.claire.traveldiary">
+    package="com.xmug.traveldiary">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.xmug.traveldiary.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -38,7 +38,7 @@
             android:name="io.fabric.ApiKey"
             android:value="06fcfff5a933e06ae2f2389fe8319bffc4ddd1f6"
             />
-        <activity android:name=".LaunchActivity" />
+        <activity android:name="com.xmug.traveldiary.LaunchActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
